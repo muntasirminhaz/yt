@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "topics": [
+    {
+      "topic": "Browser extension APIs",
+      "file": "references/topics-apis.json",
+      "summary": "Open when selecting a chrome.* API for extension behavior, browser integration, or device capabilities.",
+      "keywords": ["Browser extension APIs"]},
+    {
+      "topic": "Architecture and core concepts",
+      "file": "references/topics-concepts.json",
+      "summary": "Open when designing extension components, lifecycle, messaging, permissions, storage, security, or Manifest V3 migration.",
+      "keywords": ["Architecture and core concepts"]},
+    {
+      "topic": "Manifest declarations",
+      "file": "references/topics-manifest.json",
+      "summary": "Open when declaring manifest identity, capabilities, specialized features, or named permissions.",
+      "keywords": ["Manifest declarations"]},
+    {
+      "topic": "Implementation and testing guides",
+      "file": "references/topics-guides.json",
+      "summary": "Open when implementing extension UI, web-platform integration, packaging, authentication, tests, or debugging.",
+      "keywords": ["Implementation and testing guides"]},
+    {
+      "topic": "Reference Language Selection",
+      "file": "references/languages.md",
+      "summary": "Open when you need a language version of this skill's references other than English.",
+      "keywords": ["reference language", "translated references", "language selection"]}
+  ]
+}

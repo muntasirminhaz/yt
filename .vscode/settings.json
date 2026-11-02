@@ -1,0 +1,18 @@
+{
+  "swift.path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+  "files.exclude": {
+    "**/.DS_Store": true
+  },
+  "search.exclude": {
+    ".atlas/tmp/**": true,
+    "**/DerivedData/**": true,
+    "node_modules/**": true
+  },
+  "files.associations": {
+    "*.xcproj": "json5",
+    "*.xcprivacy": "xml",
+    "*.entitlements": "xml"
+  },
+  "editor.formatOnSave": false,
+  "eslint.validate": ["javascript"]
+}

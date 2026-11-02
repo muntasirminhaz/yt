@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "swiftlang.swift-vscode",
+    "sweetpad.sweetpad",
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "mrmlnc.vscode-json5"
+  ]
+}

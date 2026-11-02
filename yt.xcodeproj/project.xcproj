@@ -20,6 +20,7 @@
           "inclusions": [
             "/Localized: Resources/Main.html",
             "Assets.xcassets",
+            "PrivacyInfo.xcprivacy",
             "Resources/Icon.png",
             "Resources/Script.js",
             "Resources/Style.css",
@@ -30,6 +31,7 @@
           "inclusions": [
             "/Localized: Resources/Main.html",
             "Assets.xcassets",
+            "PrivacyInfo.xcprivacy",
             "Resources/Icon.png",
             "Resources/Script.js",
             "Resources/Style.css",
@@ -37,43 +39,10 @@
           ],
         },
       ],
-    }, {
-      "kind": "folder",
-      "path": "Shared (Extension)",
-      "opaque-folders": [
-        "Resources/_locales",
-        "Resources/images",
-      ],
-      "membership-exceptions": [
-        {
-          "target": "yt Extension (iOS)",
-          "inclusions": [
-            "Resources/_locales",
-            "Resources/background.js",
-            "Resources/content.js",
-            "Resources/images",
-            "Resources/manifest.json",
-            "Resources/popup.css",
-            "Resources/popup.html",
-            "Resources/popup.js",
-            "SafariWebExtensionHandler.swift",
-          ],
-        }, {
-          "target": "yt Extension (macOS)",
-          "inclusions": [
-            "Resources/_locales",
-            "Resources/background.js",
-            "Resources/content.js",
-            "Resources/images",
-            "Resources/manifest.json",
-            "Resources/popup.css",
-            "Resources/popup.html",
-            "Resources/popup.js",
-            "SafariWebExtensionHandler.swift",
-          ],
-        },
-      ],
-    }, {
+    },
+    { "kind": "folder", "path": "Shared (Extension)", "target-membership": [ "yt Extension (iOS)", "yt Extension (macOS)" ] },
+    { "kind": "folder", "path": "extension", "opaque-folders": [ "_locales", "images" ], "target-membership": [ "yt Extension (iOS)", "yt Extension (macOS)" ] },
+    {
       "kind": "folder",
       "path": "iOS (App)",
       "target-membership": [
@@ -213,13 +182,14 @@
         "ENABLE_USER_SELECTED_FILES": "readonly",
         "GENERATE_INFOPLIST_FILE": "YES",
         "INFOPLIST_KEY_CFBundleDisplayName": "yt",
+        "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.utilities",
         "INFOPLIST_KEY_NSMainStoryboardFile": "Main",
         "INFOPLIST_KEY_NSPrincipalClass": "NSApplication",
         "LD_RUNPATH_SEARCH_PATHS": [
           "$(inherited)",
           "@executable_path/../Frameworks",
         ],
-        "MACOSX_DEPLOYMENT_TARGET": "12.0",
+        "MACOSX_DEPLOYMENT_TARGET": "14.0",
         "MARKETING_VERSION": "1.0",
         "OTHER_LDFLAGS": [
           "-framework",
@@ -255,7 +225,7 @@
         "INFOPLIST_FILE": "iOS (Extension)/Info.plist",
         "INFOPLIST_KEY_CFBundleDisplayName": "yt Extension",
         "INFOPLIST_KEY_NSHumanReadableCopyright": "",
-        "IPHONEOS_DEPLOYMENT_TARGET": "15.0",
+        "IPHONEOS_DEPLOYMENT_TARGET": "17.0",
         "LD_RUNPATH_SEARCH_PATHS": [
           "$(inherited)",
           "@executable_path/Frameworks",
@@ -303,7 +273,7 @@
           "@executable_path/../Frameworks",
           "@executable_path/../../../../Frameworks",
         ],
-        "MACOSX_DEPLOYMENT_TARGET": "12.0",
+        "MACOSX_DEPLOYMENT_TARGET": "14.0",
         "MARKETING_VERSION": "1.0",
         "OTHER_LDFLAGS": [
           "-framework",

@@ -2,18 +2,16 @@
 //  ViewController.swift
 //  Shared (App)
 //
-//  Created by Muntasir on 2/11/26.
-//
 
 import WebKit
 
 #if os(iOS)
-import UIKit
-typealias PlatformViewController = UIViewController
+    import UIKit
+    typealias PlatformViewController = UIViewController
 #elseif os(macOS)
-import Cocoa
-import SafariServices
-typealias PlatformViewController = NSViewController
+    import Cocoa
+    import SafariServices
+    typealias PlatformViewController = NSViewController
 #endif
 
 let extensionBundleIdentifier = "cyberm3.yt.Extension"
@@ -27,55 +25,46 @@ class ViewController: PlatformViewController, WKNavigationDelegate, WKScriptMess
 
         self.webView.navigationDelegate = self
 
-#if os(iOS)
-        self.webView.scrollView.isScrollEnabled = false
-#endif
+        #if os(iOS)
+            self.webView.scrollView.isScrollEnabled = false
+        #endif
 
         self.webView.configuration.userContentController.add(self, name: "controller")
 
-        self.webView.loadFileURL(Bundle.main.url(forResource: "Main", withExtension: "html")!, allowingReadAccessTo: Bundle.main.resourceURL!)
+        self.webView.loadFileURL(
+            Bundle.main.url(forResource: "Main", withExtension: "html")!,
+            allowingReadAccessTo: Bundle.main.resourceURL!)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-#if os(iOS)
-        webView.evaluateJavaScript("show('ios')")
-#elseif os(macOS)
-        webView.evaluateJavaScript("show('mac')")
+        #if os(iOS)
+            webView.evaluateJavaScript("show('ios')")
+        #elseif os(macOS)
+            webView.evaluateJavaScript("show('mac')")
 
-        SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: extensionBundleIdentifier) { (state, error) in
-            guard let state = state, error == nil else {
-                // Insert code to inform the user that something went wrong.
-                return
-            }
-
-            DispatchQueue.main.async {
-                if #available(macOS 13, *) {
-                    webView.evaluateJavaScript("show('mac', \(state.isEnabled), true)")
-                } else {
-                    webView.evaluateJavaScript("show('mac', \(state.isEnabled), false)")
+            SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier: extensionBundleIdentifier) {
+                state, error in
+                guard let state = state, error == nil else { return }
+                DispatchQueue.main.async {
+                    webView.evaluateJavaScript("show('mac', \(state.isEnabled))")
                 }
             }
-        }
-#endif
+        #endif
     }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-#if os(macOS)
-        if (message.body as! String != "open-preferences") {
-            return
-        }
+    func userContentController(
+        _ userContentController: WKUserContentController, didReceive message: WKScriptMessage
+    ) {
+        #if os(macOS)
+            guard message.body as? String == "open-preferences" else { return }
 
-        SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionBundleIdentifier) { error in
-            guard error == nil else {
-                // Insert code to inform the user that something went wrong.
-                return
+            SFSafariApplication.showPreferencesForExtension(withIdentifier: extensionBundleIdentifier) { error in
+                guard error == nil else { return }
+                DispatchQueue.main.async {
+                    NSApp.terminate(self)
+                }
             }
-
-            DispatchQueue.main.async {
-                NSApp.terminate(self)
-            }
-        }
-#endif
+        #endif
     }
 
 }

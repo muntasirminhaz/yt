@@ -1,0 +1,10 @@
+{
+    "extension_name": {
+        "message": "yt",
+        "description": "The display name for the extension (placeholder until the product name is chosen; must not contain the word YouTube or YT variants in the final name)."
+    },
+    "extension_description": {
+        "message": "Playback and interface controls for YouTube in Safari.",
+        "description": "Description of what the extension does."
+    }
+}

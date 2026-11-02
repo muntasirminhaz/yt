@@ -1,0 +1,17 @@
+AutisticAF-claude-code-apple-dev-plugin | https://github.com/AutisticAF/claude-code-apple-dev-plugin | 977dc6c01b0140dc65d0546f1de11b1b338f8871 2026-04-02
+CharlesWiltgen-Axiom | https://github.com/CharlesWiltgen/Axiom | 58ae15ac93b1fa59db628f634a6c257e86e794b2 2026-10-31
+K8Cill-safari-webkit-skill | https://github.com/K8Cill/safari-webkit-skill | e15fa4278a822bc17f6964fd0cc4ceb04f0e10cc 2026-03-12
+LevyBytes-AI-SKILL-chrome-extensions | https://github.com/LevyBytes/AI-SKILL-chrome-extensions | 0a2ea059e4fcdd35f400cb78fea38cb78043cc7c 2026-10-22
+cameroncooke-XcodeBuildMCP | https://github.com/cameroncooke/XcodeBuildMCP | 2998ac77ebbca59544e88a27f34bfb830db9d924 2026-10-22
+cheginimohsen021-browser-extension-skills | https://github.com/cheginimohsen021/browser-extension-skills | 249886cf8137086792b6c3a5a2f7adce117a9f8d 2026-09-11
+extensiondev-skill | https://github.com/extensiondev/skill | affca9131bc8b8c19130683ac637cfb8e446d75d 2026-10-20
+fal3-claude-skills-collection | https://github.com/fal3/claude-skills-collection | 7201e746f4940de1c70a2fbca93416cb04bf4958 2026-09-17
+gaelic-ghost-apple-dev-skills | https://github.com/gaelic-ghost/apple-dev-skills | 7cce4efa5b0690aaf127ec25cfc6711e024ebc59 2026-07-03
+gaelic-ghost-socket | https://github.com/gaelic-ghost/socket | ccbde05d2d542ce20d1645b425c75dc531b53721 2026-08-26
+hmohamed01-swift-development | https://github.com/hmohamed01/swift-development | 5d08064176d9326b664a0b026eddf4d9cb29b4af 2026-04-12
+jeremieb-swift-unit-test-instructions | https://github.com/jeremieb/swift-unit-test-instructions | c8a376a5e2cdb8aebc7d6825de27846f4b6280ae 2026-02-27
+koshkinvv-ios-agent-skills | https://github.com/koshkinvv/ios-agent-skills | 8e88417aa59ee3a2ae82e021e49f53f94ad175ff 2026-03-16
+masih-0x3-agent-skills | https://github.com/masih-0x3/agent-skills | 9d38a2c2efbff6624df0dcdb41c0471a7a6bd62b 2026-09-28
+patrickserrano-skills | https://github.com/patrickserrano/skills | e90c8321d80b04dd613fba65f5e9076d1c274140 2026-01-17
+rshankras-claude-code-apple-skills | https://github.com/rshankras/claude-code-apple-skills | 9ffb83138209057875698dd11c1720c657c47a92 2026-07-24
+tddworks-claude-skills | https://github.com/tddworks/claude-skills | 650e9654f65507875a5ede05eb05e51e7cef1975 2026-06-13
