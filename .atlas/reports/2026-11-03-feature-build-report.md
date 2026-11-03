@@ -100,6 +100,20 @@ All tests on macOS Safari 27 unless marked. Reload: untick/tick the extension in
 | 33 | Original titles | Watch page > Keep original titles; set YouTube language to Bengali in your account, open an English video | English title shown; console `[ytx] title restored` |
 | 34 | Mixes | Feeds > Hide Mixes; home page and related list | Mix cards gone |
 | 35 | Tracking params | Watch page > Remove tracking; open a shared link with `?si=` | Address bar loses the parameter without reloading |
+| 36 | Seek and frames | Pin Seek back/forward and Previous/Next frame; Playback > Seek step 30 s | Jumps 30 s; frame buttons pause and step |
+| 37 | Sleep timer | ••• > Sleep timer three times | Pills "Sleep in 15 min", 30, 60, then off; at zero the video pauses |
+| 38 | Rotate and fill | ••• > Rotate video four times; Fill the frame on a 4:3 video | 90° steps back to normal; fill crops the bars, button shows active |
+| 39 | Block this channel | ••• > Block this channel; go to the home page | Pill "Blocked: <channel>"; Feeds > Blocked channels gained the name; its cards are gone |
+| 40 | Continue watching | Watch page > Dismiss on; leave a playlist playing for hours (or trigger the idle prompt) | Prompt disappears by itself |
+| 41 | Comment sort and words | Watch page > Sort comments Newest first; Blocked words in comments: `first` | Comments load newest first; comments containing "first" are hidden |
+| 42 | Length, caps, frames | Feeds > shorter than 2 min, longer than 1 h, Tone down ALL-CAPS, Real frames; home page | Short and long videos gone; shouting titles in sentence case; thumbnails replaced by a mid-video frame |
+| 43 | Posts and search shelves | Feeds switches on; home page and a search for "iphone" | Community posts and "People also watched" shelves gone |
+| 44 | Mute and undo | Sponsors > Sponsor = Mute, Intro = Skip; ••• > Undo last skip after an intro skip | Muted during the sponsor with a pill; undo jumps back to the intro start and plays it |
+| 45 | Allow ads | Ads > Skip video ads on, Allow ads on: a channel you watch; open its video | Ads play normally there, skipped elsewhere |
+| 46 | Shorts auto-next | Appearance > Shorts: play once, then next; open /shorts | Each Short plays once and advances |
+| 47 | Grayscale and hidden extras | Theme > Grayscale; Player > overlays, ambient, controls visible | Site in grey; no watermark or heat map; no glow; controls never fade |
+| 48 | Embeds | Open a blog post with an embedded YouTube video (any site); Safari may ask to allow the extension on that site | Default speed and quality apply inside the embed; console `[ytx]` lines from the frame |
+| 49 | Watch stats | Watch a few minutes, open the settings Home | "Watched today … · … this week" under the intro |
 
 Combos worth one pass: Skip video ads + SponsorBlock on the same video; Privacy mode + dislike counts (API still works); Audio mode + time remaining; Per-channel speed + "Start every video at the custom default speed" (channel wins); Blocked channels + hide watched on the home page (both hide, no layout holes).
 
