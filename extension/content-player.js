@@ -48,7 +48,7 @@
       window.removeEventListener("resize", cinemaHole);
       window.removeEventListener("scroll", cinemaHole);
     }
-    if (state.cinemaEl) { state.cinemaEl.style.opacity = (ctx.settings.themeOn ? ctx.settings.cinemaDim : 85) / 100; cinemaHole(); }
+    if (state.cinemaEl) { state.cinemaEl.style.opacity = ctx.settings.cinemaDim / 100; cinemaHole(); }
   };
 
 

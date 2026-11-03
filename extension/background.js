@@ -22,7 +22,10 @@ const reloadYouTube = async () => {
   for (const tab of tabs) browser.tabs.reload(tab.id).catch(() => null);
 };
 
-browser.runtime.onInstalled.addListener(reloadYouTube);
+browser.runtime.onInstalled.addListener(async (details) => {
+  await reloadYouTube();
+  if (details.reason === "install") browser.tabs.create({ url: browser.runtime.getURL("options.html#welcome") }).catch(() => null);
+});
 browser.storage.onChanged.addListener(async (changes, area) => {
   if (area !== "local" || !changes.settings) return;
   const on = Boolean(changes.settings.newValue?.guestMode);

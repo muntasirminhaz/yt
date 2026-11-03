@@ -34,6 +34,8 @@
 .ytx-bar:not(.in-player) .ytx-menu, .ytx-bar:not(.in-player) .ytx-panel { top: calc(100% + 6px); right: auto; left: 0; }
 .ytx-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; min-width: 360px; }
 .ytx-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; white-space: nowrap; }
+.ytx-item span { flex: 1; text-align: left; }
+.ytx-item kbd { font: 11px ui-monospace, -apple-system, monospace; color: rgba(255, 255, 255, 0.55); }
 .ytx-item:hover { background: rgba(255, 255, 255, 0.12); }
 .ytx-panel { min-width: 260px; }
 .ytx-frow { display: flex; align-items: center; gap: 10px; padding: 6px 8px; font: 500 12px -apple-system, system-ui, sans-serif; }
@@ -80,3 +82,5 @@ html.ytx-hidenavmore ytd-guide-section-renderer:has(a[href*="/premium"], a[href*
 html.ytx-hidecreate ytd-masthead ytd-button-renderer:has(a[href*="/upload"]), html.ytx-hidecreate ytd-masthead ytd-topbar-menu-button-renderer:has([aria-label="Create"]), html.ytx-hidecreate ytd-masthead #buttons > ytd-button-renderer:first-child,
 html.ytx-hidevoicesearch #voice-search-button, html.ytx-hidevoicesearch ytd-masthead .ytd-searchbox + ytd-button-renderer { display: none !important; }
 html.ytx-hidethumbnails ytd-rich-item-renderer, html.ytx-hidethumbnails ytd-compact-video-renderer { min-height: 0; }
+html.ytx-amoled, html.ytx-amoled body, html.ytx-amoled ytd-app, html.ytx-amoled #masthead-container, html.ytx-amoled ytd-masthead, html.ytx-amoled #guide, html.ytx-amoled ytd-mini-guide-renderer, html.ytx-amoled tp-yt-app-drawer#guide #contentContainer, html.ytx-amoled ytm-app, html.ytx-amoled .mobile-topbar-header { --yt-spec-base-background: #000 !important; --yt-spec-raised-background: #0a0a0a !important; --yt-spec-menu-background: #0a0a0a !important; --yt-spec-general-background-a: #000 !important; --yt-spec-brand-background-solid: #000 !important; --yt-spec-brand-background-primary: #000 !important; --ytd-searchbox-background: #0a0a0a !important; background-color: #000 !important; }
+html.ytx-amoled ytd-watch-flexy, html.ytx-amoled #below, html.ytx-amoled #secondary { background: #000 !important; }

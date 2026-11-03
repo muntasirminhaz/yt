@@ -170,7 +170,7 @@
     "message": "Custom CSS"
   },
   "n_customCss": {
-    "message": "Applied on every YouTube page."
+    "message": "Applied as written, no checks."
   },
   "s_hideRelated": {
     "message": "Hide related videos"
@@ -218,7 +218,7 @@
     "message": "Bottom right"
   },
   "o_system": {
-    "message": "Match YouTube"
+    "message": "Match device"
   },
   "o_dark": {
     "message": "Dark"
@@ -401,7 +401,7 @@
     "message": "How dark the page around the player gets."
   },
   "n_theme": {
-    "message": "Dark forces YouTube's dark theme; accent recolours progress bars and links."
+    "message": "Match device follows your Mac or iPhone appearance. Black is pure black for OLED screens."
   },
   "n_accent": {
     "message": "Used by the Dark with accent theme."
@@ -490,12 +490,6 @@
   "g_theme": {
     "message": "Theme"
   },
-  "s_themeOn": {
-    "message": "Customise the look"
-  },
-  "n_themeOn": {
-    "message": "Turn on to change the theme, accent colour, cinema dimming and add your own CSS."
-  },
   "g_cleanup": {
     "message": "Clean up"
   },
@@ -561,5 +555,153 @@
   },
   "g_experimental": {
     "message": "Experimental"
+  },
+  "g_shortcuts": {
+    "message": "Shortcuts"
+  },
+  "s_shortcuts": {
+    "message": "Keyboard shortcuts"
+  },
+  "n_shortcuts": {
+    "message": "Click a key, then press a combination with Option, Control or Shift so YouTube's own keys keep working. Backspace clears, Esc cancels."
+  },
+  "k_none": {
+    "message": "None"
+  },
+  "k_press": {
+    "message": "Press keys…"
+  },
+  "s_backup": {
+    "message": "Backup"
+  },
+  "n_backup": {
+    "message": "Export writes a JSON file of every setting; Import reads one back; Reset restores the defaults."
+  },
+  "b_export": {
+    "message": "Export"
+  },
+  "b_import": {
+    "message": "Import…"
+  },
+  "b_reset": {
+    "message": "Reset all"
+  },
+  "o_menu": {
+    "message": "Sections"
+  },
+  "s_welcome": {
+    "message": "Welcome page"
+  },
+  "n_welcome": {
+    "message": "The setup page shown after installing."
+  },
+  "b_welcome": {
+    "message": "Show again"
+  },
+  "w_title": {
+    "message": "Ready on YouTube"
+  },
+  "w_intro": {
+    "message": "Pick a starting point. Everything can be changed later."
+  },
+  "w_focused": {
+    "message": "Focused"
+  },
+  "w_focused_note": {
+    "message": "No Shorts, topic chips, bell, or suggestion grids."
+  },
+  "w_fast": {
+    "message": "Fast"
+  },
+  "w_fast_note": {
+    "message": "Every video at 1.5×, bigger steps, speed buttons in the toolbar."
+  },
+  "w_clean": {
+    "message": "Clean"
+  },
+  "w_clean_note": {
+    "message": "Focused, plus titles instead of thumbnails and a trimmed sidebar."
+  },
+  "w_devices": {
+    "message": "Also on iPhone and iPad. Settings move with Export and Import."
+  },
+  "w_done": {
+    "message": "Start"
+  },
+  "o_back": {
+    "message": "Back"
+  },
+  "o_settings": {
+    "message": "Settings"
+  },
+  "o_amoled": {
+    "message": "Black (OLED)"
+  },
+  "s_customCssOn": {
+    "message": "Custom CSS"
+  },
+  "n_customCssOn": {
+    "message": "Add your own styles to every YouTube page."
+  },
+  "g_home": {
+    "message": "Home"
+  },
+  "g_support": {
+    "message": "Support"
+  },
+  "h_title": {
+    "message": "Playback and interface controls for YouTube"
+  },
+  "h_intro": {
+    "message": "Speed, quality, autoplay, a cleaner page and a small toolbar in the player. Everything is on YouTube itself; this page only sets preferences."
+  },
+  "h_feedback": {
+    "message": "Something missing or broken? Tell me on the Support page."
+  },
+  "h_allset": {
+    "message": "All set. Your choices are saved; browse the sections on the left any time."
+  },
+  "h_allset_short": {
+    "message": "All set. Your choices are saved; browse the sections any time."
+  },
+  "sp_intro": {
+    "message": "Questions, bugs and ideas are welcome. Say which device and Safari version you use and what you expected to happen."
+  },
+  "sp_email": {
+    "message": "Email"
+  },
+  "sp_write": {
+    "message": "Write"
+  },
+  "sp_copy": {
+    "message": "Copy address"
+  },
+  "sp_version": {
+    "message": "Version"
+  },
+  "sp_device": {
+    "message": "Device"
+  },
+  "t_saved": {
+    "message": "Saved"
+  },
+  "f_welcome": {
+    "message": "Welcome"
+  },
+  "f_support": {
+    "message": "Support"
+  },
+  "f_export": {
+    "message": "Export settings"
+  },
+  "support_email": {
+    "message": "xkmtrx@gmail.com",
+    "description": "Support contact shown on the Support page; change before release."
+  },
+  "w_recommended": {
+    "message": "Recommended"
+  },
+  "w_recommended_note": {
+    "message": "Auto 1080p, no autoplay in background tabs, mini player, and no Shorts, chips, bell or suggestion grids."
   }
 }

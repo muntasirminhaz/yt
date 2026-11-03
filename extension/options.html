@@ -10,11 +10,28 @@
   <script type="module" src="options.js"></script>
 </head>
 <body>
-  <header>
-    <h1 id="title"></h1>
-    <input id="search" type="search" autocomplete="off">
-  </header>
-  <nav id="nav"></nav>
-  <main id="main"></main>
+  <div id="window">
+    <aside id="sidebar">
+      <div class="brand"><img src="images/icon-128.png" alt="" width="28" height="28"><span id="brand"></span></div>
+      <input id="search" type="search" autocomplete="off">
+      <nav id="nav"></nav>
+    </aside>
+    <section id="pane">
+      <header id="bar">
+        <button id="back" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span></span></button>
+        <h1 id="title"></h1>
+      </header>
+      <div id="scroll">
+        <div id="list" hidden></div>
+        <div id="welcome" hidden></div>
+        <div id="home" hidden></div>
+        <div id="support" hidden></div>
+        <div id="results" hidden></div>
+        <div id="main"></div>
+      </div>
+      <footer id="foot"></footer>
+    </section>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </div>
 </body>
 </html>

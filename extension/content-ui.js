@@ -66,7 +66,8 @@
       item.type = "button";
       item.className = "ytx-item";
       item.dataset.action = id;
-      item.append(glyph(id), Object.assign(document.createElement("span"), { textContent: t("a_" + id) }));
+      const combo = ctx.settings.shortcuts?.[id];
+      item.append(glyph(id), Object.assign(document.createElement("span"), { textContent: t("a_" + id) }), Object.assign(document.createElement("kbd"), { textContent: combo ? ytx.comboLabel(combo) : "" }));
       item.addEventListener("click", (e) => { e.stopPropagation(); if (id === "filters") togglePanel(ctx, true); else { run(id); closeAll(); } });
       menu.append(item);
     }
@@ -121,7 +122,8 @@
     ui.bar.classList.toggle("in-player", inPlayer);
     ctx.mobile ? host.after(ui.bar) : host.prepend(ui.bar);
   };
-  const sig = (ctx) => ctx.settings.controlsPlacement + ":" + ctx.settings.controls.join(",");
+  const sig = (ctx) => ctx.settings.controlsPlacement + ":" + ctx.settings.controls.join(",") + ":" + JSON.stringify(ctx.settings.shortcuts ?? {});
+  ytx.refreshUi = refresh;
 
   ytx.register({
     id: "ui",

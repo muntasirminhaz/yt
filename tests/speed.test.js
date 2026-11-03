@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
+globalThis.navigator ??= { platform: "MacIntel", maxTouchPoints: 0 };
 globalThis.browser = { storage: { local: { get: async () => ({}) , set: async () => {} }, onChanged: { addListener() {} } } };
 await import("../extension/defaults.js");
 const { clampSpeed } = globalThis.ytx;
