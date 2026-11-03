@@ -2,7 +2,7 @@
   const ytx = globalThis.ytx;
   const html = document.documentElement;
   const HIDE = ytx.SCHEMA.flatMap((g) => g.rows).map((r) => r.key).filter((k) => k.startsWith("hide"));
-  const state = { forcedDark: false, viewsObserver: null, viewsTimer: 0 };
+  const state = { forcedDark: false };
   const VIEWS = /^\s*(?:[\d.,]+\s*[KMB]?\s*(?:views?|watching|waiting)?|[\d.,]+\s*[KMB]?)\s*$/i;
   const markViews = () => {
     for (const span of document.querySelectorAll("yt-content-metadata-view-model span:not(.ytx-views), #metadata-line span:not(.ytx-views), .ytm-badge-and-byline-item-byline:not(.ytx-views)")) {
@@ -12,14 +12,7 @@
       }
     }
   };
-  const watchViews = (on) => {
-    if (on && !state.viewsObserver) {
-      state.viewsObserver = new MutationObserver(() => { clearTimeout(state.viewsTimer); state.viewsTimer = setTimeout(markViews, 300); });
-      state.viewsObserver.observe(document.body, { childList: true, subtree: true });
-      markViews();
-    }
-    if (!on && state.viewsObserver) { state.viewsObserver.disconnect(); state.viewsObserver = null; }
-  };
+  const watchViews = (on) => ytx.scanner.set("views", on ? markViews : null);
 
   const shortsToWatch = (href) => {
     const m = href.match(/\/shorts\/([\w-]+)/);
@@ -32,6 +25,7 @@
       const s = ctx.settings;
       for (const key of HIDE) html.classList.toggle("ytx-" + key.toLowerCase(), s.enabled && s[key]);
       if (document.body) watchViews(s.enabled && s.hideViews);
+      try { localStorage.setItem("ytxBg", s.enabled && s.backgroundPlay ? "1" : "0"); } catch { /* storage blocked */ }
       const theme = s.enabled ? s.theme : "system";
       const dark = ["dark", "amoled", "accent"].includes(theme) || (theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
       try { localStorage.setItem("ytxDark", dark ? "1" : "0"); } catch { /* storage blocked */ }

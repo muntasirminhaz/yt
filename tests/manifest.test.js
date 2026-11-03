@@ -52,3 +52,7 @@ test("page bridge runs in the main world at document_start; the isolated bundle 
   assert.ok(!manifest.web_accessible_resources, "nothing needs to be web accessible");
   for (const cs of manifest.content_scripts) for (const f of cs.css ?? []) assert.ok(existsSync(join(ext, f)), `${f} exists`);
 });
+
+test("optional hosts are limited to the two community APIs", () => {
+  assert.deepEqual(manifest.optional_host_permissions ?? [], ["https://sponsor.ajay.app/*", "https://returnyoutubedislikeapi.com/*"]);
+});

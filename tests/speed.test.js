@@ -21,3 +21,20 @@ test("pickQuality picks the wanted level or the next lower one that exists", () 
   assert.equal(pickQuality("hd720", ["large", "medium", "auto"]), "large");
   assert.equal(pickQuality("tiny", ["hd720", "auto"]), "hd720");
 });
+
+test("formatTime, matchList and chapterStarts", () => {
+  const { formatTime, listOf, matchList, chapterStarts } = globalThis.ytx;
+  assert.equal(formatTime(65), "1:05");
+  assert.equal(formatTime(3600), "1:00:00");
+  const list = listOf("Linus Tech Tips\n@mkbhd\n\n  ReAcTs ");
+  assert.ok(matchList("Linus Tech Tips", list));
+  assert.ok(matchList("@MKBHD", list));
+  assert.ok(matchList("Best REACTS of 2026", list));
+  assert.ok(!matchList("Veritasium", list));
+  assert.deepEqual(chapterStarts([50, 25, 25], 100), [0, 50, 75]);
+  assert.deepEqual(chapterStarts([100], 100), []);
+});
+
+test("sbPrefix is the first four hex chars of SHA-256", async () => {
+  assert.equal(await globalThis.ytx.sbPrefix("dQw4w9WgXcQ"), "5f6b");
+});

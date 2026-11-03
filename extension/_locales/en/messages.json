@@ -703,5 +703,254 @@
   },
   "w_recommended_note": {
     "message": "Auto 1080p, no autoplay in background tabs, mini player, and no Shorts, chips, bell or suggestion grids."
+  },
+  "a_loopAB": {
+    "message": "Loop a section"
+  },
+  "a_chapterPrev": {
+    "message": "Previous chapter"
+  },
+  "a_chapterNext": {
+    "message": "Next chapter"
+  },
+  "a_copyLink": {
+    "message": "Copy link at current time"
+  },
+  "a_copyTranscript": {
+    "message": "Copy transcript"
+  },
+  "s_speedPerChannel": {
+    "message": "Remember speed per channel"
+  },
+  "n_speedPerChannel": {
+    "message": "The speed you set on a channel comes back on its next video."
+  },
+  "s_captionsAuto": {
+    "message": "Turn on captions"
+  },
+  "n_captionsAuto": {
+    "message": "Switches captions on when a video has them."
+  },
+  "s_captionsLang": {
+    "message": "Caption language"
+  },
+  "n_captionsLang": {
+    "message": "Language code such as en, es or ja. Empty keeps YouTube's choice."
+  },
+  "s_timeRemaining": {
+    "message": "Show time remaining"
+  },
+  "n_timeRemaining": {
+    "message": "Adds the remaining time next to the duration, at the current speed."
+  },
+  "s_pauseOnBlur": {
+    "message": "Pause when you leave the window"
+  },
+  "n_pauseOnBlur": {
+    "message": "Pauses when Safari loses focus and resumes when it comes back."
+  },
+  "s_resumePositions": {
+    "message": "Resume where you left off"
+  },
+  "n_resumePositions": {
+    "message": "Remembers the position of the last 300 videos on this device, also when signed out."
+  },
+  "s_autoTheater": {
+    "message": "Start in Theater mode"
+  },
+  "n_autoTheater": {
+    "message": "Switches to the wide player on every video."
+  },
+  "s_screenshotTo": {
+    "message": "Screenshot goes to"
+  },
+  "n_screenshotTo": {
+    "message": "A PNG in Downloads, or straight to the clipboard."
+  },
+  "o_file": {
+    "message": "File"
+  },
+  "o_clipboard": {
+    "message": "Clipboard"
+  },
+  "g_feeds": {
+    "message": "Feeds"
+  },
+  "s_homeRedirect": {
+    "message": "Open instead of the home page"
+  },
+  "n_homeRedirect": {
+    "message": "Where the YouTube logo and the home page take you."
+  },
+  "o_none": {
+    "message": "Home"
+  },
+  "o_subscriptions": {
+    "message": "Subscriptions"
+  },
+  "o_watchlater": {
+    "message": "Watch later"
+  },
+  "o_history": {
+    "message": "History"
+  },
+  "s_hideWatched": {
+    "message": "Hide watched videos"
+  },
+  "n_hideWatched": {
+    "message": "Videos with a red progress bar disappear from feeds and related lists."
+  },
+  "s_hideLive": {
+    "message": "Hide live streams and premieres"
+  },
+  "n_hideLive": {
+    "message": "Live, upcoming and premiere items disappear from feeds."
+  },
+  "s_blockedChannels": {
+    "message": "Blocked channels"
+  },
+  "n_blockedChannels": {
+    "message": "One per line: a channel name or @handle. Their videos disappear from feeds, search and related lists."
+  },
+  "s_blockedKeywords": {
+    "message": "Blocked words in titles"
+  },
+  "n_blockedKeywords": {
+    "message": "One per line. Videos whose title contains a word disappear."
+  },
+  "g_sponsors": {
+    "message": "Sponsors"
+  },
+  "s_sbEnabled": {
+    "message": "Skip sponsor segments"
+  },
+  "n_sbEnabled": {
+    "message": "Uses the SponsorBlock community database (sponsor.ajay.app). Only a short hash of each video ID is sent, never the full ID or your account. Asks once for access to that server."
+  },
+  "s_sb_sponsor": {
+    "message": "Sponsor"
+  },
+  "n_sb_sponsor": {
+    "message": "Paid promotions and ads read by the creator."
+  },
+  "s_sb_selfpromo": {
+    "message": "Self promotion"
+  },
+  "n_sb_selfpromo": {
+    "message": "Merch, Patreon, other videos."
+  },
+  "s_sb_interaction": {
+    "message": "Interaction reminder"
+  },
+  "n_sb_interaction": {
+    "message": "Like, subscribe, comment reminders."
+  },
+  "s_sb_intro": {
+    "message": "Intro"
+  },
+  "n_sb_intro": {
+    "message": "Intermissions and intro animations."
+  },
+  "s_sb_outro": {
+    "message": "Outro"
+  },
+  "n_sb_outro": {
+    "message": "End cards and credits."
+  },
+  "s_sb_preview": {
+    "message": "Preview or recap"
+  },
+  "n_sb_preview": {
+    "message": "Clips of what is coming or what happened."
+  },
+  "s_sb_music_offtopic": {
+    "message": "Non-music in music videos"
+  },
+  "n_sb_music_offtopic": {
+    "message": "Only on music videos."
+  },
+  "s_sb_filler": {
+    "message": "Filler"
+  },
+  "n_sb_filler": {
+    "message": "Tangents and jokes. Aggressive, off by default."
+  },
+  "sbo_skip": {
+    "message": "Skip"
+  },
+  "sbo_mark": {
+    "message": "Mark"
+  },
+  "sbo_off": {
+    "message": "Off"
+  },
+  "s_sbNotify": {
+    "message": "Show a note when skipping"
+  },
+  "n_sbNotify": {
+    "message": "A brief pill on the video."
+  },
+  "h_skipped": {
+    "message": "Skipped"
+  },
+  "g_ads": {
+    "message": "Ads"
+  },
+  "s_hidePromoted": {
+    "message": "Hide promoted videos and banners"
+  },
+  "n_hidePromoted": {
+    "message": "Sponsored items in feeds, the masthead banner and shopping shelves. Video ads are not affected."
+  },
+  "s_adSkip": {
+    "message": "Skip video ads"
+  },
+  "n_adSkip": {
+    "message": "Experimental. Mutes and fast-forwards ads in the player and presses Skip as soon as it appears. This goes against YouTube's terms; YouTube may change the player at any time."
+  },
+  "s_rydEnabled": {
+    "message": "Show dislike counts"
+  },
+  "n_rydEnabled": {
+    "message": "Uses the Return YouTube Dislike service (returnyoutubedislikeapi.com). Sends the video ID. Asks once for access to that server."
+  },
+  "s_dearrowTitles": {
+    "message": "Clearer titles from DeArrow"
+  },
+  "n_dearrowTitles": {
+    "message": "Replaces clickbait titles on the watch page with community-written ones from DeArrow (sponsor.ajay.app). Same privacy as sponsor skipping."
+  },
+  "s_backgroundPlay": {
+    "message": "Keep playing in the background"
+  },
+  "n_backgroundPlay": {
+    "message": "Experimental. Keeps audio going when you switch apps or lock the screen on iPhone and iPad. Reload the page after changing."
+  },
+  "h_copied_link": {
+    "message": "Link copied"
+  },
+  "h_copied_transcript": {
+    "message": "Transcript copied"
+  },
+  "h_no_transcript": {
+    "message": "No transcript on this video"
+  },
+  "h_saved_image": {
+    "message": "Screenshot copied"
+  },
+  "ab_from": {
+    "message": "From"
+  },
+  "ab_to": {
+    "message": "To"
+  },
+  "ab_now": {
+    "message": "Now"
+  },
+  "ab_clear": {
+    "message": "Clear"
+  },
+  "h_no_chapters": {
+    "message": "No chapters on this video"
   }
 }

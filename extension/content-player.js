@@ -97,6 +97,11 @@
     canvas.width = v.videoWidth;
     canvas.height = v.videoHeight;
     canvas.getContext("2d").drawImage(v, 0, 0);
+    if (ctx.settings.screenshotTo === "clipboard" && globalThis.ClipboardItem) {
+      navigator.clipboard.write([new ClipboardItem({ "image/png": new Promise((resolve) => canvas.toBlob(resolve, "image/png")) })])
+        .then(() => ytx.hud(t("h_saved_image")), (err) => console.warn("[ytx] clipboard", err));
+      return;
+    }
     canvas.toBlob((blob) => {
       if (!blob) return;
       const a = document.createElement("a");
@@ -107,6 +112,45 @@
       a.remove();
       setTimeout(() => URL.revokeObjectURL(a.href), 5000);
     });
+  };
+
+  const chapters = (ctx) => {
+    const v = ctx.video;
+    const bars = [...document.querySelectorAll(".ytp-chapters-container .ytp-chapter-hover-container")];
+    if (!v || bars.length < 2) return [];
+    return ytx.chapterStarts(bars.map((b) => b.offsetWidth), v.duration);
+  };
+  const jumpChapter = (ctx, dir) => {
+    const v = ctx.video;
+    const starts = chapters(ctx);
+    if (!v || !starts.length) { ytx.hud(t("h_no_chapters")); return; }
+    const target = dir > 0 ? starts.find((s) => s > v.currentTime + 0.5) : [...starts].reverse().find((s) => s < v.currentTime - 2) ?? 0;
+    if (target === undefined) return;
+    v.currentTime = target;
+    ytx.hud(ytx.formatTime(target));
+  };
+  const onTimeAB = (ctx) => {
+    const v = ctx.video;
+    if (state.ab && v && v.currentTime >= state.ab.b) v.currentTime = state.ab.a;
+  };
+  const copyLink = (ctx) => {
+    const id = ctx.videoId;
+    if (!id || !ctx.video) return;
+    navigator.clipboard.writeText(`https://youtu.be/${id}?t=${Math.floor(ctx.video.currentTime)}`).then(() => ytx.hud(t("h_copied_link")));
+  };
+  const copyTranscript = async () => {
+    const button = document.querySelector("ytd-video-description-transcript-section-renderer button, button[aria-label='Show transcript']");
+    if (button && !document.querySelector("ytd-transcript-segment-renderer")) button.click();
+    for (let i = 0; i < 10 && !document.querySelector("ytd-transcript-segment-renderer"); i++) await new Promise((r) => setTimeout(r, 300));
+    const lines = [...document.querySelectorAll("ytd-transcript-segment-renderer")].map((seg) => `${seg.querySelector(".segment-timestamp")?.textContent.trim() ?? ""} ${seg.querySelector(".segment-text")?.textContent.trim() ?? ""}`.trim());
+    if (!lines.length) { ytx.hud(t("h_no_transcript")); return; }
+    await navigator.clipboard.writeText(lines.join("\n"));
+    ytx.hud(t("h_copied_transcript"));
+  };
+  const autoTheater = (ctx) => {
+    if (!ctx.settings.autoTheater || ctx.mobile || !ctx.watch || state.theaterFor === location.href) return;
+    state.theaterFor = location.href;
+    setTimeout(() => { if (!document.querySelector("ytd-watch-flexy[theater]")) document.querySelector(".ytp-size-button")?.click(); }, 600);
   };
 
   ytx.register({
@@ -122,14 +166,16 @@
           else if (state.yielded && performance.now() - state.yielded > 500) { state.yielded = 0; state.observed = null; applyMini(ctx); }
         }).observe(document.documentElement, { attributes: true, subtree: true, attributeFilter: ["active", "enabled", "hidden"] });
       }
-      if (reason === "nav") { if (ctx.settings.cinema) ytx.save({ cinema: false }); setMini(ctx, false); state.yielded = 0; }
+      if (reason === "nav") { if (ctx.settings.cinema) ytx.save({ cinema: false }); setMini(ctx, false); state.yielded = 0; state.ab = null; }
+      if (reason === "video" || reason === "boot") autoTheater(ctx);
+      if (ctx.video && !state.abBound?.has(ctx.video)) { (state.abBound ??= new WeakSet()).add(ctx.video); ctx.video.addEventListener("timeupdate", () => onTimeAB(ctx)); }
       if (reason === "settings" && ctx.changed.has("filters")) state.filters = null;
       applyVideo(ctx);
       applyAudio(ctx);
       applyCinema(ctx);
       applyMini(ctx);
     },
-    state: (ctx) => ({ audio: ctx.settings.audioMode, guest: ctx.settings.guestMode, loop: ctx.settings.loop, cinema: ctx.settings.cinema, flip: state.flip, filters: ctx.settings.filtersOn, cards: ctx.settings.hideCards, miniPlayer: ctx.settings.miniPlayer, reversePlaylist: html.classList.contains("ytx-reverse") }),
+    state: (ctx) => ({ loopAB: Boolean(state.ab), audio: ctx.settings.audioMode, guest: ctx.settings.guestMode, loop: ctx.settings.loop, cinema: ctx.settings.cinema, flip: state.flip, filters: ctx.settings.filtersOn, cards: ctx.settings.hideCards, miniPlayer: ctx.settings.miniPlayer, reversePlaylist: html.classList.contains("ytx-reverse") }),
   });
 
   const toggleSetting = (key, hudKey = key) => async () => {
@@ -156,6 +202,12 @@
       v.webkitSetPresentationMode?.(v.webkitPresentationMode === "picture-in-picture" ? "inline" : "picture-in-picture");
     },
     screenshot: () => screenshot(ytx.ctx),
+    chapterPrev: () => jumpChapter(ytx.ctx, -1),
+    chapterNext: () => jumpChapter(ytx.ctx, 1),
+    copyLink: () => copyLink(ytx.ctx),
+    copyTranscript,
+    setAB: ({ a, b }) => { state.ab = Number.isFinite(a) && Number.isFinite(b) && b > a ? { a, b } : null; return state.ab; },
+    getAB: () => state.ab,
     reversePlaylist: () => { const on = html.classList.toggle("ytx-reverse"); hudToggle("reversePlaylist", on); return on; },
     settings: () => browser.runtime.sendMessage({ type: "openOptions" }),
     setFilter: ({ key, value }) => {

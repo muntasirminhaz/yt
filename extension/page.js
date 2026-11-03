@@ -1,6 +1,17 @@
 (() => {
   if (globalThis.browser?.runtime?.id) return;
   const player = () => document.getElementById("movie_player");
+  let bg = false;
+  try { bg = localStorage.getItem("ytxBg") === "1"; } catch { /* storage blocked */ }
+  if (bg) {
+    for (const [owner, prop] of [[Document.prototype, "hidden"], [Document.prototype, "visibilityState"], [Document.prototype, "webkitHidden"], [Document.prototype, "webkitVisibilityState"]]) {
+      try { Object.defineProperty(owner, prop, { configurable: true, get: () => (prop.endsWith("State") ? "visible" : false) }); } catch { /* read-only */ }
+    }
+    for (const type of ["visibilitychange", "webkitvisibilitychange", "pagehide", "blur"]) {
+      document.addEventListener(type, (e) => e.stopImmediatePropagation(), true);
+      window.addEventListener(type, (e) => e.stopImmediatePropagation(), true);
+    }
+  }
   const flags = { fps: false, avc: false };
   const blocked = (type) => (flags.avc && /vp0?9|av01/i.test(type)) || (flags.fps && /framerate=(4[89]|[5-9]\d)/i.test(type));
   const wrap = (owner, name) => {
@@ -36,6 +47,13 @@
     qualities: () => player()?.getAvailableQualityLevels?.() ?? [],
     state: () => player()?.getPlayerState?.(),
     stop: () => player()?.stopVideo?.(),
+    videoData: () => { const d = player()?.getVideoData?.(); return d ? { id: d.video_id, title: d.title, author: d.author } : null; },
+    captions: (lang) => {
+      const p = player();
+      if (!p?.loadModule) return null;
+      try { p.loadModule("captions"); p.setOption("captions", "track", lang ? { languageCode: lang } : {}); } catch (err) { return String(err); }
+      return true;
+    },
     cue: () => { const p = player(); const id = p?.getVideoData?.().video_id; if (id) p.cueVideoById(id); return id ?? null; },
   };
   document.addEventListener("ytx:call", (e) => {

@@ -23,7 +23,8 @@
   const quality = (key, def, extra) => row(key, "select", def, { options: QUALITIES, labels: QUALITY_LABELS, ...extra });
   const SIZES = ["320x180", "400x225", "480x270", "640x360"];
 
-  const ACTIONS = ["speedDown", "speedUp", "speedReset", "audio", "guest", "loop", "stop", "cinema", "miniPlayer", "pip", "flip", "filters", "cards", "screenshot", "reversePlaylist", "settings"];
+  const ACTIONS = ["speedDown", "speedUp", "speedReset", "audio", "guest", "loop", "loopAB", "chapterPrev", "chapterNext", "stop", "cinema", "miniPlayer", "pip", "flip", "filters", "cards", "screenshot", "copyLink", "copyTranscript", "reversePlaylist", "settings"];
+  const SB_CATEGORIES = { sponsor: "skip", selfpromo: "skip", interaction: "skip", intro: "mark", outro: "mark", preview: "off", music_offtopic: "off", filler: "off" };
 
   const SCHEMA = [
     { id: "playback", rows: [
@@ -33,6 +34,12 @@
       sw("speedWheel", false, { ...NO_PHONE }),
       sw("speedWheelRight", false, { parent: "speedWheel", ...NO_PHONE }),
       sw("wheelReverse", false, { ...NO_PHONE }),
+      sw("speedPerChannel"),
+      sw("captionsAuto"),
+      row("captionsLang", "text", "", { parent: "captionsAuto", placeholder: "en" }),
+      sw("timeRemaining", false, { ...NO_PHONE }),
+      sw("pauseOnBlur"),
+      sw("resumePositions"),
     ] },
     { id: "quality", rows: [
       sw("qualityAuto", true),
@@ -56,10 +63,28 @@
       sw("hideGuide"), sw("hideNavExplore"), sw("hideNavYou"), sw("hideNavMore"),
       sw("hideCreate"), sw("hideVoiceSearch"),
     ] },
+    { id: "feeds", rows: [
+      row("homeRedirect", "select", "none", { options: ["none", "subscriptions", "watchlater", "history"] }),
+      sw("hideWatched"),
+      sw("hideLive"),
+      row("blockedChannels", "textarea", ""),
+      row("blockedKeywords", "textarea", ""),
+    ] },
+    { id: "sponsors", rows: [
+      sw("sbEnabled", false, { origins: ["https://sponsor.ajay.app/*"] }),
+      ...Object.entries(SB_CATEGORIES).map(([cat, def]) => row("sb_" + cat, "select", def, { options: ["skip", "mark", "off"], prefix: "sbo_", parent: "sbEnabled" })),
+      sw("sbNotify", true, { parent: "sbEnabled" }),
+    ] },
+    { id: "ads", rows: [
+      sw("hidePromoted"),
+      sw("adSkip"),
+    ] },
     { id: "player", rows: [
       sw("miniPlayer", true, { ...NO_PHONE }),
       row("miniSize", "choice", "480x270", { options: SIZES, prefix: "z_", custom: { min: 200, max: 1200, step: 10, from: (v) => Number(v.split("x")[0]), to: (w) => `${w}x${Math.round(w * 9 / 16)}` }, parent: "miniPlayer", ...NO_PHONE }),
       row("miniPosition", "select", "tl", { options: ["tl", "tr", "bl", "br"], parent: "miniPlayer", ...NO_PHONE }),
+      sw("autoTheater", false, { ...NO_PHONE }),
+      row("screenshotTo", "select", "file", { options: ["file", "clipboard"] }),
     ] },
     { id: "toolbar", rows: [
       row("controlsPlacement", "select", "player", { options: ["player", "below"], ...NO_PHONE }),
@@ -85,6 +110,8 @@
       sw("autoAsk"),
       sw("emailCopy"),
       sw("linksNewTab"),
+      sw("rydEnabled", false, { origins: ["https://returnyoutubedislikeapi.com/*"] }),
+      sw("dearrowTitles", false, { origins: ["https://sponsor.ajay.app/*"] }),
     ] },
     { id: "theme", rows: [
       row("theme", "select", "system", { options: ["system", "dark", "amoled", "accent"] }),
@@ -94,7 +121,7 @@
       row("customCss", "textarea", "", { parent: "customCssOn" }),
     ] },
     { id: "shortcuts", rows: [row("shortcuts", "shortcuts", {}, NO_PHONE)] },
-    { id: "experimental", rows: [sw("guestMode")] },
+    { id: "experimental", rows: [sw("backgroundPlay", false, { not: ["mac"] }), sw("guestMode")] },
     { id: "advanced", rows: [sw("debug"), row("backup", "backup", null), row("welcome", "link", null)] },
   ];
 
@@ -113,6 +140,26 @@
     fast: { speedDefault: 1.5, speedStep: 0.25, speedWheel: true, controls: ["speedDown", "speedUp", "speedReset", "cinema", "pip"] },
     clean: { hideShorts: true, hideChips: true, hideEndWall: true, hideNotifications: true, hideMoreVideos: true, hideThumbnails: true, hideViews: true, hideNavExplore: true, hideNavMore: true, hideCreate: true, hideVoiceSearch: true },
   };
+  const formatTime = (sec) => {
+    sec = Math.max(0, Math.round(sec));
+    const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s2 = sec % 60;
+    return (h ? `${h}:${String(m).padStart(2, "0")}` : String(m)) + ":" + String(s2).padStart(2, "0");
+  };
+  const listOf = (text) => String(text ?? "").split("\n").map((l) => l.trim().toLowerCase()).filter(Boolean);
+  const matchList = (text, list) => {
+    const hay = String(text ?? "").toLowerCase();
+    return list.some((needle) => (needle.startsWith("@") ? hay.includes(needle) || hay === needle.slice(1) : hay.includes(needle)));
+  };
+  const chapterStarts = (widths, duration) => {
+    const total = widths.reduce((a, b) => a + b, 0);
+    if (!total || !duration || widths.length < 2) return [];
+    let acc = 0;
+    return widths.map((w) => { const start = (acc / total) * duration; acc += w; return start; });
+  };
+  const sbPrefix = async (videoId) => {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(videoId));
+    return [...new Uint8Array(buf)].slice(0, 2).map((b) => b.toString(16).padStart(2, "0")).join("");
+  };
   const merge = (stored) => ({ ...DEFAULTS, ...stored });
   const load = async () => merge((await browser.storage.local.get("settings")).settings);
   const save = async (patch) => {
@@ -129,5 +176,5 @@
     return order.find((q) => available.includes(q)) ?? available.find((q) => q !== "auto") ?? wanted;
   };
 
-  globalThis.ytx = { SCHEMA, DEFAULTS, ACTIONS, QUALITY_LABELS, merge, load, save, watch, clampSpeed, pickQuality, device, comboOf, comboLabel, PRESETS, reset: () => browser.storage.local.set({ settings: {} }) };
+  globalThis.ytx = { SCHEMA, DEFAULTS, ACTIONS, QUALITY_LABELS, merge, load, save, watch, clampSpeed, pickQuality, device, comboOf, comboLabel, PRESETS, SB_CATEGORIES, formatTime, listOf, matchList, chapterStarts, sbPrefix, reset: () => browser.storage.local.set({ settings: {} }) };
 })();

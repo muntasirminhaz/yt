@@ -28,7 +28,20 @@
     pending.get(id)?.(result);
     pending.delete(id);
   });
-  const ctx = { settings: ytx.DEFAULTS, mobile, video: null, changed: new Set(), call, q, SEL, get watch() { return location.pathname === "/watch"; } };
+  const ctx = { settings: ytx.DEFAULTS, mobile, video: null, changed: new Set(), call, q, SEL, get watch() { return location.pathname === "/watch"; }, get videoId() { return new URLSearchParams(location.search).get("v"); } };
+  const scanner = { fns: new Map(), observer: null, timer: 0 };
+  const runScans = () => { for (const fn of scanner.fns.values()) try { fn(); } catch (err) { console.warn("[ytx] scan", err); } };
+  ytx.scanner = {
+    set(name, fn) {
+      if (fn) scanner.fns.set(name, fn); else scanner.fns.delete(name);
+      if (scanner.fns.size && !scanner.observer && document.body) {
+        scanner.observer = new MutationObserver(() => { clearTimeout(scanner.timer); scanner.timer = setTimeout(runScans, 300); });
+        scanner.observer.observe(document.body, { childList: true, subtree: true });
+      }
+      if (!scanner.fns.size && scanner.observer) { scanner.observer.disconnect(); scanner.observer = null; }
+      if (fn) fn();
+    },
+  };
   const log = (...args) => { if (ctx.settings.debug) console.debug("[ytx]", ...args); };
   let hudTimer;
   ytx.hud = (text) => {

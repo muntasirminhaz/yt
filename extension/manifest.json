@@ -41,6 +41,9 @@
                 "content-appearance.js",
                 "content-page.js",
                 "content-shortcuts.js",
+                "content-sponsors.js",
+                "content-feeds.js",
+                "content-ads.js",
                 "content-ui.js"
             ],
             "css": [
@@ -69,5 +72,9 @@
     },
     "host_permissions": [
         "*://*.youtube.com/*"
+    ],
+    "optional_host_permissions": [
+        "https://sponsor.ajay.app/*",
+        "https://returnyoutubedislikeapi.com/*"
     ]
 }

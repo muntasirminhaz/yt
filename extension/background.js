@@ -1,3 +1,5 @@
+import "./defaults.js";
+
 browser.action.onClicked.addListener(() => browser.runtime.openOptionsPage());
 
 const YT = "youtube.com";
@@ -34,9 +36,39 @@ browser.storage.onChanged.addListener(async (changes, area) => {
   await reloadYouTube();
 });
 
-browser.runtime.onMessage.addListener(async (msg, sender) => {
-  if (msg.type === "openOptions") return browser.runtime.openOptionsPage();
-  if (msg.type !== "playing") return;
+const pauseOthers = async (sender) => {
   const tabs = await browser.tabs.query({});
   await Promise.all(tabs.filter((t) => t.id !== sender.tab?.id).map((t) => browser.tabs.sendMessage(t.id, { type: "pauseOthers" }).catch(() => null)));
+};
+
+const cache = new Map();
+const cached = async (key, make) => {
+  if (!cache.has(key)) cache.set(key, make().catch((err) => { cache.delete(key); console.warn("[ytx] api", key, err); return null; }));
+  return cache.get(key);
+};
+const getJson = async (url) => { const r = await fetch(url, { headers: { Accept: "application/json" } }); if (r.status === 404) return null; if (!r.ok) throw new Error(`${r.status} ${url}`); return r.json(); };
+const api = {
+  sb: async ({ videoId, categories }) => cached("sb:" + videoId + categories.join(), async () => {
+    const prefix = await globalThis.ytx.sbPrefix(videoId);
+    const list = await getJson(`https://sponsor.ajay.app/api/skipSegments/${prefix}?categories=${encodeURIComponent(JSON.stringify(categories))}&actionTypes=${encodeURIComponent(JSON.stringify(["skip"]))}`);
+    const hit = (list ?? []).find((v) => v.videoID === videoId);
+    return (hit?.segments ?? []).map((seg) => ({ start: seg.segment[0], end: seg.segment[1], category: seg.category, id: seg.UUID }));
+  }),
+  ryd: async ({ videoId }) => cached("ryd:" + videoId, async () => {
+    const d = await getJson(`https://returnyoutubedislikeapi.com/votes?videoId=${encodeURIComponent(videoId)}`);
+    return d ? { likes: d.likes, dislikes: d.dislikes } : null;
+  }),
+  dearrow: async ({ videoId }) => cached("da:" + videoId, async () => {
+    const prefix = await globalThis.ytx.sbPrefix(videoId);
+    const map = await getJson(`https://sponsor.ajay.app/api/branding/${prefix}`);
+    const entry = map?.[videoId];
+    const title = entry?.titles?.find((t) => !t.original && (t.locked || t.votes >= 0));
+    return title ? { title: title.title.replace(/^>/, "") } : null;
+  }),
+};
+browser.runtime.onMessage.addListener((msg, sender) => {
+  if (msg.type === "openOptions") return browser.runtime.openOptionsPage();
+  if (msg.type === "playing") return pauseOthers(sender);
+  if (api[msg.type]) return api[msg.type](msg);
+  return undefined;
 });

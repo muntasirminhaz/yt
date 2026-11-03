@@ -120,7 +120,7 @@
         el("label", {}, [el("input", { type: "checkbox", value: o, checked: value.includes(o) }), el("span", { textContent: optionLabel(row, o) })])));
     }
     if (row.type === "textarea") return el("textarea", { value, rows: 6 });
-    return el("input", { type: row.type, value, min: row.min ?? "", max: row.max ?? "", step: row.step ?? "" });
+    return el("input", { type: row.type, value, min: row.min ?? "", max: row.max ?? "", step: row.step ?? "", placeholder: row.placeholder ?? "", autocomplete: "off" });
   };
 
   const read = (row, node) => {
@@ -142,7 +142,11 @@
     container.dataset.key = row.key;
     if (row.parent) Object.assign(container.dataset, { parent: row.parent, when: row.when ?? "" });
     if (row.type === "range") node.addEventListener("input", () => (container.querySelector("output").textContent = node.value));
-    if (row.type !== "backup" && row.type !== "link") container.addEventListener("change", () => globalThis.ytx.save({ [row.key]: read(row, node) }));
+    if (row.type !== "backup" && row.type !== "link") container.addEventListener("change", () => {
+      const value = read(row, node);
+      if (row.origins && value === true && browser.permissions?.request) browser.permissions.request({ origins: row.origins }).catch(() => {});
+      globalThis.ytx.save({ [row.key]: value });
+    });
     return container;
   };
 
