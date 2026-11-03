@@ -54,3 +54,6 @@ AuthKey_*.p8
 # Editors
 /.idea
 /.fleet
+
+# Store screenshots gathered by research agents (hundreds of MB); kept on disk only
+.atlas/research/store-images/

@@ -34,6 +34,7 @@
       html.classList.toggle("ytx-accent", theme === "accent");
       html.classList.toggle("ytx-amoled", theme === "amoled");
       html.style.setProperty("--ytx-accent", s.accent);
+      if (s.enabled && s.gridColumns !== "auto") html.style.setProperty("--ytx-grid", String(s.gridColumns)); else html.style.removeProperty("--ytx-grid");
       let style = document.getElementById("ytx-custom");
       if (!style) { style = document.createElement("style"); style.id = "ytx-custom"; html.append(style); }
       style.textContent = s.enabled && s.customCssOn ? s.customCss : "";

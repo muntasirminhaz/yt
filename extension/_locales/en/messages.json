@@ -952,5 +952,50 @@
   },
   "h_no_chapters": {
     "message": "No chapters on this video"
+  },
+  "s_sbWhitelist": {
+    "message": "Never skip on these channels"
+  },
+  "n_sbWhitelist": {
+    "message": "One channel name per line. Segments are still marked."
+  },
+  "s_hidePlayables": {
+    "message": "Hide Playables"
+  },
+  "n_hidePlayables": {
+    "message": "The games shelf and its sidebar entry."
+  },
+  "s_hideAi": {
+    "message": "Hide AI features"
+  },
+  "n_hideAi": {
+    "message": "The Ask button and panel on the watch page."
+  },
+  "s_gridColumns": {
+    "message": "Videos per row on the home page"
+  },
+  "n_gridColumns": {
+    "message": "Auto lets YouTube decide from the window width."
+  },
+  "o_auto": {
+    "message": "Auto"
+  },
+  "s_noTranslate": {
+    "message": "Keep original titles"
+  },
+  "n_noTranslate": {
+    "message": "Undoes YouTube's automatic title translation on the watch page."
+  },
+  "s_hideMixes": {
+    "message": "Hide Mixes"
+  },
+  "n_hideMixes": {
+    "message": "The auto-generated playlists in feeds and related lists."
+  },
+  "s_stripTracking": {
+    "message": "Remove tracking from the address"
+  },
+  "n_stripTracking": {
+    "message": "Drops si, pp and feature parameters from the URL so copied links carry nothing extra."
   }
 }

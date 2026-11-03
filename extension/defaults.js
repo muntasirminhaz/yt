@@ -61,12 +61,14 @@
     { id: "cleanup", rows: [
       sw("hideHomeFeed"), sw("hideThumbnails"), sw("hideViews"), sw("hideChips"),
       sw("hideGuide"), sw("hideNavExplore"), sw("hideNavYou"), sw("hideNavMore"),
-      sw("hideCreate"), sw("hideVoiceSearch"),
+      sw("hideCreate"), sw("hideVoiceSearch"), sw("hidePlayables"), sw("hideAi"),
+      row("gridColumns", "select", "auto", { options: ["auto", 3, 4, 5, 6], labels: { 3: "3", 4: "4", 5: "5", 6: "6" } }),
     ] },
     { id: "feeds", rows: [
       row("homeRedirect", "select", "none", { options: ["none", "subscriptions", "watchlater", "history"] }),
       sw("hideWatched"),
       sw("hideLive"),
+      sw("hideMixes"),
       row("blockedChannels", "textarea", ""),
       row("blockedKeywords", "textarea", ""),
     ] },
@@ -74,6 +76,7 @@
       sw("sbEnabled", false, { origins: ["https://sponsor.ajay.app/*"] }),
       ...Object.entries(SB_CATEGORIES).map(([cat, def]) => row("sb_" + cat, "select", def, { options: ["skip", "mark", "off"], prefix: "sbo_", parent: "sbEnabled" })),
       sw("sbNotify", true, { parent: "sbEnabled" }),
+      row("sbWhitelist", "textarea", "", { parent: "sbEnabled" }),
     ] },
     { id: "ads", rows: [
       sw("hidePromoted"),
@@ -110,6 +113,8 @@
       sw("autoAsk"),
       sw("emailCopy"),
       sw("linksNewTab"),
+      sw("noTranslate"),
+      sw("stripTracking"),
       sw("rydEnabled", false, { origins: ["https://returnyoutubedislikeapi.com/*"] }),
       sw("dearrowTitles", false, { origins: ["https://sponsor.ajay.app/*"] }),
     ] },

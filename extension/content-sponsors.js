@@ -2,7 +2,7 @@
   const ytx = globalThis.ytx;
   const t = (k) => browser.i18n.getMessage(k);
   const COLORS = { sponsor: "#00d400", selfpromo: "#ffff00", interaction: "#cc00ff", intro: "#00ffff", outro: "#0202ed", preview: "#008fd6", music_offtopic: "#ff9900", filler: "#7300ff" };
-  const state = { videoId: null, segments: [], done: new Set(), bar: null, bound: new WeakSet(), titleFor: null, originalTitle: null };
+  const state = { videoId: null, segments: [], done: new Set(), bar: null, bound: new WeakSet(), titleFor: null, originalTitle: null, whitelisted: false };
 
   const modes = (s) => Object.fromEntries(Object.keys(ytx.SB_CATEGORIES).map((c) => [c, s["sb_" + c]]));
   const clearBar = () => { state.bar?.remove(); state.bar = null; };
@@ -28,7 +28,7 @@
 
   const onTime = (ctx) => {
     const v = ctx.video;
-    if (!v || !state.segments.length || !ctx.settings.sbEnabled) return;
+    if (!v || !state.segments.length || !ctx.settings.sbEnabled || state.whitelisted) return;
     const m = modes(ctx.settings);
     for (const seg of state.segments) {
       if (m[seg.category] !== "skip" || state.done.has(seg.id)) continue;
@@ -46,6 +46,8 @@
     const id = ctx.videoId;
     if (!id || !ctx.settings.sbEnabled) { state.segments = []; clearBar(); return; }
     const categories = Object.entries(modes(ctx.settings)).filter(([, mode]) => mode !== "off").map(([c]) => c);
+    const list = ytx.listOf(ctx.settings.sbWhitelist);
+    state.whitelisted = list.length ? ytx.matchList((await ctx.call("videoData"))?.author ?? "", list) : false;
     const segments = (await browser.runtime.sendMessage({ type: "sb", videoId: id, categories }).catch(() => null)) ?? [];
     if (ctx.videoId !== id) return;
     state.segments = segments;
@@ -70,6 +72,16 @@
     button.setAttribute("aria-label", `${n} dislikes`);
   };
 
+  const untranslate = async (ctx) => {
+    const id = ctx.videoId;
+    if (!id || ctx.mobile || !ctx.settings.noTranslate || ctx.settings.dearrowTitles) return;
+    const data = await ctx.call("videoData");
+    if (!data?.title || ctx.videoId !== id) return;
+    for (let i = 0; i < 10 && !document.querySelector("ytd-watch-metadata h1"); i++) await new Promise((r) => setTimeout(r, 400));
+    const el = document.querySelector("ytd-watch-metadata h1 yt-formatted-string, ytd-watch-metadata h1");
+    if (el && el.textContent.trim() !== data.title.trim()) { ytx.log("title restored", { shown: el.textContent.trim(), original: data.title }); el.textContent = data.title; }
+  };
+
   const dearrow = async (ctx) => {
     const id = ctx.videoId;
     const h1 = document.querySelector("ytd-watch-metadata h1 yt-formatted-string, ytd-watch-metadata h1");
@@ -91,10 +103,11 @@
       if (!ctx.settings.enabled) { clearBar(); return; }
       if (reason === "nav") { state.segments = []; state.done.clear(); clearBar(); }
       if (ctx.video && !state.bound.has(ctx.video)) { state.bound.add(ctx.video); ctx.video.addEventListener("timeupdate", () => onTime(ctx)); ctx.video.addEventListener("durationchange", () => drawBar(ctx)); }
-      const sbKeys = ["sbEnabled", ...Object.keys(ytx.SB_CATEGORIES).map((c) => "sb_" + c)];
+      const sbKeys = ["sbEnabled", "sbWhitelist", ...Object.keys(ytx.SB_CATEGORIES).map((c) => "sb_" + c)];
       if (ctx.watch && (reason === "video" || reason === "boot" || (reason === "settings" && sbKeys.some((k) => ctx.changed.has(k))))) load(ctx);
       if (ctx.watch && (reason === "video" || reason === "boot" || (reason === "settings" && ctx.changed.has("rydEnabled")))) dislikes(ctx);
       if (ctx.watch && (reason === "video" || reason === "boot" || (reason === "settings" && ctx.changed.has("dearrowTitles")))) dearrow(ctx);
+      if (ctx.watch && (reason === "video" || reason === "boot" || (reason === "settings" && ctx.changed.has("noTranslate")))) untranslate(ctx);
     },
   });
 })();

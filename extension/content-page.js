@@ -60,9 +60,18 @@
     window.open(url.href, "_blank", "noopener");
   };
 
+  const TRACKING = ["si", "pp", "feature", "embeds_referring_euri", "source_ve_path", "ab_channel"];
+  const strip = () => {
+    const u = new URL(location.href);
+    let changed = false;
+    for (const k of TRACKING) if (u.searchParams.has(k)) { u.searchParams.delete(k); changed = true; }
+    if (changed) history.replaceState(history.state, "", u.toString());
+  };
+
   ytx.register({
     id: "page",
     apply(ctx, reason) {
+      if (ctx.settings.enabled && ctx.settings.stripTracking && (reason === "boot" || reason === "nav")) strip();
       if (reason === "boot") document.addEventListener("click", (e) => onClick(ctx, e), true);
       const s = ctx.settings;
       const KEYS = ["autoDescription", "autoTranscript", "autoAsk", "emailCopy"];
