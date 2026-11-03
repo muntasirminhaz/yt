@@ -34,6 +34,17 @@ Research inputs: `.atlas/research/2026-11-03-survey-chrome.md`, `-survey-firefox
 | Watch page | Keep original titles | Compares the shown title with the player's `getVideoData().title` and restores it when YouTube auto-translated | Six Firefox add-ons exist only for this; relevant for non-English accounts |
 | Watch page | Remove tracking from the address | `history.replaceState` without `si`, `pp`, `feature` and similar | From the Chrome survey (YouTube Enhancer) |
 
+| Playback | Seek back/forward, previous/next frame, sleep timer | Toolbar actions; seek step setting; sleep timer cycles 15/30/60 min and pauses | From the candidates list (seek buttons, sleep timer) |
+| Player | Rotate video, fill the frame, keep controls visible, hide overlays, ambient glow off | CSS transforms and classes | Candidates 20, 22, 24, 46, 49 |
+| Watch page | Block this channel (toolbar), dismiss "Continue watching?", comments sorted by newest, hide Share/Clip/Thanks/Save, blocked words in comments, like/dislike ratio bar | Scanner and DOM clicks; ratio bar uses the RYD numbers already fetched | Candidates 9, 18, 21, 38, 42, 52 |
+| Feeds | Hide shorter/longer than, tone down ALL-CAPS titles, full titles, real frames instead of thumbnails, hide Community posts, clean search results | Scanner (duration badge, title case, `i.ytimg.com/vi/<id>/hq2.jpg`), CSS | Candidates 10, 28, 29, 32, 41 |
+| Sponsors | Mute instead of skip (per category), undo last skip | Mute while inside the segment; undo seeks to the segment start | Candidates 35, 53 |
+| Ads | Allow ads on chosen channels | Author matched against the list before the skipper engages | Candidate 26 |
+| Shorts | Play once, then next | `video.loop = false`, clicks the next button on `ended` | Candidate 5 (17 community sources) |
+| Theme | Grayscale | `filter: grayscale(1)` on body | Candidate 8 |
+| Embeds | Content scripts run in `youtube.com/embed/*` frames on other sites (`all_frames`) | Speed, quality, codecs, captions and sponsor skipping apply; no toolbar | Candidate 2 (34 products). Safari may need its own site grant per embedding site; verify |
+| Home | Watched today / this week | `watchStats` seconds per day, 30 days kept | Candidate 37 |
+
 Settings page: three new groups (Feeds, Sponsors, Ads) with icons; `Watch page` and `Playback` extended; Experimental holds Background play (iPhone/iPad only) and Privacy mode.
 
 ## 2. Not built, with reason
@@ -101,4 +112,20 @@ Combos worth one pass: Skip video ads + SponsorBlock on the same video; Privacy 
 
 ## 5. Research consolidation
 
-(filled in section 6 below after the agents finished)
+- Four agents surveyed 43 Chrome, 93 Firefox and 145 Apple products (96 in full) and about 82 forum, tracker and review sources; a fifth merged them. Files: `.atlas/research/2026-11-03-survey-chrome.md`, `-survey-firefox.md`, `-survey-apple.md`, `-community-findings.md`, `2026-11-03-competitor-feature-lists.md` (167-row master table with our status per feature), and the expanded `example_extentions.txt` (106 products).
+- Screenshots: 789 PNGs, 326 MB, under `.atlas/research/store-images/<store>/<slug>/`, on disk only (gitignored); 24 MB slipped into history in `b816269` before the ignore rule. Say if you want that history rewritten.
+- Reddit was unreachable for the agent (login wall and bot checks), so community evidence comes from Hacker News, MacRumors, Apple Support Communities, Mozilla Discourse, GitHub trackers and store reviews.
+- Status counts in the master table before this last batch: built 73, candidate 56, won't do 14, not possible 11, pending API 7, partial 6. This batch moved 24 candidate rows to built.
+
+## 6. Still open after this round
+
+| Candidate | Why not now | Note |
+|---|---|---|
+| Other video sites, Reels on social sites, Invidious/Piped, YouTube Music | Scope and permission decisions: each adds hosts to the manifest and App Review justification | YouTube Music already matches `*.youtube.com` but has its own DOM; nothing applies there yet |
+| Focus schedules, timers, settings lock, parental controls | Multi-day feature with its own UI | Sleep timer and grayscale cover the light version |
+| DeArrow titles and thumbnails in feeds | One API request per visible card prefix; needs batching and an IndexedDB cache | Watch-page titles are built |
+| Original audio track (block auto-dub) | Player audio-track API is undocumented and obfuscated | Revisit with a device that has auto-dub videos |
+| Caption size and position | Player `fontSizeIncrement` option unverified in Safari | |
+| Subscription groups | Needs a data model and UI; sync only with iCloud | |
+| Playlist total duration, chapter list panel, comment search, multiple loops | Small but each needs its own panel | |
+| Transcript export to file, video download | No downloads API; downloads conflict with YouTube terms | won't do |

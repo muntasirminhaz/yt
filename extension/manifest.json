@@ -27,7 +27,8 @@
                 "*://*.youtube.com/*"
             ],
             "run_at": "document_start",
-            "world": "MAIN"
+            "world": "MAIN",
+            "all_frames": true
         },
         {
             "js": [
@@ -52,7 +53,8 @@
             "matches": [
                 "*://*.youtube.com/*"
             ],
-            "run_at": "document_start"
+            "run_at": "document_start",
+            "all_frames": true
         }
     ],
     "action": {

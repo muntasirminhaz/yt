@@ -70,10 +70,18 @@ main.addEventListener("change", () => notify(t("t_saved")));
 const manifest = browser.runtime.getManifest();
 const supportEmail = t("support_email");
 const allset = el("p", { className: "allset", textContent: t("h_allset"), hidden: true });
+const stats = el("p", { className: "note" });
+browser.storage.local.get("watchStats").then(({ watchStats = {} }) => {
+  const day = new Date().toISOString().slice(0, 10);
+  const week = Object.entries(watchStats).filter(([d]) => Date.now() - new Date(d).getTime() < 7 * 86400000).reduce((a, [, v]) => a + v, 0);
+  const fmt = (sec) => `${Math.floor(sec / 3600)}h ${Math.floor((sec % 3600) / 60)}m`;
+  if (week > 60) stats.textContent = `${t("h_watched_today")} ${fmt(watchStats[day] ?? 0)} · ${fmt(week)} ${t("h_watched_week")}`;
+});
 pages.home.append(
   el("img", { src: "images/icon-128.png", alt: "" }),
   el("h2", { textContent: t("h_title") }),
   el("p", { textContent: t("h_intro") }),
+  stats,
   allset,
   el("p", { className: "note" }, [t("h_feedback") + " ", el("a", { href: "#support", textContent: t("g_support") })]),
 );

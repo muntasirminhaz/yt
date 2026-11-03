@@ -2,7 +2,7 @@
   const ytx = globalThis.ytx;
   const t = (k) => browser.i18n.getMessage(k);
   const COLORS = { sponsor: "#00d400", selfpromo: "#ffff00", interaction: "#cc00ff", intro: "#00ffff", outro: "#0202ed", preview: "#008fd6", music_offtopic: "#ff9900", filler: "#7300ff" };
-  const state = { videoId: null, segments: [], done: new Set(), bar: null, bound: new WeakSet(), titleFor: null, originalTitle: null, whitelisted: false };
+  const state = { videoId: null, segments: [], done: new Set(), bar: null, bound: new WeakSet(), titleFor: null, originalTitle: null, whitelisted: false, lastSkip: null, mutedSeg: null, prevMuted: false };
 
   const modes = (s) => Object.fromEntries(Object.keys(ytx.SB_CATEGORIES).map((c) => [c, s["sb_" + c]]));
   const clearBar = () => { state.bar?.remove(); state.bar = null; };
@@ -30,10 +30,14 @@
     const v = ctx.video;
     if (!v || !state.segments.length || !ctx.settings.sbEnabled || state.whitelisted) return;
     const m = modes(ctx.settings);
+    const inMute = state.segments.find((seg) => m[seg.category] === "mute" && v.currentTime >= seg.start && v.currentTime < seg.end);
+    if (inMute && !state.mutedSeg) { state.prevMuted = v.muted; v.muted = true; state.mutedSeg = inMute; if (ctx.settings.sbNotify) ytx.hud(`${t("sbo_mute")}: ${t("s_sb_" + inMute.category)}`); }
+    if (!inMute && state.mutedSeg) { v.muted = state.prevMuted; state.mutedSeg = null; }
     for (const seg of state.segments) {
       if (m[seg.category] !== "skip" || state.done.has(seg.id)) continue;
       if (v.currentTime >= seg.start && v.currentTime < seg.end - 0.3) {
         state.done.add(seg.id);
+        state.lastSkip = seg;
         v.currentTime = seg.end;
         ytx.log("sponsorblock skip", seg);
         if (ctx.settings.sbNotify) ytx.hud(`${t("h_skipped")}: ${t("s_sb_" + seg.category)}`);
@@ -70,6 +74,15 @@
     if (!span) { span = document.createElement("span"); span.className = "ytx-dislikes"; button.append(span); }
     span.textContent = text;
     button.setAttribute("aria-label", `${n} dislikes`);
+    const host = document.querySelector("segmented-like-dislike-button-view-model");
+    document.querySelector(".ytx-ratio")?.remove();
+    if (host && ctx.settings.rydBar && data.likes + n > 0) {
+      const bar = document.createElement("div");
+      bar.className = "ytx-ratio";
+      bar.append(Object.assign(document.createElement("div"), { style: `width:${(data.likes / (data.likes + n)) * 100}%` }));
+      bar.title = `${Math.round((data.likes / (data.likes + n)) * 100)}% likes`;
+      host.append(bar);
+    }
   };
 
   const untranslate = async (ctx) => {
@@ -97,14 +110,23 @@
     el.title = state.originalTitle;
   };
 
+  ytx.actions.undoSkip = () => {
+    const seg = state.lastSkip;
+    if (!seg || !ytx.ctx.video) { ytx.hud(t("h_nothing_to_undo")); return; }
+    ytx.ctx.video.currentTime = seg.start;
+    state.lastSkip = null;
+    ytx.hud(t("h_undone"));
+  };
+
   ytx.register({
     id: "sponsors",
     apply(ctx, reason) {
       if (!ctx.settings.enabled) { clearBar(); return; }
-      if (reason === "nav") { state.segments = []; state.done.clear(); clearBar(); }
+      if (reason === "nav") { state.segments = []; state.done.clear(); state.lastSkip = null; state.mutedSeg = null; clearBar(); document.querySelector(".ytx-ratio")?.remove(); }
+      const page = ctx.watch || ctx.embed || ctx.shorts;
       if (ctx.video && !state.bound.has(ctx.video)) { state.bound.add(ctx.video); ctx.video.addEventListener("timeupdate", () => onTime(ctx)); ctx.video.addEventListener("durationchange", () => drawBar(ctx)); }
       const sbKeys = ["sbEnabled", "sbWhitelist", ...Object.keys(ytx.SB_CATEGORIES).map((c) => "sb_" + c)];
-      if (ctx.watch && (reason === "video" || reason === "boot" || (reason === "settings" && sbKeys.some((k) => ctx.changed.has(k))))) load(ctx);
+      if (page && (reason === "video" || reason === "boot" || (reason === "settings" && sbKeys.some((k) => ctx.changed.has(k))))) load(ctx);
       if (ctx.watch && (reason === "video" || reason === "boot" || (reason === "settings" && ctx.changed.has("rydEnabled")))) dislikes(ctx);
       if (ctx.watch && (reason === "video" || reason === "boot" || (reason === "settings" && ctx.changed.has("dearrowTitles")))) dearrow(ctx);
       if (ctx.watch && (reason === "video" || reason === "boot" || (reason === "settings" && ctx.changed.has("noTranslate")))) untranslate(ctx);

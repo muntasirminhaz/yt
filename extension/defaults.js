@@ -23,7 +23,7 @@
   const quality = (key, def, extra) => row(key, "select", def, { options: QUALITIES, labels: QUALITY_LABELS, ...extra });
   const SIZES = ["320x180", "400x225", "480x270", "640x360"];
 
-  const ACTIONS = ["speedDown", "speedUp", "speedReset", "audio", "guest", "loop", "loopAB", "chapterPrev", "chapterNext", "stop", "cinema", "miniPlayer", "pip", "flip", "filters", "cards", "screenshot", "copyLink", "copyTranscript", "reversePlaylist", "settings"];
+  const ACTIONS = ["speedDown", "speedUp", "speedReset", "seekBack", "seekForward", "frameBack", "frameForward", "audio", "guest", "loop", "loopAB", "chapterPrev", "chapterNext", "undoSkip", "sleepTimer", "stop", "cinema", "miniPlayer", "pip", "flip", "rotate", "fillCrop", "filters", "cards", "screenshot", "copyLink", "copyTranscript", "blockChannel", "reversePlaylist", "settings"];
   const SB_CATEGORIES = { sponsor: "skip", selfpromo: "skip", interaction: "skip", intro: "mark", outro: "mark", preview: "off", music_offtopic: "off", filler: "off" };
 
   const SCHEMA = [
@@ -34,6 +34,7 @@
       sw("speedWheel", false, { ...NO_PHONE }),
       sw("speedWheelRight", false, { parent: "speedWheel", ...NO_PHONE }),
       sw("wheelReverse", false, { ...NO_PHONE }),
+      row("seekStep", "select", 10, { options: [5, 10, 15, 30, 60], labels: { 5: "5 s", 10: "10 s", 15: "15 s", 30: "30 s", 60: "60 s" } }),
       sw("speedPerChannel"),
       sw("captionsAuto"),
       row("captionsLang", "text", "", { parent: "captionsAuto", placeholder: "en" }),
@@ -57,6 +58,7 @@
       sw("hideRelated"), sw("hideComments"), sw("hideChat"), sw("hideShorts"),
       sw("hideEndScreens"), sw("hideEndWall", true), sw("hideCards"), sw("hideMoreVideos"), sw("hideNotifications"),
       sw("shortsAsVideos"),
+      sw("shortsAutoNext"),
     ] },
     { id: "cleanup", rows: [
       sw("hideHomeFeed"), sw("hideThumbnails"), sw("hideViews"), sw("hideChips"),
@@ -71,22 +73,33 @@
       sw("hideMixes"),
       row("blockedChannels", "textarea", ""),
       row("blockedKeywords", "textarea", ""),
+      row("hideShorterThan", "select", 0, { options: [0, 1, 2, 5, 10, 20], labels: { 0: "Off", 1: "1 min", 2: "2 min", 5: "5 min", 10: "10 min", 20: "20 min" } }),
+      row("hideLongerThan", "select", 0, { options: [0, 30, 60, 120, 240], labels: { 0: "Off", 30: "30 min", 60: "1 h", 120: "2 h", 240: "4 h" } }),
+      sw("fixCaps"),
+      sw("fullTitles"),
+      sw("thumbFrames"),
+      sw("hidePosts"),
+      sw("hideSearchShelves"),
     ] },
     { id: "sponsors", rows: [
       sw("sbEnabled", false, { origins: ["https://sponsor.ajay.app/*"] }),
-      ...Object.entries(SB_CATEGORIES).map(([cat, def]) => row("sb_" + cat, "select", def, { options: ["skip", "mark", "off"], prefix: "sbo_", parent: "sbEnabled" })),
+      ...Object.entries(SB_CATEGORIES).map(([cat, def]) => row("sb_" + cat, "select", def, { options: ["skip", "mute", "mark", "off"], prefix: "sbo_", parent: "sbEnabled" })),
       sw("sbNotify", true, { parent: "sbEnabled" }),
       row("sbWhitelist", "textarea", "", { parent: "sbEnabled" }),
     ] },
     { id: "ads", rows: [
       sw("hidePromoted"),
       sw("adSkip"),
+      row("adAllowChannels", "textarea", "", { parent: "adSkip" }),
     ] },
     { id: "player", rows: [
       sw("miniPlayer", true, { ...NO_PHONE }),
       row("miniSize", "choice", "480x270", { options: SIZES, prefix: "z_", custom: { min: 200, max: 1200, step: 10, from: (v) => Number(v.split("x")[0]), to: (w) => `${w}x${Math.round(w * 9 / 16)}` }, parent: "miniPlayer", ...NO_PHONE }),
       row("miniPosition", "select", "tl", { options: ["tl", "tr", "bl", "br"], parent: "miniPlayer", ...NO_PHONE }),
       sw("autoTheater", false, { ...NO_PHONE }),
+      sw("controlsAlwaysVisible", false, { ...NO_PHONE }),
+      sw("hideOverlays"),
+      sw("hideAmbient"),
       row("screenshotTo", "select", "file", { options: ["file", "clipboard"] }),
     ] },
     { id: "toolbar", rows: [
@@ -116,12 +129,18 @@
       sw("noTranslate"),
       sw("stripTracking"),
       sw("rydEnabled", false, { origins: ["https://returnyoutubedislikeapi.com/*"] }),
+      sw("rydBar", true, { parent: "rydEnabled" }),
+      sw("dismissContinue"),
+      row("commentsSort", "select", "default", { options: ["default", "newest"] }),
+      sw("hideActionButtons"),
+      row("blockedCommentWords", "textarea", ""),
       sw("dearrowTitles", false, { origins: ["https://sponsor.ajay.app/*"] }),
     ] },
     { id: "theme", rows: [
       row("theme", "select", "system", { options: ["system", "dark", "amoled", "accent"] }),
       row("accent", "color", "#ff375f", { parent: "theme", when: "accent" }),
       row("cinemaDim", "range", 85, { min: 50, max: 100, step: 5 }),
+      sw("grayscale"),
       sw("customCssOn"),
       row("customCss", "textarea", "", { parent: "customCssOn" }),
     ] },
@@ -165,6 +184,10 @@
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(videoId));
     return [...new Uint8Array(buf)].slice(0, 2).map((b) => b.toString(16).padStart(2, "0")).join("");
   };
+  const videoIdFrom = (url) => { try { const u = new URL(url); return u.searchParams.get("v") ?? u.pathname.match(/^\/(?:embed|shorts|live)\/([\w-]{11})/)?.[1] ?? null; } catch { return null; } };
+  const parseDuration = (text) => { const parts = String(text ?? "").trim().split(":").map(Number); return parts.length && parts.every(Number.isFinite) ? parts.reduce((a, b) => a * 60 + b, 0) : NaN; };
+  const titleCase = (text) => text.replace(/\S+/g, (w) => (/[A-Z]/.test(w) && w.length > 1 && w === w.toUpperCase() ? w[0] + w.slice(1).toLowerCase() : w));
+  const mostlyCaps = (text) => { const letters = text.replace(/[^A-Za-z]/g, ""); return letters.length >= 8 && letters.replace(/[^A-Z]/g, "").length / letters.length > 0.6; };
   const merge = (stored) => ({ ...DEFAULTS, ...stored });
   const load = async () => merge((await browser.storage.local.get("settings")).settings);
   const save = async (patch) => {
@@ -181,5 +204,5 @@
     return order.find((q) => available.includes(q)) ?? available.find((q) => q !== "auto") ?? wanted;
   };
 
-  globalThis.ytx = { SCHEMA, DEFAULTS, ACTIONS, QUALITY_LABELS, merge, load, save, watch, clampSpeed, pickQuality, device, comboOf, comboLabel, PRESETS, SB_CATEGORIES, formatTime, listOf, matchList, chapterStarts, sbPrefix, reset: () => browser.storage.local.set({ settings: {} }) };
+  globalThis.ytx = { SCHEMA, DEFAULTS, ACTIONS, QUALITY_LABELS, merge, load, save, watch, clampSpeed, pickQuality, device, comboOf, comboLabel, PRESETS, SB_CATEGORIES, formatTime, listOf, matchList, chapterStarts, sbPrefix, videoIdFrom, parseDuration, titleCase, mostlyCaps, reset: () => browser.storage.local.set({ settings: {} }) };
 })();

@@ -38,3 +38,18 @@ test("formatTime, matchList and chapterStarts", () => {
 test("sbPrefix is the first four hex chars of SHA-256", async () => {
   assert.equal(await globalThis.ytx.sbPrefix("dQw4w9WgXcQ"), "5f6b");
 });
+
+test("videoIdFrom, parseDuration, titleCase and mostlyCaps", () => {
+  const { videoIdFrom, parseDuration, titleCase, mostlyCaps } = globalThis.ytx;
+  assert.equal(videoIdFrom("https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RD1"), "dQw4w9WgXcQ");
+  assert.equal(videoIdFrom("https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"), "dQw4w9WgXcQ");
+  assert.equal(videoIdFrom("https://m.youtube.com/shorts/dQw4w9WgXcQ"), "dQw4w9WgXcQ");
+  assert.equal(videoIdFrom("https://www.youtube.com/"), null);
+  assert.equal(parseDuration("1:02:03"), 3723);
+  assert.equal(parseDuration(" 12:34 "), 754);
+  assert.ok(Number.isNaN(parseDuration("LIVE")));
+  assert.equal(titleCase("I TRIED THE NEW iPhone AND IT BROKE"), "I Tried The New iPhone And It Broke");
+  assert.ok(mostlyCaps("THIS IS INSANE!!! (not clickbait)") === false || mostlyCaps("THIS IS INSANE!!! WOW") === true);
+  assert.ok(mostlyCaps("WE BUILT A CASTLE OUT OF CARDBOARD"));
+  assert.ok(!mostlyCaps("A quiet walk through Kyoto at night"));
+});

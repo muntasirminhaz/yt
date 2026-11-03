@@ -10,8 +10,8 @@
   let seq = 0;
 
   const SEL = {
-    player: "#movie_player",
-    video: "#movie_player video",
+    player: "#movie_player, #shorts-player",
+    video: "#movie_player video, #shorts-player video",
     rightControls: mobile ? ".player-controls-bottom" : ".ytp-right-controls",
     below: mobile ? "#player-container-id, #player" : "#below",
   };
@@ -28,7 +28,7 @@
     pending.get(id)?.(result);
     pending.delete(id);
   });
-  const ctx = { settings: ytx.DEFAULTS, mobile, video: null, changed: new Set(), call, q, SEL, get watch() { return location.pathname === "/watch"; }, get videoId() { return new URLSearchParams(location.search).get("v"); } };
+  const ctx = { settings: ytx.DEFAULTS, mobile, video: null, changed: new Set(), call, q, SEL, get watch() { return location.pathname === "/watch"; }, get embed() { return location.pathname.startsWith("/embed/"); }, get shorts() { return location.pathname.startsWith("/shorts/"); }, get videoId() { return ytx.videoIdFrom(location.href); } };
   const scanner = { fns: new Map(), observer: null, timer: 0 };
   const runScans = () => { for (const fn of scanner.fns.values()) try { fn(); } catch (err) { console.warn("[ytx] scan", err); } };
   ytx.scanner = {

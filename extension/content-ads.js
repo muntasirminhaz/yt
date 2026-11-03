@@ -1,14 +1,14 @@
 (() => {
   const ytx = globalThis.ytx;
   const SKIP = ".ytp-skip-ad-button, .ytp-ad-skip-button, .ytp-ad-skip-button-modern, .ytp-ad-skip-button-slot button, .ytp-ad-overlay-close-button, button[id^='skip-button'], .skip-button";
-  const state = { observer: null, observed: null, active: false, muted: false, timer: 0 };
+  const state = { observer: null, observed: null, active: false, muted: false, timer: 0, allowed: false };
 
   const adShowing = (player) => player.classList.contains("ad-showing") || player.classList.contains("ad-interrupting");
   const tick = (ctx) => {
     const player = ctx.q("player");
     const v = ctx.video;
     if (!player || !v) return;
-    const showing = ctx.settings.enabled && ctx.settings.adSkip && adShowing(player);
+    const showing = ctx.settings.enabled && ctx.settings.adSkip && !state.allowed && adShowing(player);
     if (showing && !state.active) {
       state.active = true;
       ytx.adActive = true;
@@ -32,7 +32,11 @@
 
   ytx.register({
     id: "ads",
-    apply(ctx) {
+    apply(ctx, reason) {
+      if (reason === "video" || reason === "boot" || ctx.changed.has("adAllowChannels")) {
+        const list = ytx.listOf(ctx.settings.adAllowChannels);
+        if (list.length) ctx.call("videoData").then((d) => { state.allowed = ytx.matchList(d?.author ?? "", list); }); else state.allowed = false;
+      }
       const player = ctx.q("player");
       const on = ctx.settings.enabled && ctx.settings.adSkip && player;
       if (!on) {

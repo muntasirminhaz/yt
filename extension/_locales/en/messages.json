@@ -997,5 +997,185 @@
   },
   "n_stripTracking": {
     "message": "Drops si, pp and feature parameters from the URL so copied links carry nothing extra."
+  },
+  "a_seekBack": {
+    "message": "Seek back"
+  },
+  "a_seekForward": {
+    "message": "Seek forward"
+  },
+  "a_frameBack": {
+    "message": "Previous frame"
+  },
+  "a_frameForward": {
+    "message": "Next frame"
+  },
+  "a_undoSkip": {
+    "message": "Undo last skip"
+  },
+  "a_sleepTimer": {
+    "message": "Sleep timer"
+  },
+  "a_rotate": {
+    "message": "Rotate video"
+  },
+  "a_fillCrop": {
+    "message": "Fill the frame"
+  },
+  "a_blockChannel": {
+    "message": "Block this channel"
+  },
+  "s_seekStep": {
+    "message": "Seek step"
+  },
+  "n_seekStep": {
+    "message": "For the Seek back and Seek forward buttons and shortcuts."
+  },
+  "s_controlsAlwaysVisible": {
+    "message": "Keep player controls visible"
+  },
+  "n_controlsAlwaysVisible": {
+    "message": "The progress bar and buttons never fade out."
+  },
+  "s_hideOverlays": {
+    "message": "Hide player overlays"
+  },
+  "n_hideOverlays": {
+    "message": "The channel watermark and the most-replayed heat map."
+  },
+  "s_hideAmbient": {
+    "message": "Turn off ambient glow"
+  },
+  "n_hideAmbient": {
+    "message": "The coloured glow around the player in dark theme."
+  },
+  "s_hideShorterThan": {
+    "message": "Hide videos shorter than"
+  },
+  "n_hideShorterThan": {
+    "message": "Judged from the duration badge on the thumbnail."
+  },
+  "s_hideLongerThan": {
+    "message": "Hide videos longer than"
+  },
+  "n_hideLongerThan": {
+    "message": "Live streams without a duration are not affected."
+  },
+  "s_fixCaps": {
+    "message": "Tone down ALL-CAPS titles"
+  },
+  "n_fixCaps": {
+    "message": "Titles written mostly in capitals are shown in sentence case."
+  },
+  "s_fullTitles": {
+    "message": "Show full titles"
+  },
+  "n_fullTitles": {
+    "message": "No more cut-off titles with an ellipsis."
+  },
+  "s_thumbFrames": {
+    "message": "Real frames instead of thumbnails"
+  },
+  "n_thumbFrames": {
+    "message": "Shows a frame from the video instead of the uploaded cover image. Cuts clickbait; costs a little data."
+  },
+  "s_hidePosts": {
+    "message": "Hide Community posts and membership shelves"
+  },
+  "n_hidePosts": {
+    "message": "In feeds and on channel pages."
+  },
+  "s_hideSearchShelves": {
+    "message": "Clean search results"
+  },
+  "n_hideSearchShelves": {
+    "message": "Removes the “People also watched”, “For you” and similar shelves between results."
+  },
+  "sbo_mute": {
+    "message": "Mute"
+  },
+  "s_adAllowChannels": {
+    "message": "Allow ads on these channels"
+  },
+  "n_adAllowChannels": {
+    "message": "One channel name per line. Ads play normally there."
+  },
+  "s_rydBar": {
+    "message": "Like and dislike bar"
+  },
+  "n_rydBar": {
+    "message": "A thin ratio bar under the buttons."
+  },
+  "s_dismissContinue": {
+    "message": "Dismiss “Continue watching?”"
+  },
+  "n_dismissContinue": {
+    "message": "Answers YouTube's idle prompt for you."
+  },
+  "s_commentsSort": {
+    "message": "Sort comments by"
+  },
+  "n_commentsSort": {
+    "message": "Applied once per video."
+  },
+  "o_default": {
+    "message": "YouTube's choice"
+  },
+  "o_newest": {
+    "message": "Newest first"
+  },
+  "s_hideActionButtons": {
+    "message": "Hide Share, Clip, Thanks and Save"
+  },
+  "n_hideActionButtons": {
+    "message": "Leaves like, dislike and the menu under the video."
+  },
+  "s_blockedCommentWords": {
+    "message": "Blocked words in comments"
+  },
+  "n_blockedCommentWords": {
+    "message": "One per line. Comments containing a word are hidden."
+  },
+  "s_shortsAutoNext": {
+    "message": "Shorts: play once, then next"
+  },
+  "n_shortsAutoNext": {
+    "message": "No looping; the next Short starts when one ends."
+  },
+  "s_grayscale": {
+    "message": "Grayscale"
+  },
+  "n_grayscale": {
+    "message": "Removes colour from the whole site; a focus aid."
+  },
+  "h_sleep_off": {
+    "message": "Sleep timer off"
+  },
+  "h_sleep_in": {
+    "message": "Sleep in"
+  },
+  "h_sleep_done": {
+    "message": "Sleep timer: paused"
+  },
+  "h_blocked_channel": {
+    "message": "Blocked"
+  },
+  "h_undone": {
+    "message": "Skip undone"
+  },
+  "h_nothing_to_undo": {
+    "message": "Nothing to undo"
+  },
+  "h_watched_today": {
+    "message": "Watched today"
+  },
+  "h_watched_week": {
+    "message": "this week"
+  },
+  "pl_total": {
+    "message": "total"
+  },
+  "pl_left": {
+    "message": "left"
   }
 }

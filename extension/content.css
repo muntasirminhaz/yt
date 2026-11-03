@@ -99,3 +99,17 @@ html.ytx-hideplayables ytd-guide-entry-renderer:has(a[href="/playables"]), html.
 html.ytx-hideai ytd-watch-metadata button[aria-label^="Ask"], html.ytx-hideai ytd-watch-metadata yt-button-view-model:has(button[aria-label^="Ask"]), html.ytx-hideai ytd-engagement-panel-section-list-renderer[target-id*="ask"], html.ytx-hideai ytd-watch-metadata [aria-label*="AI"] { display: none !important; }
 html[style*="--ytx-grid"] ytd-rich-grid-renderer { --ytd-rich-grid-items-per-row: var(--ytx-grid) !important; --ytd-rich-grid-posts-per-row: var(--ytx-grid) !important; }
 html.ytx-hidemixes ytd-rich-item-renderer:has(a[href*="list=RD"]), html.ytx-hidemixes ytd-compact-radio-renderer, html.ytx-hidemixes ytd-radio-renderer, html.ytx-hidemixes yt-lockup-view-model:has(a[href*="list=RD"]), html.ytx-hidemixes ytm-rich-item-renderer:has(a[href*="list=RD"]) { display: none !important; }
+html.ytx-fill #movie_player video, html.ytx-fill #shorts-player video { object-fit: cover !important; }
+html.ytx-controlsalwaysvisible .ytp-autohide .ytp-chrome-bottom, html.ytx-controlsalwaysvisible .ytp-autohide .ytp-gradient-bottom { opacity: 1 !important; transform: none !important; }
+html.ytx-controlsalwaysvisible .ytp-autohide { cursor: auto !important; }
+html.ytx-hideoverlays .ytp-watermark, html.ytx-hideoverlays .ytp-heat-map-container, html.ytx-hideoverlays .ytp-heat-map-chapter, html.ytx-hideoverlays .ytp-heat-map-edge,
+html.ytx-hideambient #cinematics, html.ytx-hideambient #cinematic-container, html.ytx-hideambient ytd-watch-flexy[cinematics-active] #cinematics,
+html.ytx-hideposts ytd-post-renderer, html.ytx-hideposts ytd-backstage-post-thread-renderer, html.ytx-hideposts ytd-rich-section-renderer:has(ytd-post-renderer, ytd-backstage-post-renderer), html.ytx-hideposts ytd-rich-shelf-renderer:has(a[href*="/membership"]), html.ytx-hideposts ytd-rich-section-renderer:has(a[href*="/membership"]), html.ytx-hideposts ytm-post-renderer,
+html.ytx-hidesearchshelves ytd-search ytd-shelf-renderer, html.ytx-hidesearchshelves ytd-search ytd-horizontal-card-list-renderer, html.ytx-hidesearchshelves ytd-search ytd-reel-shelf-renderer, html.ytx-hidesearchshelves ytd-search ytd-promoted-sparkles-text-search-renderer, html.ytx-hidesearchshelves ytm-search ytm-shelf-renderer,
+html.ytx-hideactionbuttons ytd-watch-metadata #top-level-buttons-computed > yt-button-view-model, html.ytx-hideactionbuttons ytd-watch-metadata #top-level-buttons-computed > ytd-button-renderer, html.ytx-hideactionbuttons ytd-watch-metadata #top-level-buttons-computed > ytd-download-button-renderer, html.ytx-hideactionbuttons ytd-watch-metadata #flexible-item-buttons,
+html.ytx-hidepromoted ytm-mealbar-promo-renderer, html.ytx-hidepromoted ytm-promoted-sparkles-web-renderer, html.ytx-hidepromoted ytm-app-promo-renderer { display: none !important; }
+html.ytx-fulltitles #video-title, html.ytx-fulltitles .yt-lockup-metadata-view-model__title, html.ytx-fulltitles h3.media-item-headline { -webkit-line-clamp: unset !important; max-height: none !important; white-space: normal !important; overflow: visible !important; display: block !important; }
+html.ytx-grayscale body { filter: grayscale(1); }
+.ytx-ratio { position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; border-radius: 1px; background: #ff3b30; overflow: hidden; }
+.ytx-ratio div { height: 100%; background: #30d158; }
+segmented-like-dislike-button-view-model { position: relative; }

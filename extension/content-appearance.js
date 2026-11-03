@@ -23,7 +23,7 @@
     id: "appearance",
     apply(ctx, reason) {
       const s = ctx.settings;
-      for (const key of HIDE) html.classList.toggle("ytx-" + key.toLowerCase(), s.enabled && s[key]);
+      for (const key of [...HIDE, "fullTitles", "grayscale", "controlsAlwaysVisible"]) html.classList.toggle("ytx-" + key.toLowerCase(), s.enabled && Boolean(s[key]));
       if (document.body) watchViews(s.enabled && s.hideViews);
       try { localStorage.setItem("ytxBg", s.enabled && s.backgroundPlay ? "1" : "0"); } catch { /* storage blocked */ }
       const theme = s.enabled ? s.theme : "system";

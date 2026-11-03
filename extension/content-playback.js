@@ -1,7 +1,32 @@
 (() => {
   const ytx = globalThis.ytx;
-  const state = { speed: 1, loadedAt: 0, rightDown: false, bound: new WeakSet(), acc: 0, channel: null, channelSpeeds: {}, positions: {}, lastSaved: 0, pausedByBlur: false, remainingEl: null, remainingAt: 0 };
-  browser.storage.local.get(["channelSpeeds", "positions"]).then((r) => { state.channelSpeeds = r.channelSpeeds ?? {}; state.positions = r.positions ?? {}; });
+  const state = { speed: 1, loadedAt: 0, rightDown: false, bound: new WeakSet(), acc: 0, channel: null, channelSpeeds: {}, positions: {}, lastSaved: 0, pausedByBlur: false, remainingEl: null, remainingAt: 0, sleep: null, sleepTimer: 0, stats: {}, statsAt: 0, statsSaved: 0 };
+  browser.storage.local.get(["channelSpeeds", "positions", "watchStats"]).then((r) => { state.channelSpeeds = r.channelSpeeds ?? {}; state.positions = r.positions ?? {}; state.stats = r.watchStats ?? {}; });
+  const t = (k) => browser.i18n.getMessage(k);
+  const seek = (ctx, delta) => { if (ctx.video) { ctx.video.currentTime = Math.max(0, Math.min(ctx.video.duration || Infinity, ctx.video.currentTime + delta)); ytx.hud(ytx.formatTime(ctx.video.currentTime)); } };
+  const frame = (ctx, dir) => { if (ctx.video) { ctx.video.pause(); ctx.video.currentTime = Math.max(0, ctx.video.currentTime + dir / 30); } };
+  const sleepCycle = (ctx) => {
+    const steps = [15, 30, 60];
+    const next = state.sleep ? steps[steps.indexOf(state.sleep.minutes) + 1] : steps[0];
+    clearTimeout(state.sleepTimer);
+    if (!next) { state.sleep = null; ytx.hud(t("h_sleep_off")); return; }
+    state.sleep = { minutes: next, at: Date.now() + next * 60000 };
+    state.sleepTimer = setTimeout(() => { ctx.video?.pause(); state.sleep = null; ytx.hud(t("h_sleep_done")); ytx.refreshUi?.(); }, next * 60000);
+    ytx.hud(`${t("h_sleep_in")} ${next} min`);
+  };
+  const trackStats = (v) => {
+    const now = Date.now();
+    if (!v.paused && state.statsAt && now - state.statsAt < 3000) {
+      const day = new Date().toISOString().slice(0, 10);
+      state.stats[day] = (state.stats[day] ?? 0) + (now - state.statsAt) / 1000;
+    }
+    state.statsAt = now;
+    if (now - state.statsSaved > 30000) {
+      state.statsSaved = now;
+      for (const day of Object.keys(state.stats).sort().slice(0, -30)) delete state.stats[day];
+      browser.storage.local.set({ watchStats: state.stats });
+    }
+  };
   const remember = (ctx) => {
     if (!ctx.settings.speedPerChannel || !state.channel) return;
     state.channelSpeeds[state.channel] = state.speed;
@@ -40,6 +65,7 @@
   const onTime = (ctx) => {
     const v = ctx.video;
     if (!v) return;
+    trackStats(v);
     const now = performance.now();
     if (ctx.settings.timeRemaining && !ctx.mobile && now - state.remainingAt > 1000) {
       state.remainingAt = now;
@@ -110,7 +136,7 @@
         window.addEventListener("focus", () => { if (state.pausedByBlur && ctx.video?.paused) ctx.video.play().catch(() => {}); state.pausedByBlur = false; });
       }
     },
-    state: () => state.speed,
+    state: () => ({ sleepTimer: Boolean(state.sleep) }),
   });
 
   Object.assign(ytx.actions, {
@@ -119,5 +145,10 @@
     speedReset: () => setSpeed(ytx.ctx, ytx.ctx.settings.speedDefault),
     speedSet: (v) => setSpeed(ytx.ctx, v),
     speedRestore: () => setSpeed(ytx.ctx, state.speed, false),
+    seekBack: () => seek(ytx.ctx, -ytx.ctx.settings.seekStep),
+    seekForward: () => seek(ytx.ctx, ytx.ctx.settings.seekStep),
+    frameBack: () => frame(ytx.ctx, -1),
+    frameForward: () => frame(ytx.ctx, 1),
+    sleepTimer: () => sleepCycle(ytx.ctx),
   });
 })();

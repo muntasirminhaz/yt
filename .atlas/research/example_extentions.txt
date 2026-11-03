@@ -52,3 +52,125 @@ Shorts Blocker for YouTube
 
 https://apps.apple.com/us/app/unwatched-for-youtube/id6477287463
 Unwatched for YouTube
+
+
+# Expanded list (2026-11-03)
+
+Products with at least three YouTube-specific features in the 2026-11-03 surveys, plus ad blockers with YouTube filters. Downloaders, converters, proxies, generic non-YouTube tools and Shorts-only or one-feature clones are left out.
+
+## Chrome Web Store
+
+Enhancer for YouTube — https://chromewebstore.google.com/detail/enhancer-for-youtube/ponfpcnoihfmfllpaingbgckeeldkhle — free — Speed, quality, volume, loop, cinema, filters, shortcuts and Shorts hiding
+Video Enhancer for YouTube — https://chromewebstore.google.com/detail/video-enhancer-for-youtube/jpgdgpdcbjcnhmnibhopchhkajphahmj — free — Speed up to 16x, audio boost, loop, filters, popup player
+YouTube Enhancer — https://chromewebstore.google.com/detail/youtube-enhancer/dejhhgdpambaambdifcfbmpliolehfaj — free (Ko-fi donations) — Speed, quality, volume wheel, resume playback, tracking-parameter stripping, themes
+Improve YouTube! (ImprovedTube) — https://chromewebstore.google.com/detail/improve-youtube-for-youtube-videos/bnomihfieiccainjcjblhegjgglakjdd — free (donations) — Everything-in-one: player buttons, codecs, themes, shortcuts, hiding, optional ad blocker
+Unhook — https://chromewebstore.google.com/detail/unhook-remove-youtube-recommended-shorts/khncfooichmfjbepaaaebmommgaepoid — free (PayPal donations) — Hides home feed, recommendations, comments, Shorts, end cards, autoplay
+DF Tube (Distraction Free for YouTube) — https://chromewebstore.google.com/detail/df-tube-new-distraction-free-for-youtube/kchgllkpfcggmdaoopkhlkbcokngahlg — free — Distraction-free: hides recommendations, comments, Shorts and disables autoplay
+SponsorBlock — https://chromewebstore.google.com/detail/sponsorblock-for-youtube-skip-sponsorships/mnjggcdmjocbbbhaepdhchncahnbgone — free (optional donations) — Crowdsourced skipping of sponsors, intros, outros and other segments
+Return YouTube Dislike — https://chromewebstore.google.com/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi — free core; some features need Patreon tiers — Restores the dislike count using archived and estimated votes
+DeArrow — https://chromewebstore.google.com/detail/dearrow-better-titles-and-thumbnails/enamippconapkdmgfgjchkhakpfinmaj — $1 optional license key — Crowdsourced descriptive titles and screenshot thumbnails replace clickbait
+Magic Actions for YouTube — https://chromewebstore.google.com/detail/magic-actions-for-youtube/nhjnnjaaiahcabkadamaeknbkndmaaib — free — Cinema mode, Auto HD, wheel volume, filters, screenshots, Wi-Fi-aware quality
+Turn Off the Lights — https://chromewebstore.google.com/detail/turn-off-the-lights/bfbmjmiodbnnpllbbbfblcplfjjepjdn — free (donations) — Dims the page around video; Auto HD, filters, night mode
+Video Speed Controller — https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk — free — On-video speed overlay with hotkeys for any HTML5 video site
+Iridium for YouTube — https://chromewebstore.google.com/detail/iridium-for-youtube/gbjmgndncjkjfcnpfhgidhbgokofegbl — free (donations) — Open-source tweaks: autoplay off, quality, themes, full titles, ad management
+UnTrap for YouTube — https://chromewebstore.google.com/detail/untrap-for-youtube-block-shorts-remove-recommendations-detox-focus/enboaomnljigfhfjfoalacienlhjlfil — freemium; UnTrap Pro subscription — Hides Shorts, recommendations, comments; timers, parental controls, AI summaries
+Looper for YouTube — https://chromewebstore.google.com/detail/looper-for-youtube/iggpfpnahkgpnindfkdncknoldgnccdg — free (crypto donations) — Loop button under the player, whole video or a range
+BlockTube — https://chromewebstore.google.com/detail/blocktube/bbeaicapbccfllodepmimpkgecanonai — free — Block videos, channels, comments by name or keyword; context menus
+RYS (Remove YouTube Suggestions) — https://chromewebstore.google.com/detail/rys-remove-youtube-suggestions/cdhdichomdnlaadbndgmagohccgpejae — freemium; Premium tier — Hides Shorts, home and sidebar suggestions, comments; Premium adds more
+Adblock for Youtube — https://chromewebstore.google.com/detail/adblock-for-youtube/cmedhionkhpnakcndndgjdbohmhepckk — free — Blocks YouTube ads, banners, popups, also in embedded players
+AdBlock for YouTube (by AdBlock) — https://chromewebstore.google.com/detail/adblock-block-ads-across-the-web/gighmmpiobklfepjocnamgkkbiglidom — freemium; Premium subscription — General ad blocker with YouTube pre-roll and mid-roll blocking, trackers
+YouTube Ad Auto Skipper — https://chromewebstore.google.com/detail/youtube-ad-auto-skipper/lokpenepehfdekijkebhpnpcjjpngpnd — freemium; USD 7/year optional unlock — Auto-clicks Skip Ad with countdown and per-channel exceptions
+Ad Speedup — https://chromewebstore.google.com/detail/ad-speedup-skip-video-ads-16x-faster/gfegfgnmgmcmlbnemeehifpckogmdapa — free — Mutes and speeds ads 5x to 16x instead of blocking
+uBlock Origin Lite — https://chromewebstore.google.com/detail/ublock-origin-lite/ddkjiahejlhfcafbddmgiahcphecmpfh — free — Declarative content blocker for ads and trackers, YouTube cosmetic filters
+AdGuard AdBlocker — https://chromewebstore.google.com/detail/adguard-adblocker/bgnkhhnnamicmpeenaelnjfhikgbkllg — free extension; paid apps — Blocks video ads and trackers; handles anti-adblock scripts
+PocketTube: YouTube Subscription Manager — https://chromewebstore.google.com/detail/pockettube-youtube-subscription-manager/kdmnjgijlmjgmimahnillepgcgeemffb — free (Patreon, Buy Me a Coffee) — Groups subscriptions into collections with per-group feeds; Drive sync
+YCS - YouTube Comment Search — https://chromewebstore.google.com/detail/ycs-youtube-comment-search/pmfhcilikeembgbiadjiojgfgcfbcoaa — free — Search comments, replies, chat replay and transcript by content
+Minimal YouTube — https://chromewebstore.google.com/detail/minimal-youtube/imnffafnaoooaedkhappfhomnnpigogk — free — Minimal YouTube interface with no recommendations and no Shorts
+Youtube Playback Speed Control — https://chromewebstore.google.com/detail/youtube-playback-speed-control/hdannnflhlmdablckfkjpleikpphncik — free — Keyboard speed keys plus on-player speed overlay buttons
+Music Mode for YouTube — https://chromewebstore.google.com/detail/music-mode-for-youtube/abbpaepbpakcpipajigmlpnhlnbennna — free (donations) — Audio-only YouTube with hidden video, lower quality, background play
+YouTube Summary with ChatGPT & Claude (Glasp) — https://chromewebstore.google.com/detail/youtube-summary-with-chatgpt-claude/nmmicjeknamkfloonkhhcjmomieiodli — freemium; daily caps — AI summaries of videos with timestamps via ChatGPT, Claude, Gemini
+Stands AdBlocker — https://chromewebstore.google.com/detail/ad-blocker-stands-adblocker/lgblnfidahcdcjddiepkckcfdhpknnjh — free — Blocks pop-ups, banners and YouTube ads; built-in ad skipper
+Adblock Plus — https://chromewebstore.google.com/detail/adblock-plus-free-ad-blocker/cfhdojbkjhnklbpkdaibdccddilifddb — freemium; Premium subscription — Blocks pop-ups, video ads, banners and trackers on all sites
+Ad & Intro Skip for YT, Netflix — https://chromewebstore.google.com/detail/ad-intro-skip-for-yt-netflix/hmbnhhcgiecenbbkgdoaoafjpeaboine — free — Auto-skips YouTube video ads and Netflix intros
+Global Speed - Video Speed Control — https://chromewebstore.google.com/detail/global-speed-video-speed-control/jpbjcnkcffbooppibceonlgknpkniiff — free — Universal media speed control with URL rules, boost, pitch, presets
+
+## Firefox Add-ons
+
+SponsorBlock - Skip Sponsorships on YouTube — https://addons.mozilla.org/en-US/firefox/addon/sponsorblock/ — free, open source — Crowdsourced skipping of sponsors, intros, outros and reminders
+Enhancer for YouTube — https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-youtube/ — free, closed source — Speed, quality, volume, loop, cinema, filters, shortcuts, hiding in one
+Return YouTube Dislike — https://addons.mozilla.org/en-US/firefox/addon/return-youtube-dislikes/ — free, open source; in-page Patreon upsell — Restores the dislike count from archived and estimated votes
+DeArrow - Better Titles and Thumbnails on YouTube — https://addons.mozilla.org/en-US/firefox/addon/dearrow/ — $1 optional license key (soft paywall) — Crowdsourced titles and thumbnails replace clickbait ones
+YouTube High Definition — https://addons.mozilla.org/en-US/firefox/addon/youtube-high-definition/ — free, closed source — Auto-plays in highest quality; defaults for speed, volume, captions, cinema
+Unhook: Remove YouTube Recommended Videos Comments — https://addons.mozilla.org/en-US/firefox/addon/youtube-recommended-videos/ — free, closed source — Hides feed, comments, Shorts, related videos, autoplay; focus mode
+Iridium for YouTube — https://addons.mozilla.org/en-US/firefox/addon/particle-iridium/ — free, open source — Open-source tweaks: channel blacklist, reverse playlists, quality, speed, themes
+uBlock Origin — https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/ — free, open source — General content blocker with YouTube ad filters and anti-detection
+BlockTube — https://addons.mozilla.org/en-US/firefox/addon/blocktube/ — free, open source — Blocks videos, channels, comments by rule; hides Shorts and feed
+UnTrap for YouTube — https://addons.mozilla.org/en-US/firefox/addon/untrap-for-youtube/ — free core; optional UnTrap Plus — Hides Shorts, feed, comments; focus tools, AI summaries, shortcuts
+AdBlocker for YouTube — https://addons.mozilla.org/en-US/firefox/addon/adblock-for-youtube/ — free — Dedicated YouTube ad blocker with network and cosmetic filtering
+Improve YouTube! (For YouTube & Video) — https://addons.mozilla.org/en-US/firefox/addon/youtube-addon/ — free, open source — Hundreds of tweaks: speed, quality, codecs, ad blocking, themes, hotkeys
+Control Panel for YouTube — https://addons.mozilla.org/en-US/firefox/addon/control-panel-for-youtube/ — free, closed source — Hides ads, Shorts, comments, AI, mixes; theater and background play
+YouTube No Translation — https://addons.mozilla.org/en-US/firefox/addon/youtube-no-translation/ — free, open source — Stops auto-translated titles, descriptions, captions and audio
+vidIQ Vision for YouTube — https://addons.mozilla.org/en-US/firefox/addon/vidiq-vision-youtube/ — freemium (vidIQ paid plans) — Creator analytics and optimization score card for any video
+Ambient light for YouTube — https://addons.mozilla.org/en-US/firefox/addon/ambient-light-for-youtube/ — free, open source — Ambient glow around the player; removes black bars, fills screen
+Adblock for Youtube — https://addons.mozilla.org/en-US/firefox/addon/adblock-for-youtube-tm/ — free, open source — Blocks YouTube ads, banners and popups
+YouTube Search Fixer — https://addons.mozilla.org/en-US/firefox/addon/youtube-suite-search-fixer/ — free, open source — Removes search suggestions, Shorts, watched videos, live and premieres
+PocketTube: Youtube Subscription Manager — https://addons.mozilla.org/en-US/firefox/addon/youtube-subscription-groups/ — free, closed source; Patreon support — Groups subscriptions into collections with per-group feeds and filters
+No Shorts - YouTube Shorts Blocker — https://addons.mozilla.org/en-US/firefox/addon/youtube-shorts-blocker-pro/ — free, open source — Removes Shorts from home and search; Shorts viewing tools
+YT Shorts Blocker — https://addons.mozilla.org/en-US/firefox/addon/yt-shorts-blocker/ — free, open source — Hides Shorts, filters by video length, channel or keyword
+Block YouTube Shorts and Playables — https://addons.mozilla.org/en-US/firefox/addon/block-yt-shortvideo/ — free — Hides Shorts, Playables and feed rails with filters
+YouTube Audio — https://addons.mozilla.org/en-US/firefox/addon/youtube-audio/ — free, open source — Audio-only mode with background play, ad block, SponsorBlock and downloads
+RYS - Remove YouTube Suggestions — https://addons.mozilla.org/en-US/firefox/addon/remove-youtube-s-suggestions/ — freemium (Premium tier) — Hides suggestions, Shorts, comments; ad skipping, themes; Premium tier
+YCS - YouTube Comment Search (Continued) — https://addons.mozilla.org/en-US/firefox/addon/ycs-continued/ — free, open source — Continued comment, live chat and transcript search
+HyperChat [Improved YouTube Chat] — https://addons.mozilla.org/en-US/firefox/addon/hyperchat/ — free, open source — Lightweight live chat with themes, filters and translation
+DF YouTube (Distraction Free) — https://addons.mozilla.org/en-US/firefox/addon/df-youtube/ — free — Distraction-free: hides feed, comments, UI; autoplay, playlist and focus tools
+Tweaks for YouTube — https://addons.mozilla.org/en-US/firefox/addon/tweaks-for-youtube/ — free, closed source — 100+ opt-in features: mouse regions, audio, hiding, shortcuts, filters
+YouTube Tweaks — https://addons.mozilla.org/en-US/firefox/addon/youtube-tweaks/ — free, open source — Grid layout, hiding, per-channel speed, quality, themes, custom CSS
+YouTube Enhancer — https://addons.mozilla.org/en-US/firefox/addon/youtube-enhancer-vc/ — free, open source — Speed, volume, quality, loop, cinema, captions, screenshots, themes, hiding
+YouTube Row Fixer — https://addons.mozilla.org/en-US/firefox/addon/youtube-row-fixer-extension/ — free, open source — Sets videos per row, hides Shorts and channel profile images
+YouTube Redux — https://addons.mozilla.org/en-US/firefox/addon/youtube-redux/ — free, open source — Restores old layout and dislikes; themes, autoplay and feed controls
+SocialFocus: Hide Distractions — https://addons.mozilla.org/en-US/firefox/addon/socialfocus/ — free tier; premium hints — Hides recommendations, Shorts and comments on YouTube and social sites
+YouTube LevelUp — https://addons.mozilla.org/en-US/firefox/addon/youtube-levelup/ — free, open source — Hides Shorts and feed; dislikes, sponsor skip, anti-translate, background play
+AdBlocker for YouTube Video — https://addons.mozilla.org/en-US/firefox/addon/youtube-adblock/ — free — Removes YouTube advertisements and banners with hard-coded rules
+LiteTube: Fix YouTube Lag & Adblock Detection — https://addons.mozilla.org/en-US/firefox/addon/litetube-adfree/ — free — Fixes Firefox lag and ad-block detection; forces H.264, sponsor skip
+Adblock Plus — https://addons.mozilla.org/en-US/firefox/addon/adblock-plus/ — free, open source (Acceptable Ads) — General ad blocker with YouTube ad filter lists
+AdGuard AdBlocker — https://addons.mozilla.org/en-US/firefox/addon/adguard-adblocker/ — free, open source — General ad blocker with YouTube ad filters
+AdBlock for Firefox — https://addons.mozilla.org/en-US/firefox/addon/adblock-for-firefox/ — free, open source — General ad blocker with YouTube ad filters
+AdBlocker Ultimate — https://addons.mozilla.org/en-US/firefox/addon/adblocker-ultimate/ — free, open source — General ad blocker with YouTube ad filters
+Ghostery – Privacy Ad Blocker — https://addons.mozilla.org/en-US/firefox/addon/ghostery/ — free, open source; optional paid tiers — Privacy blocker for ads and trackers, including YouTube
+YouTube Parts Looper & Bookmarker — https://addons.mozilla.org/en-US/firefox/addon/youtube-parts-looper/ — free, open source — Loops and bookmarks multiple segments of one video
+Rotate Youtube Video (+ Zoom / Mirror, AB Loop) — https://addons.mozilla.org/en-US/firefox/addon/rotate-youtube-video/ — free — Rotate, zoom, mirror, crop and A-B loop the video
+Global Speed - Video Speed Control — https://addons.mozilla.org/en-US/firefox/addon/global-speed/ — free — Global media speed control with shortcuts, boost, filters and cinema
+Turn Off the Lights for Firefox — https://addons.mozilla.org/en-US/firefox/addon/turn-off-the-lights/ — free, open source — Dims the page; quality, codecs, volume, transforms, popup, loop
+YouTube Anti Translate - Official Port — https://addons.mozilla.org/en-US/firefox/addon/youtube-anti-translate-mv3/ — free, open source — Restores original titles, descriptions and audio instead of translations
+
+## Apple App Store
+
+SponsorBlock for Safari — https://apps.apple.com/us/app/sponsorblock-for-safari/id1573461917 — iOS $2.99 one-time — Crowdsourced skipping of sponsors, intros and outros in Safari
+PocketTube for Safari — https://apps.apple.com/us/app/pockettube-for-safari/id1533703891 — Mac Free — Groups subscriptions into collections (Mac only)
+Accelerate for Safari — https://apps.apple.com/us/app/accelerate-for-safari/id1459809092 — iOS Free + tip — Speed control and shortcuts for any HTML5 video, plus PiP
+Vinegar - Tube Cleaner — https://apps.apple.com/us/app/vinegar-tube-cleaner/id1591303229 — iOS $1.99 one-time — Native HTML5 player with ad removal, PiP and background audio
+DeArrow for YouTube — https://apps.apple.com/us/app/dearrow-for-youtube/id6451469297 — iOS $1.99 one-time — Crowdsourced titles and screenshot thumbnails replace clickbait
+1Blocker: Ad Blocker — https://apps.apple.com/us/app/1blocker-ad-blocker/id1365531024 — iOS Free + subscription / lifetime — Ad and tracker blocker with YouTube ad rules and scripts
+AdGuard Ad Blocker for Safari — https://apps.apple.com/us/app/adguard-ad-blocker-for-safari/id1047223162 — iOS Free + subscription / lifetime — Ad blocker; Pro unlocks advanced YouTube blocking
+StopTheMadness Pro — https://apps.apple.com/us/app/stopthemadness-pro/id6471380298 — iOS $14.99 one-time — Web-fixes bundle with YouTube controls, tracking-parameter stripping, PiP, scripts
+wBlock: Ad Blocker for Safari — https://apps.apple.com/us/app/wblock-ad-blocker-for-safari/id6746388723 — iOS Free (open source) — Open-source content blocker with 750,000 rules and YouTube scripts
+UnTrap for YouTube — https://apps.apple.com/us/app/untrap-for-youtube/id1637438059 — iOS $4.99 + subscription — 250+ options hiding Shorts, comments, recommendations; focus tools and sync
+YouTweak — https://apps.apple.com/us/app/youtweak/id6788401713 — iOS Free — Locks video quality and adds speed buttons
+Unwatched for YouTube — https://apps.apple.com/us/app/unwatched-for-youtube/id6477287463 — iOS Free (open source) + optional Premium — Queue-first YouTube client: no autoplay, follow channels, playlists, PiP
+Adblocker For YouTube Videos — https://apps.apple.com/us/app/adblocker-for-youtube-videos/id1621531549 — iOS $2.99 one-time + premium IAP — Removes YouTube pre-roll and text ads; 1080p, audio-only, PiP
+SwizzTube: Video Ad Blocker — https://apps.apple.com/us/app/swizztube-video-ad-blocker/id6466721604 — iOS Free + one-time unlock (donation tiers) — Ad and Shorts blocker with SponsorBlock, PiP and background play
+Turn Off the Lights for Safari — https://apps.apple.com/us/app/turn-off-the-lights-for-safari/id1273998507 — iOS Free (open source) — Cinema dimming, Auto HD, loop and hotkeys on video sites
+#blockit: Block Shorts & Reels — https://apps.apple.com/us/app/blockit-block-shorts-reels/id1492879257 — iOS Free + subscription — Content-blocker rules hiding Shorts, Reels and home recommendations
+Mira - Focused Video Player — https://apps.apple.com/us/app/mira-focused-video-player/id6767721654 — iOS Free + subscription / lifetime — Focused player with SponsorBlock, queue, dislikes, background audio, sync
+Better Player for Youtube — https://apps.apple.com/us/app/better-player-for-youtube/id1592876082 — iOS Free — Hides ad slots, landscape full screen, PiP, theater tweaks
+Improved Tube — https://apps.apple.com/us/app/improved-tube/id1672777754 — Mac Free (open source) — Mac all-in-one: Shorts hiding, speed, quality, PiP, loops, hotkeys
+Pie Adblock for Safari — https://apps.apple.com/us/app/pie-adblock-for-safari/id6499055690 — iOS Free (ad/cash-back funded) — Free Safari ad blocker with anti-adblock circumvention
+Ad blocker by Magic Lasso — https://apps.apple.com/us/app/ad-blocker-by-magic-lasso/id1260462853 — iOS Free + subscription — Ad and tracker blocker with YouTube pre-roll and mid-roll blocking
+Smart Tube BDP — https://apps.apple.com/us/app/smart-tube-bdp/id6761388918 — iOS Free — Native SwiftUI YouTube client with SponsorBlock, DeArrow, PiP
+Red Crow For Safari — https://apps.apple.com/us/app/red-crow-for-safari/id6766324724 — iOS $0.99 one-time — 150+ settings: Shorts, speed, quality, SponsorBlock, DeArrow, dislikes, filters
+Ad Skipper for YouTube — https://apps.apple.com/us/app/ad-skipper-for-youtube/id1542270454 — Mac $1.99 one-time — Fast-forwards ads at 16x, mutes and blurs the player
+CleanTube: Ad & Shorts Blocker — https://apps.apple.com/us/app/cleantube-ad-shorts-blocker/id6760742039 — iOS $1.99 one-time — Blocks video ads and removes Shorts shelves and search results
+FocusTube for Safari — https://apps.apple.com/us/app/focustube-for-safari/id6799667312 — iOS Free + subscription (annual) — Hides Shorts entry points; opens Shorts in regular player
+SocialFocus: Hide Distractions — https://apps.apple.com/us/app/socialfocus-hide-distractions/id1661093205 — iOS $4.99 + subscription — Hides recommendations, Shorts and comments on YouTube and social sites
+
+Detailed files (in .atlas/research/): 2026-11-03-competitor-feature-lists.md, 2026-11-03-survey-chrome.md, 2026-11-03-survey-firefox.md, 2026-11-03-survey-apple.md

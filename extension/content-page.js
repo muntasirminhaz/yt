@@ -68,9 +68,25 @@
     if (changed) history.replaceState(history.state, "", u.toString());
   };
 
+  const dismissContinue = () => {
+    const dialog = [...document.querySelectorAll("yt-confirm-dialog-renderer, tp-yt-paper-dialog")].find((d) => /continue watching|still watching/i.test(d.textContent) && d.offsetParent !== null);
+    dialog?.querySelector("#confirm-button, button")?.click();
+  };
+  const sortComments = async () => {
+    const trigger = await waitFor("#sort-menu yt-sort-filter-sub-menu-renderer, #sort-menu tp-yt-paper-button, #sort-menu");
+    if (!trigger) return;
+    trigger.querySelector("tp-yt-paper-button, button, #icon-label")?.click();
+    await new Promise((r) => setTimeout(r, 300));
+    const items = document.querySelectorAll("#sort-menu tp-yt-paper-listbox a, #sort-menu tp-yt-paper-listbox tp-yt-paper-item, ytd-menu-popup-renderer tp-yt-paper-listbox a");
+    const newest = [...items].find((i) => /newest/i.test(i.textContent));
+    if (newest) newest.click(); else document.body.click();
+  };
+
   ytx.register({
     id: "page",
     apply(ctx, reason) {
+      if (document.body) ytx.scanner.set("continue", ctx.settings.enabled && ctx.settings.dismissContinue ? dismissContinue : null);
+      if (ctx.settings.enabled && !ctx.mobile && ctx.watch && ctx.settings.commentsSort === "newest" && (reason === "video" || reason === "boot") && state.sortedFor !== location.href) { state.sortedFor = location.href; setTimeout(sortComments, 2500); }
       if (ctx.settings.enabled && ctx.settings.stripTracking && (reason === "boot" || reason === "nav")) strip();
       if (reason === "boot") document.addEventListener("click", (e) => onClick(ctx, e), true);
       const s = ctx.settings;

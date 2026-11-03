@@ -2,7 +2,7 @@
   const ytx = globalThis.ytx;
   const t = (k) => browser.i18n.getMessage(k);
   const html = document.documentElement;
-  const state = { flip: false, mini: false, cinemaEl: null, observer: null, observed: null, bound: new WeakSet(), filters: null, saveTimer: 0 };
+  const state = { flip: false, rotate: 0, fill: false, mini: false, cinemaEl: null, observer: null, observed: null, bound: new WeakSet(), filters: null, saveTimer: 0, shortsBound: new WeakSet() };
   const FILTER_UNITS = { brightness: "%", contrast: "%", saturate: "%", grayscale: "%", sepia: "%", hue: "deg", invert: "%", blur: "px" };
   const hudToggle = (key, on) => ytx.hud(`${t("a_" + key)} ${t(on ? "h_on" : "h_off")}`);
 
@@ -17,7 +17,8 @@
   const applyVideo = (ctx) => {
     if (!ctx.video) return;
     ctx.video.style.filter = ctx.settings.filtersOn ? filterCss(state.filters ?? ctx.settings.filters) : "";
-    ctx.video.style.transform = state.flip ? "scaleX(-1)" : "";
+    ctx.video.style.transform = `${state.flip ? "scaleX(-1) " : ""}${state.rotate ? `rotate(${state.rotate * 90}deg)` : ""}`.trim();
+    html.classList.toggle("ytx-fill", state.fill);
     ctx.video.loop = ctx.settings.enabled && ctx.settings.loop;
     if (!state.bound.has(ctx.video)) {
       state.bound.add(ctx.video);
@@ -168,6 +169,10 @@
       }
       if (reason === "nav") { if (ctx.settings.cinema) ytx.save({ cinema: false }); setMini(ctx, false); state.yielded = 0; state.ab = null; }
       if (reason === "video" || reason === "boot") autoTheater(ctx);
+      if (ctx.shorts && ctx.video && ctx.settings.enabled && ctx.settings.shortsAutoNext) {
+        ctx.video.loop = false;
+        if (!state.shortsBound.has(ctx.video)) { state.shortsBound.add(ctx.video); ctx.video.addEventListener("ended", () => { if (ctx.settings.shortsAutoNext) document.querySelector("#navigation-button-down button, button[aria-label='Next video']")?.click(); }); }
+      }
       if (ctx.video && !state.abBound?.has(ctx.video)) { (state.abBound ??= new WeakSet()).add(ctx.video); ctx.video.addEventListener("timeupdate", () => onTimeAB(ctx)); }
       if (reason === "settings" && ctx.changed.has("filters")) state.filters = null;
       applyVideo(ctx);
@@ -175,7 +180,7 @@
       applyCinema(ctx);
       applyMini(ctx);
     },
-    state: (ctx) => ({ loopAB: Boolean(state.ab), audio: ctx.settings.audioMode, guest: ctx.settings.guestMode, loop: ctx.settings.loop, cinema: ctx.settings.cinema, flip: state.flip, filters: ctx.settings.filtersOn, cards: ctx.settings.hideCards, miniPlayer: ctx.settings.miniPlayer, reversePlaylist: html.classList.contains("ytx-reverse") }),
+    state: (ctx) => ({ fillCrop: state.fill, loopAB: Boolean(state.ab), audio: ctx.settings.audioMode, guest: ctx.settings.guestMode, loop: ctx.settings.loop, cinema: ctx.settings.cinema, flip: state.flip, filters: ctx.settings.filtersOn, cards: ctx.settings.hideCards, miniPlayer: ctx.settings.miniPlayer, reversePlaylist: html.classList.contains("ytx-reverse") }),
   });
 
   const toggleSetting = (key, hudKey = key) => async () => {
@@ -193,6 +198,15 @@
     cards: toggleSetting("hideCards", "cards"),
     miniPlayer: toggleSetting("miniPlayer"),
     flip: () => { state.flip = !state.flip; applyVideo(ytx.ctx); hudToggle("flip", state.flip); return state.flip; },
+    rotate: () => { state.rotate = (state.rotate + 1) % 4; applyVideo(ytx.ctx); ytx.hud(`${state.rotate * 90}°`); },
+    fillCrop: () => { state.fill = !state.fill; applyVideo(ytx.ctx); hudToggle("fillCrop", state.fill); return state.fill; },
+    blockChannel: async () => {
+      const data = await ytx.ctx.call("videoData");
+      if (!data?.author) return;
+      const list = ytx.listOf(ytx.ctx.settings.blockedChannels);
+      if (!list.includes(data.author.toLowerCase())) await ytx.save({ blockedChannels: `${ytx.ctx.settings.blockedChannels.trim()}\n${data.author}`.trim() });
+      ytx.hud(`${t("h_blocked_channel")}: ${data.author}`);
+    },
     stop: () => ytx.ctx.call("stop"),
     pip: async () => {
       const v = ytx.ctx.video;

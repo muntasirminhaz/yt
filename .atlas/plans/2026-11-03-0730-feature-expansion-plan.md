@@ -1,7 +1,7 @@
 # Plan: feature expansion from competitor survey (autonomous round)
 
 Date: 2026-11-03 07:30 (+06)
-Status: EXECUTING. Research agents write to `.atlas/research/2026-11-03-survey-{chrome,firefox,apple}.md` and `2026-11-03-community-findings.md`; build proceeds in parallel.
+Status: DONE 2026-11-03 (see .atlas/reports/2026-11-03-feature-build-report.md). Research agents write to `.atlas/research/2026-11-03-survey-{chrome,firefox,apple}.md` and `2026-11-03-community-findings.md`; build proceeds in parallel.
 
 ## Decisions taken (user: "build all, flag what needs an API, follow Apple guidelines")
 | Feature | Approach | Needs | Flag |

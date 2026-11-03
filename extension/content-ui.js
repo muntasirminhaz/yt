@@ -9,6 +9,15 @@
     speedReset: [GAUGE, "M12 15V8", "M8 20h8"],
     audio: ["M9 18V6l12-2v12", "M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0z", "M21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"],
     guest: ["M2 13h3M19 13h3", "M11 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0z", "M19 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0z", "M11 13h2", "M5 10l2-5h10l2 5"],
+    seekBack: ["M12 5a8 8 0 1 1-7 4", "M5 4v5h5", "M10 10v5l4-2.5z"],
+    seekForward: ["M12 5a8 8 0 1 0 7 4", "M19 4v5h-5", "M10 10v5l4-2.5z"],
+    frameBack: ["M18 5v14", "M14 12l-8-7v14z"],
+    frameForward: ["M6 5v14", "M10 12l8-7v14z"],
+    undoSkip: ["M9 14L4 9l5-5", "M4 9h10a6 6 0 0 1 0 12h-3"],
+    sleepTimer: ["M21 13a9 9 0 1 1-10-10 7 7 0 0 0 10 10z"],
+    rotate: ["M4 12a8 8 0 1 0 3-6.2", "M4 4v5h5", "M9 9h6v6H9z"],
+    fillCrop: ["M3 5h18v14H3z", "M8 9h8v6H8z", "M3 12h5M16 12h5"],
+    blockChannel: ["M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z", "M4 21a8 8 0 0 1 11-7.4", "M17 17l4 4M21 17l-4 4", "M19 15a4 4 0 1 1 0 8"],
     loopAB: ["M4 17V7l5 5-5 5z", "M20 7v10l-5-5 5-5z", "M9 12h6"],
     chapterPrev: ["M6 5v14", "M18 5l-9 7 9 7z"],
     chapterNext: ["M18 5v14", "M6 5l9 7-9 7z"],
@@ -27,7 +36,7 @@
     settings: ["M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z", "M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"],
     more: ["M5 12h.01M12 12h.01M19 12h.01"],
   };
-  const TOGGLES = ["audio", "guest", "loop", "loopAB", "cinema", "flip", "filters", "cards", "miniPlayer", "reversePlaylist"];
+  const TOGGLES = ["audio", "guest", "loop", "loopAB", "fillCrop", "sleepTimer", "cinema", "flip", "filters", "cards", "miniPlayer", "reversePlaylist"];
 
   const glyph = (id) => {
     const svg = document.createElementNS(NS, "svg");
@@ -79,7 +88,7 @@
   const toggleAB = (ctx, force) => { ui.ab.hidden = force === undefined ? !ui.ab.hidden : !force; if (!ui.ab.hidden) { ui.menu.hidden = true; ui.panel.hidden = true; } };
   const run = async (id) => { await ytx.actions[id]?.(); refresh(); };
   const refresh = () => {
-    const st = ytx.feature("player")?.state(ytx.ctx) ?? {};
+    const st = { ...(ytx.feature("player")?.state(ytx.ctx) ?? {}), ...(ytx.feature("speed")?.state(ytx.ctx) ?? {}) };
     for (const b of document.querySelectorAll(".ytx-btn[data-action], .ytx-item[data-action]")) {
       const id = b.dataset.action;
       if (TOGGLES.includes(id)) b.setAttribute("aria-pressed", String(Boolean(st[id])));
