@@ -7,6 +7,22 @@
     return node;
   };
   const fire = (node) => node.dispatchEvent(new Event("change", { bubbles: true }));
+  const button = (text, onClick, className = "") => { const b = el("button", { type: "button", textContent: text, className }); b.addEventListener("click", onClick); return b; };
+  const ask = (row, node, e) => {
+    e.stopPropagation();
+    node.checked = false;
+    const grant = () => { node.checked = true; const ev = new Event("change", { bubbles: true }); ev.granted = true; node.dispatchEvent(ev); };
+    (browser.permissions.contains?.({ origins: row.origins }) ?? Promise.resolve(false)).catch(() => false).then((ok) => {
+      if (ok) return grant();
+      const host = new URL(row.origins[0].replace("*", "")).host;
+      const panel = el("div", { className: "ask" }, [
+        el("span", { className: "note", textContent: browser.i18n.getMessage("p_explain", [host]) }),
+        el("div", { className: "backup" }, [button(t("p_continue"), () => browser.permissions.request({ origins: row.origins }).catch(() => false).then((ok) => { panel.remove(); if (ok) grant(); })), button(t("p_cancel"), () => panel.remove())]),
+      ]);
+      node.closest(".row").querySelector(".text").append(panel);
+    });
+  };
+  const badge = (key) => (globalThis.ytx.BETA.has(key) ? [el("span", { className: "badge", textContent: t("badge_beta") })] : []);
 
   const segment = (row, value, options = row.options) => {
     const seg = el("div", { className: "seg", role: "radiogroup" });
@@ -67,7 +83,7 @@
         };
         window.addEventListener("keydown", onKey, true);
       });
-      const line = el("div", { className: "keyrow" }, [el("span", { textContent: t("a_" + id) }), key]);
+      const line = el("div", { className: "keyrow" }, [el("span", { textContent: t("a_" + id) }, badge(id)), key]);
       line.dataset.action = id;
       box.append(line);
     }
@@ -77,10 +93,12 @@
   const backup = () => {
     const ytx = globalThis.ytx;
     const box = el("div", { className: "backup" });
+    const pad = (n) => String(n).padStart(2, "0");
+    const stamp = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}`; };
     const exportBtn = el("button", { type: "button", textContent: t("b_export") });
     exportBtn.addEventListener("click", async () => {
       const settings = await ytx.load();
-      const a = el("a", { href: URL.createObjectURL(new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" })), download: "yt-settings.json" });
+      const a = el("a", { href: URL.createObjectURL(new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" })), download: `yt-settings-${stamp()}.json` });
       document.body.append(a);
       a.click();
       a.remove();
@@ -98,9 +116,14 @@
     });
     const importBtn = el("button", { type: "button", textContent: t("b_import") });
     importBtn.addEventListener("click", () => file.click());
-    const resetBtn = el("button", { type: "button", className: "danger", textContent: t("b_reset") });
-    resetBtn.addEventListener("click", async () => { await ytx.reset(); location.reload(); });
-    box.append(exportBtn, importBtn, resetBtn, file);
+    const copyBtn = button(t("b_copy"), async () => { await navigator.clipboard.writeText(JSON.stringify(await ytx.load(), null, 2)); copyBtn.textContent = t("h_copied"); setTimeout(() => (copyBtn.textContent = t("b_copy")), 1400); });
+    let armed = 0;
+    const resetBtn = button(t("b_reset"), async () => {
+      if (!armed) { armed = setTimeout(() => { armed = 0; resetBtn.textContent = t("b_reset"); resetBtn.classList.remove("armed"); }, 4000); resetBtn.textContent = t("b_reset_confirm"); resetBtn.classList.add("armed"); return; }
+      await ytx.reset();
+      location.reload();
+    }, "danger");
+    box.append(exportBtn, copyBtn, importBtn, resetBtn, file);
     return box;
   };
 
@@ -114,10 +137,11 @@
       return input;
     }
     if (row.type === "select") return segment(row, value);
+    if (row.type === "dropdown") { const s = el("select", {}, row.options.map((o) => el("option", { value: o, textContent: optionLabel(row, o) }))); s.value = String(value); if (s.selectedIndex < 0) s.selectedIndex = 0; return s; }
     if (row.type === "choice") return choice(row, value);
     if (row.type === "set") {
       return el("div", { className: "set" }, row.options.map((o) =>
-        el("label", {}, [el("input", { type: "checkbox", value: o, checked: value.includes(o) }), el("span", { textContent: optionLabel(row, o) })])));
+        el("label", {}, [el("input", { type: "checkbox", value: o, checked: value.includes(o) }), el("span", { textContent: optionLabel(row, o) }, badge(o))])));
     }
     if (row.type === "textarea") return el("textarea", { value, rows: 6 });
     return el("input", { type: row.type, value, min: row.min ?? "", max: row.max ?? "", step: row.step ?? "", placeholder: row.placeholder ?? "", autocomplete: "off" });
@@ -136,15 +160,18 @@
   const renderRow = (row, settings) => {
     const node = control(row, settings[row.key]);
     const stack = ["textarea", "set", "choice", "shortcuts", "backup"].includes(row.type) || (row.type === "select" && row.options.length > 2);
-    const labelled = row.type === "switch" || row.type === "range" || row.type === "number" || row.type === "textarea" || row.type === "color";
-    const text = el("span", { className: "text" }, [el("span", { className: "label", textContent: t(row.label ?? "s_" + row.key) }), ...(t("n_" + row.key) ? [el("span", { className: "note", textContent: t("n_" + row.key) })] : [])]);
+    const labelled = ["switch", "range", "number", "textarea", "color", "dropdown"].includes(row.type);
+    const hint = row.actions ? row.actions.map((id) => settings.shortcuts?.[id] && `${globalThis.ytx.comboLabel(settings.shortcuts[id])} ${t("a_" + id)}`).filter(Boolean).join(" · ") : "";
+    const more = row.link ? el("a", { className: "note more", href: row.link, target: "_blank", rel: "noopener noreferrer", textContent: t("o_learn") }) : null;
+    more?.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); (browser.tabs?.create ? browser.tabs.create({ url: row.link }) : Promise.reject()).catch(() => window.open(row.link, "_blank", "noopener")); });
+    const text = el("span", { className: "text" }, [el("span", { className: "label", textContent: t(typeof row.label === "function" ? row.label(settings) : row.label ?? "s_" + row.key) }, badge(row.key)), ...(t("n_" + row.key) ? [el("span", { className: "note", textContent: t("n_" + row.key) })] : []), ...(row.actions ? [el("span", { className: "note", textContent: hint ? `${t("k_hint")} ${hint}` : t("k_hint_none") })] : []), ...(more ? [more] : [])]);
     const container = el(labelled ? "label" : "div", { className: "row" + (stack ? " stack" : "") }, [text, node, ...(row.type === "range" ? [el("output", { textContent: settings[row.key] })] : [])]);
     container.dataset.key = row.key;
     if (row.parent) Object.assign(container.dataset, { parent: row.parent, when: row.when ?? "" });
     if (row.type === "range") node.addEventListener("input", () => (container.querySelector("output").textContent = node.value));
-    if (row.type !== "backup" && row.type !== "link") container.addEventListener("change", () => {
+    if (row.type !== "backup" && row.type !== "link") container.addEventListener("change", (e) => {
       const value = read(row, node);
-      if (row.origins && value === true && browser.permissions?.request) browser.permissions.request({ origins: row.origins }).catch(() => {});
+      if (row.origins && value === true && browser.permissions?.request && !e.granted) return ask(row, node, e);
       globalThis.ytx.save({ [row.key]: value });
     });
     return container;
@@ -153,9 +180,9 @@
   const reveal = (root, settings) => {
     for (const label of root.querySelectorAll("[data-parent]")) {
       const parentValue = settings[label.dataset.parent];
-      label.hidden = label.dataset.when ? String(parentValue) !== label.dataset.when : !parentValue;
+      label.hidden = label.dataset.when ? !label.dataset.when.split(",").includes(String(parentValue)) : !parentValue;
     }
   };
 
-  Object.assign(globalThis.ytx, { t, el, renderRow, reveal });
+  Object.assign(globalThis.ytx, { t, el, button, renderRow, reveal });
 })();

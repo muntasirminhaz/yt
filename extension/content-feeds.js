@@ -31,10 +31,28 @@
     if (lists.comments.length) for (const c of document.querySelectorAll(COMMENTS)) c.classList.toggle("ytx-blocked", ytx.matchList(c.querySelector("#content-text, .comment-text")?.textContent ?? "", lists.comments));
   };
 
+  const PREVIEW_VIDEO = "ytd-video-preview video, #video-preview video, #inline-preview-player video";
+  let previews = "allow";
+  let previewStart = 0;
+  const holdPreview = (v, type) => {
+    if (previews === "off" && !v.paused) v.pause();
+    else if (previews === "muted" && !v.muted) v.muted = true;
+    else if (previews === "sound") {
+      if (type === "play" || type === "playing") previewStart = performance.now();
+      if (v.muted && performance.now() - previewStart < 3000) ytx.call("previewSound").then((r) => ytx.log("preview sound", r));
+    }
+  };
+  const onPreviewMedia = (e) => { if (previews !== "allow" && e.target.matches?.(PREVIEW_VIDEO)) holdPreview(e.target, e.type); };
+
   ytx.register({
     id: "feeds",
     apply(ctx, reason) {
       const s = ctx.settings;
+      previews = s.enabled ? s.feedPreviews : "allow";
+      document.documentElement.classList.toggle("ytx-previews-off", previews === "off");
+      document.documentElement.classList.toggle("ytx-previewcaptionsoff", s.enabled && s.previewCaptionsOff);
+      if (reason === "boot") for (const type of ["play", "playing", "volumechange"]) document.addEventListener(type, onPreviewMedia, true);
+      if (previews !== "allow") for (const v of document.querySelectorAll(PREVIEW_VIDEO)) holdPreview(v, "settings");
       if (s.enabled && s.homeRedirect !== "none" && location.pathname === "/" && (reason === "boot" || reason === "nav")) { location.replace(TARGETS[s.homeRedirect]); return; }
       lists = { channels: s.enabled ? ytx.listOf(s.blockedChannels) : [], keywords: s.enabled ? ytx.listOf(s.blockedKeywords) : [], comments: s.enabled ? ytx.listOf(s.blockedCommentWords) : [] };
       opts = { shorter: s.enabled ? s.hideShorterThan : 0, longer: s.enabled ? s.hideLongerThan : 0, caps: s.enabled && s.fixCaps, frames: s.enabled && s.thumbFrames && !ctx.mobile };

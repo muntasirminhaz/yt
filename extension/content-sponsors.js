@@ -113,6 +113,7 @@
   ytx.actions.undoSkip = () => {
     const seg = state.lastSkip;
     if (!seg || !ytx.ctx.video) { ytx.hud(t("h_nothing_to_undo")); return; }
+    ytx.log("undo skip", seg);
     ytx.ctx.video.currentTime = seg.start;
     state.lastSkip = null;
     ytx.hud(t("h_undone"));

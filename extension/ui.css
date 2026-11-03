@@ -40,6 +40,9 @@ a { color: var(--tint); text-decoration: none; }
 .row:first-child { border-top: 0; }
 .row .text { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .row .note { font: -apple-system-footnote; font-family: inherit; font-size: 13px; color: var(--muted); }
+.row .more { color: var(--tint); text-decoration: none; }
+.ask { display: flex; flex-direction: column; gap: 8px; padding-top: 6px; }
+.badge { display: inline-block; white-space: nowrap; margin-left: 6px; padding: 1px 6px; border-radius: 5px; font-size: 11px; font-weight: 600; line-height: 16px; vertical-align: 1px; color: var(--tint); background: color-mix(in srgb, var(--tint) 14%, transparent); }
 .row.stack { flex-direction: column; align-items: stretch; }
 .row.stack .text { padding-top: 4px; }
 .row.stack > :not(.text) { align-self: stretch; }
@@ -79,3 +82,4 @@ button.plain { background: transparent; color: var(--tint); padding: 8px 0; }
 .backup { display: flex; flex-wrap: wrap; gap: 8px; }
 .backup button { background: var(--seg); color: var(--text); }
 .backup button.danger { color: #ff3b30; }
+.backup button.armed { background: #ff3b30; color: #fff; }

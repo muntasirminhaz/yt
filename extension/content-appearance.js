@@ -2,7 +2,16 @@
   const ytx = globalThis.ytx;
   const html = document.documentElement;
   const HIDE = ytx.SCHEMA.flatMap((g) => g.rows).map((r) => r.key).filter((k) => k.startsWith("hide"));
-  const state = { forcedDark: false };
+  const syncTheme = (ctx, want, reason) => {
+    let tried = "";
+    try { tried = sessionStorage.getItem("ytxTheme") ?? ""; } catch { /* storage blocked */ }
+    if (reason !== "settings" && tried === want) return;
+    try { sessionStorage.setItem("ytxTheme", want); } catch { /* storage blocked */ }
+    ctx.call("theme", want).then((r) => {
+      ytx.log("theme", want, r);
+      if (r === null && want !== "device") html.toggleAttribute("dark", want === "dark");
+    });
+  };
   const VIEWS = /^\s*(?:[\d.,]+\s*[KMB]?\s*(?:views?|watching|waiting)?|[\d.,]+\s*[KMB]?)\s*$/i;
   const markViews = () => {
     for (const span of document.querySelectorAll("yt-content-metadata-view-model span:not(.ytx-views), #metadata-line span:not(.ytx-views), .ytm-badge-and-byline-item-byline:not(.ytx-views)")) {
@@ -23,14 +32,15 @@
     id: "appearance",
     apply(ctx, reason) {
       const s = ctx.settings;
+      if (reason === "settings" && ctx.changed.has("guestMode") && s.guestMode) { try { for (const key of Object.keys(localStorage)) if (!key.startsWith("ytx")) localStorage.removeItem(key); sessionStorage.clear(); } catch { /* storage blocked */ } }
       for (const key of [...HIDE, "fullTitles", "grayscale", "controlsAlwaysVisible"]) html.classList.toggle("ytx-" + key.toLowerCase(), s.enabled && Boolean(s[key]));
       if (document.body) watchViews(s.enabled && s.hideViews);
       try { localStorage.setItem("ytxBg", s.enabled && s.backgroundPlay ? "1" : "0"); } catch { /* storage blocked */ }
       const theme = s.enabled ? s.theme : "system";
-      const dark = ["dark", "amoled", "accent"].includes(theme) || (theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
-      try { localStorage.setItem("ytxDark", dark ? "1" : "0"); } catch { /* storage blocked */ }
-      if (dark) { html.setAttribute("dark", ""); state.forcedDark = true; }
-      else if (state.forcedDark) { html.removeAttribute("dark"); state.forcedDark = false; }
+      const want = theme === "system" ? "device" : theme === "light" ? "light" : "dark";
+      const mismatch = want === "dark" ? !html.hasAttribute("dark") : want === "light" ? html.hasAttribute("dark") : false;
+      if (reason === "settings" ? ctx.changed.has("theme") || ctx.changed.has("enabled") : mismatch) syncTheme(ctx, want, reason);
+      else if (!mismatch) { try { sessionStorage.removeItem("ytxTheme"); } catch { /* storage blocked */ } }
       html.classList.toggle("ytx-accent", theme === "accent");
       html.classList.toggle("ytx-amoled", theme === "amoled");
       html.style.setProperty("--ytx-accent", s.accent);
@@ -42,7 +52,6 @@
         const target = shortsToWatch(location.pathname);
         if (target) location.replace(target);
       }
-      if (reason === "boot") matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => this.apply(ctx, "settings"));
       if (reason === "boot") document.addEventListener("click", (e) => {
         if (!ctx.settings.enabled || !ctx.settings.shortsAsVideos) return;
         const a = e.target.closest?.("a[href*='/shorts/']");

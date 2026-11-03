@@ -1,6 +1,6 @@
 (() => {
   const clampSpeed = (v) => Math.min(16, Math.max(0.07, Math.round(v * 100) / 100));
-  const KEY_NAMES = { ArrowUp: "↑", ArrowDown: "↓", ArrowLeft: "←", ArrowRight: "→", Space: "Space", Enter: "↩", Backquote: "`", Minus: "-", Equal: "=", BracketLeft: "[", BracketRight: "]", Semicolon: ";", Quote: "'", Comma: ",", Period: ".", Slash: "/", Backslash: "\\" };
+  const KEY_NAMES = { ArrowUp: "↑", ArrowDown: "↓", ArrowLeft: "←", ArrowRight: "→", Space: "Space", Enter: "↩", Backspace: "⌫", Backquote: "`", Minus: "-", Equal: "=", BracketLeft: "[", BracketRight: "]", Semicolon: ";", Quote: "'", Comma: ",", Period: ".", Slash: "/", Backslash: "\\" };
   const comboOf = (e) => {
     if (["Control", "Alt", "Shift", "Meta"].includes(e.key)) return null;
     const mods = [e.ctrlKey && "Ctrl", e.altKey && "Alt", e.shiftKey && "Shift"].filter(Boolean);
@@ -23,24 +23,29 @@
   const quality = (key, def, extra) => row(key, "select", def, { options: QUALITIES, labels: QUALITY_LABELS, ...extra });
   const SIZES = ["320x180", "400x225", "480x270", "640x360"];
 
-  const ACTIONS = ["speedDown", "speedUp", "speedReset", "seekBack", "seekForward", "frameBack", "frameForward", "audio", "guest", "loop", "loopAB", "chapterPrev", "chapterNext", "undoSkip", "sleepTimer", "stop", "cinema", "miniPlayer", "pip", "flip", "rotate", "fillCrop", "filters", "cards", "screenshot", "copyLink", "copyTranscript", "blockChannel", "reversePlaylist", "settings"];
+  const ACTIONS = ["speedDown", "speedUp", "speedReset", "seekBack", "seekForward", "frameBack", "frameForward", "audio", "loop", "loopAB", "chapterPrev", "chapterNext", "undoSkip", "sleepTimer", "stop", "cinema", "miniPlayer", "pip", "flip", "rotate", "fillCrop", "filters", "cards", "screenshot", "copyLink", "copyTranscript", "reversePlaylist", "settings"];
   const SB_CATEGORIES = { sponsor: "skip", selfpromo: "skip", interaction: "skip", intro: "mark", outro: "mark", preview: "off", music_offtopic: "off", filler: "off" };
+  // note: built but not yet verified on YouTube in Safari; delete a key once it is confirmed working.
+  const BETA = new Set(["backgroundPlay", "previewCaptionsOff"]);
+  const LANGS = "ab aa af ak sq am ar hy as ay az bn ba eu be bho bs br bg my ca ceb zh-Hans zh-Hant co hr cs da dv nl dz en eo et ee fo fj fil fi fr gaa gl lg ka de el gn gu ht ha haw iw hi hmn hu is ig id iu ga it ja jv kl kn kk kha km rw ko kri ku ky lo la lv ln lt lua luo lb mk mg ms ml mt gv mi mr mn mfe ne new nso no ny oc or om os pam ps fa pl pt pt-PT pa qu ro rn ru sm sg sa gd sr crs sn sd si sk sl so st es su sw ss sv tg ta tt te th bo ti to ts tn tum tr tk uk ur ug uz ve vi war cy fy wo xh yi yo zu".split(" ");
+  const langNames = () => { try { const names = new Intl.DisplayNames([navigator.language], { type: "language" }); return Object.fromEntries(LANGS.map((code) => [code, names.of(code)])); } catch { return {}; } };
+  const LANG_NAMES = langNames();
+  const RELOAD = new Set(["qualityAuto", "qualityVideo", "qualityPlaylist", "qualityFullscreen", "qualityFsVideo", "qualityFsPlaylist", "qualityRevert", "codecStandardFps", "codecAvc", "autoTheater", "backgroundPlay", "shortsAutoNext"]);
 
   const SCHEMA = [
     { id: "playback", rows: [
       row("speedDefault", "choice", 1, { options: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3], labels: Object.fromEntries([0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3].map((n) => [n, `${n}×`])), custom: { min: 0.07, max: 16, step: 0.05, from: (v) => v, to: (n) => clampSpeed(n) } }),
       sw("speedOverride"),
-      row("speedStep", "select", 0.1, { options: [0.05, 0.1, 0.25, 0.5] }),
+      row("speedStep", "select", 0.1, { options: [0.05, 0.1, 0.25, 0.5], actions: ["speedDown", "speedUp", "speedReset"] }),
       sw("speedWheel", false, { ...NO_PHONE }),
-      sw("speedWheelRight", false, { parent: "speedWheel", ...NO_PHONE }),
       sw("wheelReverse", false, { ...NO_PHONE }),
-      row("seekStep", "select", 10, { options: [5, 10, 15, 30, 60], labels: { 5: "5 s", 10: "10 s", 15: "15 s", 30: "30 s", 60: "60 s" } }),
-      sw("speedPerChannel"),
+      row("seekStep", "select", 10, { options: [5, 10, 15, 30, 60], labels: { 5: "5 s", 10: "10 s", 15: "15 s", 30: "30 s", 60: "60 s" }, actions: ["seekBack", "seekForward", "frameBack", "frameForward"] }),
       sw("captionsAuto"),
-      row("captionsLang", "text", "", { parent: "captionsAuto", placeholder: "en" }),
+      row("captionsLang", "dropdown", "auto", { parent: "captionsAuto", options: ["auto", ...LANGS.sort((a, b) => (LANG_NAMES[a] ?? a).localeCompare(LANG_NAMES[b] ?? b))], labels: LANG_NAMES }),
       sw("timeRemaining", false, { ...NO_PHONE }),
       sw("pauseOnBlur"),
       sw("resumePositions"),
+      sw("backgroundPlay", false, { not: ["mac"] }),
     ] },
     { id: "quality", rows: [
       sw("qualityAuto", true),
@@ -52,13 +57,15 @@
       sw("qualityRevert", false, { parent: "qualityFullscreen", ...NO_PHONE }),
       sw("codecStandardFps"),
       sw("codecAvc"),
-      sw("audioMode"),
+      sw("audioMode", false, { actions: ["audio"] }),
     ] },
     { id: "appearance", rows: [
-      sw("hideRelated"), sw("hideComments"), sw("hideChat"), sw("hideShorts"),
+      sw("hideRelated"), sw("hideComments"), sw("hideChat"),
       sw("hideEndScreens"), sw("hideEndWall", true), sw("hideCards"), sw("hideMoreVideos"), sw("hideNotifications"),
-      sw("shortsAsVideos"),
-      sw("shortsAutoNext"),
+    ] },
+    { id: "shorts", rows: [
+      sw("hideShorts"), sw("shortsAsVideos"), sw("shortsAutoNext"), sw("shortsComments"), sw("shortsCaptions"),
+      row("shortsSpeed", "select", "same", { options: ["same", "1", "1.25", "1.5", "1.75", "2"], labels: { 1: "1×", 1.25: "1.25×", 1.5: "1.5×", 1.75: "1.75×", 2: "2×" } }),
     ] },
     { id: "cleanup", rows: [
       sw("hideHomeFeed"), sw("hideThumbnails"), sw("hideViews"), sw("hideChips"),
@@ -80,31 +87,35 @@
       sw("thumbFrames"),
       sw("hidePosts"),
       sw("hideSearchShelves"),
-    ] },
-    { id: "sponsors", rows: [
-      sw("sbEnabled", false, { origins: ["https://sponsor.ajay.app/*"] }),
-      ...Object.entries(SB_CATEGORIES).map(([cat, def]) => row("sb_" + cat, "select", def, { options: ["skip", "mute", "mark", "off"], prefix: "sbo_", parent: "sbEnabled" })),
-      sw("sbNotify", true, { parent: "sbEnabled" }),
-      row("sbWhitelist", "textarea", "", { parent: "sbEnabled" }),
+      row("feedPreviews", "select", "allow", { options: ["allow", "sound", "muted", "off"], prefix: "pv_" }),
+      sw("previewCaptionsOff"),
     ] },
     { id: "ads", rows: [
       sw("hidePromoted"),
       sw("adSkip"),
       row("adAllowChannels", "textarea", "", { parent: "adSkip" }),
+      sw("sbEnabled", false, { origins: ["https://sponsor.ajay.app/*"], link: "https://sponsor.ajay.app/", actions: ["undoSkip"] }),
+      ...Object.entries(SB_CATEGORIES).map(([cat, def]) => row("sb_" + cat, "select", def, { options: ["skip", "mute", "mark", "off"], prefix: "sbo_", parent: "sbEnabled" })),
+      sw("sbNotify", true, { parent: "sbEnabled" }),
+      row("sbWhitelist", "textarea", "", { parent: "sbEnabled" }),
     ] },
     { id: "player", rows: [
-      sw("miniPlayer", true, { ...NO_PHONE }),
+      sw("miniPlayer", true, { ...NO_PHONE, actions: ["miniPlayer"] }),
       row("miniSize", "choice", "480x270", { options: SIZES, prefix: "z_", custom: { min: 200, max: 1200, step: 10, from: (v) => Number(v.split("x")[0]), to: (w) => `${w}x${Math.round(w * 9 / 16)}` }, parent: "miniPlayer", ...NO_PHONE }),
       row("miniPosition", "select", "tl", { options: ["tl", "tr", "bl", "br"], parent: "miniPlayer", ...NO_PHONE }),
       sw("autoTheater", false, { ...NO_PHONE }),
       sw("controlsAlwaysVisible", false, { ...NO_PHONE }),
+      sw("tabFullscreen", false, { ...NO_PHONE }),
       sw("hideOverlays"),
       sw("hideAmbient"),
-      row("screenshotTo", "select", "file", { options: ["file", "clipboard"] }),
+      row("screenshotTo", "select", "file", { options: ["file", "clipboard"], actions: ["screenshot"] }),
     ] },
     { id: "toolbar", rows: [
-      row("controlsPlacement", "select", "player", { options: ["player", "below"], ...NO_PHONE }),
-      row("controls", "set", ["speedDown", "speedUp", "cinema", "pip"], { options: ACTIONS, prefix: "a_" }),
+      row("controlsPlacement", "select", "player", { options: ["player", "below", "both"], ...NO_PHONE }),
+      sw("toolbarLabels", true, { parent: "controlsPlacement", when: "below,both", ...NO_PHONE }),
+      row("controls", "set", ["speedDown", "speedUp", "cinema", "pip"], { options: ACTIONS, prefix: "a_", label: (s) => (s.controlsPlacement === "both" ? "s_controlsPlayer" : "s_controls") }),
+      row("controlsBelow", "set", ["speedDown", "speedUp", "speedReset", "loop", "audio", "sleepTimer", "pip", "screenshot"], { options: ACTIONS, prefix: "a_", parent: "controlsPlacement", when: "both", ...NO_PHONE }),
+      row("menuSide", "select", "auto", { options: ["auto", "above", "below"], prefix: "ms_", parent: "controlsPlacement", when: "below,both", ...NO_PHONE }),
     ] },
     { id: "autoplay", rows: [
       sw("autoplayOff"),
@@ -117,7 +128,6 @@
       sw("volumeDefaultOn", false, { ...NO_PHONE }),
       row("volumeDefault", "range", 50, { min: 0, max: 100, step: 1, parent: "volumeDefaultOn", ...NO_PHONE }),
       sw("volumeWheel", false, { ...NO_PHONE }),
-      sw("volumeWheelRight", false, { parent: "volumeWheel", ...NO_PHONE }),
       row("volumeStep", "select", 5, { options: [1, 2, 5, 10], parent: "volumeWheel", ...NO_PHONE }),
     ] },
     { id: "page", rows: [
@@ -128,24 +138,24 @@
       sw("linksNewTab"),
       sw("noTranslate"),
       sw("stripTracking"),
-      sw("rydEnabled", false, { origins: ["https://returnyoutubedislikeapi.com/*"] }),
+      sw("rydEnabled", false, { origins: ["https://returnyoutubedislikeapi.com/*"], link: "https://returnyoutubedislike.com/" }),
       sw("rydBar", true, { parent: "rydEnabled" }),
       sw("dismissContinue"),
       row("commentsSort", "select", "default", { options: ["default", "newest"] }),
       sw("hideActionButtons"),
       row("blockedCommentWords", "textarea", ""),
-      sw("dearrowTitles", false, { origins: ["https://sponsor.ajay.app/*"] }),
+      sw("dearrowTitles", false, { origins: ["https://sponsor.ajay.app/*"], link: "https://dearrow.ajay.app/" }),
     ] },
     { id: "theme", rows: [
-      row("theme", "select", "system", { options: ["system", "dark", "amoled", "accent"] }),
+      row("theme", "select", "system", { options: ["system", "light", "dark", "amoled", "accent"] }),
       row("accent", "color", "#ff375f", { parent: "theme", when: "accent" }),
-      row("cinemaDim", "range", 85, { min: 50, max: 100, step: 5 }),
+      row("cinemaDim", "range", 85, { min: 50, max: 100, step: 5, actions: ["cinema"] }),
       sw("grayscale"),
       sw("customCssOn"),
       row("customCss", "textarea", "", { parent: "customCssOn" }),
     ] },
-    { id: "shortcuts", rows: [row("shortcuts", "shortcuts", {}, NO_PHONE)] },
-    { id: "experimental", rows: [sw("backgroundPlay", false, { not: ["mac"] }), sw("guestMode")] },
+    { id: "shortcuts", rows: [row("shortcuts", "shortcuts", {}, { ...NO_PHONE, recommended: { speedDown: "Alt+Minus", speedUp: "Alt+Equal", speedReset: "Alt+Digit0", seekBack: "Alt+ArrowLeft", seekForward: "Alt+ArrowRight", frameBack: "Alt+Comma", frameForward: "Alt+Period", loop: "Alt+KeyL", loopAB: "Alt+KeyB", chapterPrev: "Alt+BracketLeft", chapterNext: "Alt+BracketRight", cinema: "Alt+KeyC", miniPlayer: "Alt+KeyM", pip: "Alt+KeyP", audio: "Alt+KeyA", screenshot: "Alt+KeyS", sleepTimer: "Alt+KeyZ", copyLink: "Alt+Shift+KeyC", undoSkip: "Alt+Backspace" } })] },
+    { id: "privacy", rows: [sw("guestMode")] },
     { id: "advanced", rows: [sw("debug"), row("backup", "backup", null), row("welcome", "link", null)] },
   ];
 
@@ -159,7 +169,7 @@
   });
 
   const PRESETS = {
-    recommended: { hideShorts: true, hideChips: true, hideEndWall: true, hideMoreVideos: true, hideNotifications: true, autoplayBlockBackground: true, qualityAuto: true, miniPlayer: true },
+    recommended: { hideShorts: true, hideChips: true, hideEndWall: true, hideMoreVideos: true, hideNotifications: true, autoplayBlockBackground: true, qualityAuto: true, miniPlayer: true, controlsPlacement: "both", toolbarLabels: true, controls: ["speedDown", "speedUp", "speedReset", "loop", "pip", "screenshot"], controlsBelow: ["speedDown", "speedUp", "speedReset", "loop", "loopAB", "audio", "sleepTimer", "pip", "screenshot", "copyLink"] },
     focused: { hideShorts: true, hideChips: true, hideEndWall: true, hideNotifications: true, hideMoreVideos: true },
     fast: { speedDefault: 1.5, speedStep: 0.25, speedWheel: true, controls: ["speedDown", "speedUp", "speedReset", "cinema", "pip"] },
     clean: { hideShorts: true, hideChips: true, hideEndWall: true, hideNotifications: true, hideMoreVideos: true, hideThumbnails: true, hideViews: true, hideNavExplore: true, hideNavMore: true, hideCreate: true, hideVoiceSearch: true },
@@ -204,5 +214,5 @@
     return order.find((q) => available.includes(q)) ?? available.find((q) => q !== "auto") ?? wanted;
   };
 
-  globalThis.ytx = { SCHEMA, DEFAULTS, ACTIONS, QUALITY_LABELS, merge, load, save, watch, clampSpeed, pickQuality, device, comboOf, comboLabel, PRESETS, SB_CATEGORIES, formatTime, listOf, matchList, chapterStarts, sbPrefix, videoIdFrom, parseDuration, titleCase, mostlyCaps, reset: () => browser.storage.local.set({ settings: {} }) };
+  globalThis.ytx = { SCHEMA, DEFAULTS, ACTIONS, QUALITY_LABELS, merge, load, save, watch, clampSpeed, pickQuality, device, comboOf, comboLabel, PRESETS, SB_CATEGORIES, BETA, RELOAD, formatTime, listOf, matchList, chapterStarts, sbPrefix, videoIdFrom, parseDuration, titleCase, mostlyCaps, reset: () => browser.storage.local.set({ settings: {} }) };
 })();

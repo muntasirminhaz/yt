@@ -8,7 +8,6 @@
     speedUp: [GAUGE, "M12 15l4-5", "M8 20h6M11 17v6"],
     speedReset: [GAUGE, "M12 15V8", "M8 20h8"],
     audio: ["M9 18V6l12-2v12", "M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0z", "M21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"],
-    guest: ["M2 13h3M19 13h3", "M11 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0z", "M19 13a3 3 0 1 1-6 0 3 3 0 0 1 6 0z", "M11 13h2", "M5 10l2-5h10l2 5"],
     seekBack: ["M12 5a8 8 0 1 1-7 4", "M5 4v5h5", "M10 10v5l4-2.5z"],
     seekForward: ["M12 5a8 8 0 1 0 7 4", "M19 4v5h-5", "M10 10v5l4-2.5z"],
     frameBack: ["M18 5v14", "M14 12l-8-7v14z"],
@@ -17,7 +16,6 @@
     sleepTimer: ["M21 13a9 9 0 1 1-10-10 7 7 0 0 0 10 10z"],
     rotate: ["M4 12a8 8 0 1 0 3-6.2", "M4 4v5h5", "M9 9h6v6H9z"],
     fillCrop: ["M3 5h18v14H3z", "M8 9h8v6H8z", "M3 12h5M16 12h5"],
-    blockChannel: ["M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z", "M4 21a8 8 0 0 1 11-7.4", "M17 17l4 4M21 17l-4 4", "M19 15a4 4 0 1 1 0 8"],
     loopAB: ["M4 17V7l5 5-5 5z", "M20 7v10l-5-5 5-5z", "M9 12h6"],
     chapterPrev: ["M6 5v14", "M18 5l-9 7 9 7z"],
     chapterNext: ["M18 5v14", "M6 5l9 7-9 7z"],
@@ -36,7 +34,7 @@
     settings: ["M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z", "M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"],
     more: ["M5 12h.01M12 12h.01M19 12h.01"],
   };
-  const TOGGLES = ["audio", "guest", "loop", "loopAB", "fillCrop", "sleepTimer", "cinema", "flip", "filters", "cards", "miniPlayer", "reversePlaylist"];
+  const TOGGLES = ["audio", "loop", "loopAB", "fillCrop", "sleepTimer", "cinema", "flip", "filters", "cards", "miniPlayer", "reversePlaylist"];
 
   const glyph = (id) => {
     const svg = document.createElementNS(NS, "svg");
@@ -49,7 +47,7 @@
     }
     return svg;
   };
-  const button = (id, label, onClick) => {
+  const button = (id, label, onClick, withLabel = false) => {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "ytx-btn";
@@ -57,11 +55,12 @@
     b.title = label;
     b.setAttribute("aria-label", label);
     b.append(glyph(id));
+    if (withLabel) b.append(Object.assign(document.createElement("span"), { className: "ytx-label", textContent: label }));
     b.addEventListener("click", (e) => { e.stopPropagation(); onClick(e); });
     return b;
   };
 
-  const ui = { bar: null, menu: null, panel: null, ab: null };
+  const bars = [];
   const parseTime = (text) => { const parts = String(text).trim().split(":").map(Number); return parts.some(Number.isNaN) ? NaN : parts.reduce((a, b) => a * 60 + b, 0); };
   const buildAB = (ctx) => {
     const panel = document.createElement("div");
@@ -85,7 +84,6 @@
     function commit() { ytx.actions.setAB({ a: parseTime(inputs.a.value), b: parseTime(inputs.b.value) }); refresh(); }
     return panel;
   };
-  const toggleAB = (ctx, force) => { ui.ab.hidden = force === undefined ? !ui.ab.hidden : !force; if (!ui.ab.hidden) { ui.menu.hidden = true; ui.panel.hidden = true; } };
   const run = async (id) => { await ytx.actions[id]?.(); refresh(); };
   const refresh = () => {
     const st = { ...(ytx.feature("player")?.state(ytx.ctx) ?? {}), ...(ytx.feature("speed")?.state(ytx.ctx) ?? {}) };
@@ -94,8 +92,24 @@
       if (TOGGLES.includes(id)) b.setAttribute("aria-pressed", String(Boolean(st[id])));
     }
   };
+  const closeAll = () => { for (const bar of bars) for (const el of [bar.menu, bar.panel, bar.ab]) el.hidden = true; };
+  const place = (bar, el) => {
+    if (bar.classList.contains("in-player") || ytx.ctx.mobile) return;
+    const side = ytx.ctx.settings.menuSide;
+    const rect = bar.getBoundingClientRect();
+    el.classList.toggle("ytx-up", side === "above" || (side === "auto" && rect.bottom + el.offsetHeight + 12 > innerHeight));
+  };
+  const toggle = (bar, el, ctx, force) => {
+    const show = force ?? el.hidden;
+    closeAll();
+    if (!show) return;
+    el.hidden = false;
+    if (el === bar.panel) syncPanel(bar, ctx);
+    if (el === bar.menu) refresh();
+    place(bar, el);
+  };
 
-  const buildMenu = (ctx) => {
+  const buildMenu = (ctx, bar) => {
     const menu = document.createElement("div");
     menu.className = "ytx-menu";
     menu.hidden = true;
@@ -106,13 +120,13 @@
       item.dataset.action = id;
       const combo = ctx.settings.shortcuts?.[id];
       item.append(glyph(id), Object.assign(document.createElement("span"), { textContent: t("a_" + id) }), Object.assign(document.createElement("kbd"), { textContent: combo ? ytx.comboLabel(combo) : "" }));
-      item.addEventListener("click", (e) => { e.stopPropagation(); if (id === "filters") togglePanel(ctx, true); else if (id === "loopAB") toggleAB(ctx, true); else { run(id); closeAll(); } });
+      item.addEventListener("click", (e) => { e.stopPropagation(); if (id === "filters") toggle(bar, bar.panel, ctx, true); else if (id === "loopAB") toggle(bar, bar.ab, ctx, true); else { run(id); closeAll(); } });
       menu.append(item);
     }
     return menu;
   };
 
-  const buildPanel = (ctx) => {
+  const buildPanel = (ctx, bar) => {
     const panel = document.createElement("div");
     panel.className = "ytx-panel";
     panel.hidden = true;
@@ -127,41 +141,45 @@
       panel.append(row);
     }
     const reset = Object.assign(document.createElement("button"), { type: "button", className: "ytx-reset", textContent: t("f_reset") });
-    reset.addEventListener("click", () => { ytx.actions.resetFilters(); syncPanel(ytx.ctx); });
+    reset.addEventListener("click", () => { ytx.actions.resetFilters(); syncPanel(bar, ytx.ctx); });
     panel.append(reset);
     return panel;
   };
-  const syncPanel = (ctx) => { for (const input of ui.panel?.querySelectorAll("input") ?? []) input.value = ctx.settings.filters[input.dataset.filter]; };
-  const togglePanel = (ctx, force) => { ui.panel.hidden = force === undefined ? !ui.panel.hidden : !force; if (!ui.panel.hidden) { ui.menu.hidden = true; syncPanel(ctx); } };
-  const closeAll = () => { if (ui.menu) ui.menu.hidden = true; if (ui.panel) ui.panel.hidden = true; if (ui.ab) ui.ab.hidden = true; };
+  const syncPanel = (bar, ctx) => { for (const input of bar.panel.querySelectorAll("input")) input.value = ctx.settings.filters[input.dataset.filter]; };
 
-  const build = (ctx) => {
+  const build = (ctx, inPlayer, ids) => {
     const bar = document.createElement("div");
-    bar.className = "ytx-bar";
+    bar.className = "ytx-bar" + (inPlayer ? " in-player" : "");
     bar.setAttribute("role", "toolbar");
-    for (const id of ctx.settings.controls) if (ytx.ACTIONS.includes(id)) bar.append(button(id, t("a_" + id), () => (id === "filters" ? togglePanel(ctx) : id === "loopAB" ? toggleAB(ctx) : run(id))));
-    bar.append(button("more", t("a_more"), () => { ui.panel.hidden = true; ui.menu.hidden = !ui.menu.hidden; refresh(); }));
-    ui.menu = buildMenu(ctx);
-    ui.panel = buildPanel(ctx);
-    ui.ab = buildAB(ctx);
-    for (const el of [ui.menu, ui.panel, ui.ab]) el.addEventListener("click", (e) => e.stopPropagation());
-    bar.append(ui.menu, ui.panel, ui.ab);
+    const labels = !inPlayer && ctx.settings.toolbarLabels;
+    bar.menu = buildMenu(ctx, bar);
+    bar.panel = buildPanel(ctx, bar);
+    bar.ab = buildAB(ctx);
+    for (const id of ids) if (ytx.ACTIONS.includes(id)) bar.append(button(id, t("a_" + id), () => (id === "filters" ? toggle(bar, bar.panel, ctx) : id === "loopAB" ? toggle(bar, bar.ab, ctx) : run(id)), labels));
+    bar.append(button("more", t("a_more"), () => toggle(bar, bar.menu, ctx), labels));
+    for (const el of [bar.menu, bar.panel, bar.ab]) el.addEventListener("click", (e) => e.stopPropagation());
+    bar.append(bar.menu, bar.panel, bar.ab);
     return bar;
   };
 
+  const sig = (ctx) => [ctx.settings.controlsPlacement, ctx.settings.toolbarLabels, ctx.settings.controls.join(","), ctx.settings.controlsBelow.join(","), JSON.stringify(ctx.settings.shortcuts ?? {})].join(":");
+  const unmount = () => { for (const bar of bars) bar.remove(); bars.length = 0; };
   const mount = (ctx) => {
-    const inPlayer = ctx.settings.controlsPlacement === "player" && !ctx.mobile;
-    const host = inPlayer ? ctx.q("rightControls") : ctx.q("below");
-    if (!host) return;
-    if (ui.bar?.isConnected && ui.bar.dataset.sig === sig(ctx)) return;
-    ytx.log("toolbar", { placement: ctx.settings.controlsPlacement, host: host.id || host.className, controls: ctx.settings.controls });
-    ui.bar?.remove();
-    ui.bar = build(ctx);
-    ui.bar.dataset.sig = sig(ctx);
-    ui.bar.classList.toggle("in-player", inPlayer);
-    ctx.mobile ? host.after(ui.bar) : host.prepend(ui.bar);
+    const placement = ctx.mobile ? "below" : ctx.settings.controlsPlacement;
+    const wanted = placement === "both" ? [true, false] : [placement === "player"];
+    const signature = sig(ctx);
+    if (bars.length === wanted.length && bars.every((bar) => bar.isConnected && bar.dataset.sig === signature)) return;
+    unmount();
+    for (const inPlayer of wanted) {
+      const host = inPlayer ? ctx.q("rightControls") : ctx.q("below");
+      if (!host) continue;
+      const bar = build(ctx, inPlayer, placement === "both" && !inPlayer ? ctx.settings.controlsBelow : ctx.settings.controls);
+      bar.dataset.sig = signature;
+      ctx.mobile ? host.after(bar) : host.prepend(bar);
+      bars.push(bar);
+    }
+    ytx.log("toolbar", { placement, bars: bars.length });
   };
-  const sig = (ctx) => ctx.settings.controlsPlacement + ":" + ctx.settings.controls.join(",") + ":" + JSON.stringify(ctx.settings.shortcuts ?? {});
   ytx.refreshUi = refresh;
 
   ytx.register({
@@ -171,7 +189,7 @@
         document.addEventListener("click", closeAll);
         document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAll(); });
       }
-      if (!ctx.settings.enabled || !ctx.watch) { ui.bar?.remove(); ui.bar = null; return; }
+      if (!ctx.settings.enabled || !ctx.watch) { unmount(); return; }
       mount(ctx);
       refresh();
     },

@@ -1,4 +1,4 @@
-const { SCHEMA, t, el, renderRow, reveal, load, watch, save, PRESETS, device } = globalThis.ytx;
+const { SCHEMA, DEFAULTS, RELOAD, t, el, button, renderRow, reveal, load, watch, save, PRESETS, device } = globalThis.ytx;
 const NS = "http://www.w3.org/2000/svg";
 const ICONS = {
   home: ["#007aff", "M3 11l9-7 9 7", "M5 10v10h14V10", "M10 20v-6h4v6"],
@@ -8,7 +8,7 @@ const ICONS = {
   appearance: ["#ff2d55", "M3 3l18 18", "M10.6 10.6a2 2 0 0 0 2.8 2.8", "M9.9 5.2A10 10 0 0 1 12 5c5 0 9 4 10 7a11 11 0 0 1-2.2 3.4", "M6.6 6.6A11 11 0 0 0 2 12c1 3 5 7 10 7a10 10 0 0 0 4.5-1"],
   cleanup: ["#ff9500", "M4 20l5-5", "M14 4l6 6-8 8-6-6z", "M10 8l6 6"],
   feeds: ["#30b0c7", "M4 5h16M4 10h16M4 15h10", "M17 14l2 2 4-4"],
-  sponsors: ["#00c7be", "M5 12l5 5L20 7", "M3 3h18v18H3z"],
+  shorts: ["#ff9500", "M8 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z", "M10 9l5 3-5 3z"],
   ads: ["#ff3b30", "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z", "M5.6 5.6l12.8 12.8"],
   player: ["#5856d6", "M3 6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z", "M10 9l5 3-5 3z"],
   toolbar: ["#32ade6", "M3 5h18v4H3z", "M7 13h10M7 17h6"],
@@ -17,7 +17,7 @@ const ICONS = {
   page: ["#8e8e93", "M5 3h10l4 4v14H5z", "M15 3v4h4", "M8 12h8M8 16h8"],
   theme: ["#ffcc00", "M12 3a9 9 0 0 0 0 18c1 0 1.5-.7 1.5-1.5 0-1-.5-1.5-.5-2.5 0-1 .8-1.5 2-1.5H17a4 4 0 0 0 4-4c0-4.5-4-8.5-9-8.5z", "M7.5 10.5h.01M10.5 7h.01M15 7h.01"],
   shortcuts: ["#636366", "M3 7h18v10H3z", "M6 10h1M9 10h1M12 10h1M15 10h1M18 10h1M7 14h10"],
-  experimental: ["#ff6b22", "M9 3h6", "M10 3v6L4 20a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1L14 9V3", "M7 15h10"],
+  privacy: ["#5ac8fa", "M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z", "M9.5 12l2 2 4-4"],
   advanced: ["#8e8e93", "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z", "M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"],
 };
 const tile = (id) => {
@@ -51,21 +51,35 @@ list.append(el("input", { className: "search", type: "search", placeholder: t("o
 const entry = (id) => el("a", { href: "#" + id }, [tile(id), el("span", { textContent: t("g_" + id) })]);
 nav.append(entry("home"));
 listGroup.append(entry("home"));
+const neutral = (row) => (row.type === "switch" ? false : row.type === "set" ? [] : row.type === "shortcuts" ? {} : row.type === "text" || row.type === "textarea" ? "" : DEFAULTS[row.key]);
+const apply = async (g, pick) => { await save(Object.fromEntries(g.rows.map((row) => [row.key, pick(row)]))); saved(g.rows.some((row) => RELOAD.has(row.key))); };
+const actions = (g) => el("div", { className: "row stack" }, [
+  el("span", { className: "text" }, [el("span", { className: "label", textContent: t("d_label") }), el("span", { className: "note", textContent: t("d_note") })]),
+  el("div", { className: "backup" }, [button(t("d_youtube"), () => apply(g, neutral)), button(t("d_recommended"), () => apply(g, (row) => row.recommended ?? PRESETS.recommended[row.key] ?? DEFAULTS[row.key]))]),
+]);
+const render = (g, s) => [...g.rows.map((row) => renderRow(row, s)), ...(g.id === "advanced" ? [] : [actions(g)])];
 for (const g of groups) {
   nav.append(entry(g.id));
   listGroup.append(entry(g.id));
-  sections[g.id] = el("section", { className: "group", hidden: true }, g.rows.map((row) => renderRow(row, settings)));
+  sections[g.id] = el("section", { className: "group", hidden: true }, render(g, settings));
   main.append(sections[g.id]);
 }
 nav.append(entry("support"));
 listGroup.append(entry("support"));
 reveal(main, settings);
-watch((next) => reveal(main, next));
+watch((next) => {
+  const full = { ...DEFAULTS, ...next };
+  for (const g of groups) if (g.rows.some((row) => JSON.stringify(settings[row.key]) !== JSON.stringify(full[row.key]) || (row.actions && JSON.stringify(settings.shortcuts) !== JSON.stringify(full.shortcuts)))) sections[g.id].replaceChildren(...render(g, full));
+  Object.assign(settings, full);
+  reveal(main, full);
+});
 
 const toast = document.getElementById("toast");
 let toastTimer;
-const notify = (text) => { toast.textContent = text; toast.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove("show"), 1400); };
-main.addEventListener("change", () => notify(t("t_saved")));
+const reloadBtn = button(t("t_reload"), () => { browser.runtime.sendMessage({ type: "reloadYouTube" }).catch(() => null); toast.classList.remove("show"); });
+const notify = (text, reload = false) => { toast.replaceChildren(text, ...(reload ? [reloadBtn] : [])); toast.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove("show"), reload ? 6000 : 1400); };
+const saved = (reload) => notify(reload ? t("t_saved_reload") : t("t_saved"), reload);
+for (const area of [main, results]) area.addEventListener("change", (e) => saved(RELOAD.has(e.target.closest(".row")?.dataset.key)));
 
 const manifest = browser.runtime.getManifest();
 const supportEmail = t("support_email");
@@ -153,9 +167,9 @@ const search = (q) => {
   results.replaceChildren();
   if (!q) return show(location.hash.slice(1));
   for (const g of groups) {
-    const hits = [...sections[g.id].querySelectorAll(".row")].filter((row) => !row.hidden && row.querySelector(".text").textContent.toLowerCase().includes(q));
+    const hits = g.rows.filter((row) => { const node = sections[g.id].querySelector(`.row[data-key="${row.key}"]`); return node && !node.hidden && node.querySelector(".text").textContent.toLowerCase().includes(q); });
     if (!hits.length) continue;
-    results.append(el("h2", { textContent: t("g_" + g.id) }), el("section", { className: "group" }, hits.map((row) => row.cloneNode(true))));
+    results.append(el("h2", { textContent: t("g_" + g.id) }), el("section", { className: "group" }, hits.map((row) => renderRow(row, settings))));
   }
   list.hidden = welcome.hidden = main.hidden = true;
   for (const p of Object.values(pages)) p.hidden = true;
@@ -163,11 +177,5 @@ const search = (q) => {
   back.hidden = !narrow.matches;
   title.textContent = t("o_search");
 };
-results.addEventListener("change", (e) => {
-  const key = e.target.closest(".row")?.dataset.key;
-  const original = main.querySelector(`.row[data-key="${key}"]`);
-  if (!original) return;
-  const src = e.target, dst = original.querySelector(src.tagName.toLowerCase() + (src.type ? `[type="${src.type}"]` : ""));
-  if (dst) { if (src.type === "checkbox") dst.checked = src.checked; else dst.value = src.value; dst.dispatchEvent(new Event("change", { bubbles: true })); }
-});
+
 for (const input of [document.getElementById("search"), list.querySelector(".search")]) input.addEventListener("input", (e) => search(e.target.value));

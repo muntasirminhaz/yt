@@ -1,6 +1,8 @@
 (() => {
   if (globalThis.browser?.runtime?.id) return;
-  const player = () => document.getElementById("movie_player");
+  const player = () => (location.pathname.startsWith("/shorts/") && document.getElementById("shorts-player")) || document.getElementById("movie_player");
+  let appReady = false;
+  document.addEventListener("yt-navigate-finish", () => { appReady = true; });
   let bg = false;
   try { bg = localStorage.getItem("ytxBg") === "1"; } catch { /* storage blocked */ }
   if (bg) {
@@ -47,12 +49,35 @@
     qualities: () => player()?.getAvailableQualityLevels?.() ?? [],
     state: () => player()?.getPlayerState?.(),
     stop: () => player()?.stopVideo?.(),
+    loop: (on) => { player()?.setLoopVideo?.(Boolean(on)); return true; },
     videoData: () => { const d = player()?.getVideoData?.(); return d ? { id: d.video_id, title: d.title, author: d.author } : null; },
     captions: (lang) => {
       const p = player();
       if (!p?.loadModule) return null;
-      try { p.loadModule("captions"); p.setOption("captions", "track", lang ? { languageCode: lang } : {}); } catch (err) { return String(err); }
-      return true;
+      try {
+        const base = (code) => String(code ?? "").split("-")[0].toLowerCase();
+        const shown = p.isSubtitlesOn?.() ? p.getOption?.("captions", "track") : null;
+        if (shown && (!lang || base(shown.translationLanguage?.languageCode ?? shown.languageCode) === base(lang))) return true;
+        p.loadModule("captions");
+        const list = (p.getOption?.("captions", "tracklist", { includeAsr: true }) ?? []).sort((a, b) => (a.kind === "asr") - (b.kind === "asr"));
+        if (!list.length) return "no tracks yet";
+        const want = lang || navigator.language;
+        const track = list.find((x) => x.languageCode === want) ?? list.find((x) => base(x.languageCode) === base(want)) ?? (lang ? null : list[0]);
+        if (track) { p.setOption("captions", "track", track); return true; }
+        const to = (p.getOption?.("captions", "translationLanguages") ?? []).find((x) => x.languageCode === lang);
+        if (!to) return "no track for " + lang;
+        p.setOption("captions", "track", { ...(list.find((x) => x.is_translateable) ?? list[0]), translationLanguage: to });
+        return true;
+      } catch (err) { return String(err); }
+    },
+    previewSound: () => { const p = document.getElementById("inline-preview-player"); if (typeof p?.unMute !== "function") return null; p.unMute(); p.syncVolume?.(); return !p.isMuted?.(); },
+    theme: (mode) => {
+      const app = document.querySelector("ytd-app");
+      if (!app) return null;
+      const go = () => app.dispatchEvent(new CustomEvent("yt-action", { detail: { actionName: "yt-signal-action-toggle-dark-theme-" + mode, optionalAction: false, args: [], returnValue: [] } }));
+      if (appReady) { go(); return true; }
+      document.addEventListener("yt-navigate-finish", go, { once: true });
+      return "queued";
     },
     cue: () => { const p = player(); const id = p?.getVideoData?.().video_id; if (id) p.cueVideoById(id); return id ?? null; },
   };

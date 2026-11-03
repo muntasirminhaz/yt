@@ -2,7 +2,6 @@
   const root = document.documentElement;
   if (root.dataset.ytx) return;
   root.dataset.ytx = "1";
-  try { if (localStorage.getItem("ytxDark") === "1") root.setAttribute("dark", ""); } catch { /* storage blocked */ }
   const ytx = globalThis.ytx;
   const features = [];
   const mobile = location.hostname.startsWith("m.");

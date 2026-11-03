@@ -55,9 +55,6 @@
   "n_speedWheel": {
     "message": "Hold Option (⌥) and scroll over the video."
   },
-  "s_speedWheelRight": {
-    "message": "Only while the right mouse button is held"
-  },
   "s_wheelReverse": {
     "message": "Reverse scroll direction"
   },
@@ -75,9 +72,6 @@
   },
   "n_volumeWheel": {
     "message": "Scroll over the video without a modifier key."
-  },
-  "s_volumeWheelRight": {
-    "message": "Only while the right mouse button is held"
   },
   "s_volumeStep": {
     "message": "Volume step"
@@ -152,7 +146,7 @@
     "message": "Toolbar placement"
   },
   "n_controlsPlacement": {
-    "message": "Inside the video controls, or in a bar under the video."
+    "message": "Inside the video controls, in a bar under the video, or both."
   },
   "s_controls": {
     "message": "Buttons in the toolbar"
@@ -355,12 +349,6 @@
   "n_miniPosition": {
     "message": "Where the mini player sits."
   },
-  "n_speedWheelRight": {
-    "message": "Scroll alone keeps scrolling the page."
-  },
-  "n_volumeWheelRight": {
-    "message": "Scroll alone keeps scrolling the page."
-  },
   "n_volumeDefaultOn": {
     "message": "Sets YouTube's volume slider when a video loads. Mac only."
   },
@@ -482,10 +470,7 @@
     "message": "Privacy mode"
   },
   "n_guestMode": {
-    "message": "Warning: experimental. Turning this on saves your youtube.com cookies inside the extension and signs YouTube out, so it sees a first-time visitor; turning it off puts them back. If YouTube signs you in again by itself or anything breaks, turn it off and reload. Reloads YouTube tabs."
-  },
-  "a_guest": {
-    "message": "Privacy mode"
+    "message": "Turning this on saves your youtube.com cookies inside the extension and signs YouTube out, so it sees a first-time visitor; turning it off puts them back. If YouTube signs you in again by itself or anything breaks, turn it off and reload. Reloads YouTube tabs."
   },
   "g_theme": {
     "message": "Theme"
@@ -553,8 +538,8 @@
   "n_hideVoiceSearch": {
     "message": "The microphone next to the search box."
   },
-  "g_experimental": {
-    "message": "Experimental"
+  "g_privacy": {
+    "message": "Privacy"
   },
   "g_shortcuts": {
     "message": "Shortcuts"
@@ -719,12 +704,6 @@
   "a_copyTranscript": {
     "message": "Copy transcript"
   },
-  "s_speedPerChannel": {
-    "message": "Remember speed per channel"
-  },
-  "n_speedPerChannel": {
-    "message": "The speed you set on a channel comes back on its next video."
-  },
   "s_captionsAuto": {
     "message": "Turn on captions"
   },
@@ -735,7 +714,7 @@
     "message": "Caption language"
   },
   "n_captionsLang": {
-    "message": "Language code such as en, es or ja. Empty keeps YouTube's choice."
+    "message": "Picks the video’s captions in this language, or asks YouTube to translate when it has none. Auto keeps YouTube’s choice."
   },
   "s_timeRemaining": {
     "message": "Show time remaining"
@@ -759,7 +738,7 @@
     "message": "Start in Theater mode"
   },
   "n_autoTheater": {
-    "message": "Switches to the wide player on every video."
+    "message": "Switches to the wide player on every video. If the layout sticks, reload the page."
   },
   "s_screenshotTo": {
     "message": "Screenshot goes to"
@@ -817,9 +796,6 @@
   },
   "n_blockedKeywords": {
     "message": "One per line. Videos whose title contains a word disappear."
-  },
-  "g_sponsors": {
-    "message": "Sponsors"
   },
   "s_sbEnabled": {
     "message": "Skip sponsor segments"
@@ -894,7 +870,7 @@
     "message": "Skipped"
   },
   "g_ads": {
-    "message": "Ads"
+    "message": "Ads and sponsors"
   },
   "s_hidePromoted": {
     "message": "Hide promoted videos and banners"
@@ -906,7 +882,7 @@
     "message": "Skip video ads"
   },
   "n_adSkip": {
-    "message": "Experimental. Mutes and fast-forwards ads in the player and presses Skip as soon as it appears. This goes against YouTube's terms; YouTube may change the player at any time."
+    "message": "Mutes and fast-forwards ads in the player and presses Skip as soon as it appears. This goes against YouTube's terms; YouTube may change the player at any time. Sponsored Shorts are skipped too."
   },
   "s_rydEnabled": {
     "message": "Show dislike counts"
@@ -924,7 +900,7 @@
     "message": "Keep playing in the background"
   },
   "n_backgroundPlay": {
-    "message": "Experimental. Keeps audio going when you switch apps or lock the screen on iPhone and iPad. Reload the page after changing."
+    "message": "Keeps audio going when you switch apps or lock the screen on iPhone and iPad. Reload the page after changing."
   },
   "h_copied_link": {
     "message": "Link copied"
@@ -1022,9 +998,6 @@
   "a_fillCrop": {
     "message": "Fill the frame"
   },
-  "a_blockChannel": {
-    "message": "Block this channel"
-  },
   "s_seekStep": {
     "message": "Seek step"
   },
@@ -1044,10 +1017,10 @@
     "message": "The channel watermark and the most-replayed heat map."
   },
   "s_hideAmbient": {
-    "message": "Turn off ambient glow"
+    "message": "Turn off Ambient mode"
   },
   "n_hideAmbient": {
-    "message": "The coloured glow around the player in dark theme."
+    "message": "YouTube’s Ambient mode, the coloured glow around the player in the dark theme."
   },
   "s_hideShorterThan": {
     "message": "Hide videos shorter than"
@@ -1140,7 +1113,7 @@
     "message": "Shorts: play once, then next"
   },
   "n_shortsAutoNext": {
-    "message": "No looping; the next Short starts when one ends."
+    "message": "No looping; the next Short starts when one ends. Waits while a comments or description panel is open, unless comments open automatically."
   },
   "s_grayscale": {
     "message": "Grayscale"
@@ -1177,5 +1150,186 @@
   },
   "pl_left": {
     "message": "left"
+  },
+  "badge_beta": {
+    "message": "Beta",
+    "description": "Badge on settings that are built but not yet verified on YouTube in Safari"
+  },
+  "h_resumed": {
+    "message": "Resumed at",
+    "description": "HUD pill shown before the time when a video resumes where you left off"
+  },
+  "d_label": {
+    "message": "Defaults",
+    "description": "Label of the per-section defaults row"
+  },
+  "d_note": {
+    "message": "YouTube’s defaults turns everything in this section off, so YouTube behaves as it does on its own. Recommended applies our suggested values for this section.",
+    "description": "Note under the per-section defaults row"
+  },
+  "d_youtube": {
+    "message": "YouTube’s defaults",
+    "description": "Button: reset the section to YouTube’s own behaviour"
+  },
+  "d_recommended": {
+    "message": "Recommended",
+    "description": "Button: apply the recommended values for the section"
+  },
+  "g_shorts": {
+    "message": "Shorts",
+    "description": "Settings group"
+  },
+  "o_light": {
+    "message": "Light",
+    "description": "Theme option: force YouTube’s light theme"
+  },
+  "o_learn": {
+    "message": "Learn more",
+    "description": "Link under a setting to the service’s website"
+  },
+  "p_explain": {
+    "message": "Safari will now ask for access to $HOST$. Choose “Always Allow” so this keeps working after restarts. Nothing else is shared with that server.",
+    "description": "Shown before the optional host permission prompt",
+    "placeholders": {
+      "host": {
+        "content": "$1"
+      }
+    }
+  },
+  "p_continue": {
+    "message": "Continue",
+    "description": "Button that opens the Safari permission prompt"
+  },
+  "p_cancel": {
+    "message": "Not now",
+    "description": "Button that dismisses the permission explanation"
+  },
+  "t_saved_reload": {
+    "message": "Saved. Reload YouTube to apply.",
+    "description": "Toast for settings that need a page reload"
+  },
+  "t_reload": {
+    "message": "Reload",
+    "description": "Toast button that reloads YouTube tabs"
+  },
+  "b_copy": {
+    "message": "Copy settings",
+    "description": "Copies the settings JSON to the clipboard"
+  },
+  "b_reset_confirm": {
+    "message": "Confirm reset",
+    "description": "Second press of Reset all"
+  },
+  "s_shortsComments": {
+    "message": "Open comments with each Short",
+    "description": "Shorts setting"
+  },
+  "n_shortsComments": {
+    "message": "Shows the comments panel as soon as a Short starts; it stays open while you scroll.",
+    "description": "Note"
+  },
+  "s_shortsCaptions": {
+    "message": "Captions on Shorts",
+    "description": "Shorts setting"
+  },
+  "n_shortsCaptions": {
+    "message": "Turns captions on for every Short, in the caption language set under Playback.",
+    "description": "Note"
+  },
+  "s_shortsSpeed": {
+    "message": "Shorts playback speed",
+    "description": "Shorts setting"
+  },
+  "n_shortsSpeed": {
+    "message": "Same as videos follows the Playback settings.",
+    "description": "Note"
+  },
+  "o_same": {
+    "message": "Same as videos",
+    "description": "Shorts speed option"
+  },
+  "s_menuSide": {
+    "message": "Menus open",
+    "description": "Toolbar setting: where the ••• menu and panels open when the toolbar sits under the video"
+  },
+  "n_menuSide": {
+    "message": "Automatic opens upward over the video when there is no room below.",
+    "description": "Note"
+  },
+  "ms_auto": {
+    "message": "Automatic",
+    "description": "Menu side option"
+  },
+  "ms_above": {
+    "message": "Above the toolbar",
+    "description": "Menu side option"
+  },
+  "ms_below": {
+    "message": "Below the toolbar",
+    "description": "Menu side option"
+  },
+  "s_feedPreviews": {
+    "message": "Hover and feed previews",
+    "description": "Feeds setting"
+  },
+  "n_feedPreviews": {
+    "message": "The short clips that play when you hover a video or a Short in a feed. With sound needs one click on the page first, as Safari requires.",
+    "description": "Note"
+  },
+  "pv_allow": {
+    "message": "Allow",
+    "description": "Previews option"
+  },
+  "pv_muted": {
+    "message": "Muted only",
+    "description": "Previews option"
+  },
+  "pv_off": {
+    "message": "Off",
+    "description": "Previews option"
+  },
+  "s_previewCaptionsOff": {
+    "message": "Hide captions in previews",
+    "description": "Feeds setting"
+  },
+  "n_previewCaptionsOff": {
+    "message": "Turning captions on for previews is YouTube’s own setting under Playback and performance.",
+    "description": "Note"
+  },
+  "k_hint": {
+    "message": "Shortcuts:",
+    "description": "Prefix before the assigned shortcuts on a related setting"
+  },
+  "k_hint_none": {
+    "message": "No shortcuts set yet; see Shortcuts.",
+    "description": "Shown when none of the related shortcuts is assigned"
+  },
+  "o_both": {
+    "message": "Both"
+  },
+  "s_toolbarLabels": {
+    "message": "Show names under the video"
+  },
+  "n_toolbarLabels": {
+    "message": "Button names next to the icons in the bar under the video. Off shows icons only."
+  },
+  "s_tabFullscreen": {
+    "message": "Full screen stays in the tab"
+  },
+  "n_tabFullscreen": {
+    "message": "Fills the browser tab instead of opening Safari’s full-screen window. The full-screen button, f and Escape toggle it."
+  },
+  "s_controlsPlayer": {
+    "message": "Buttons in the video controls"
+  },
+  "s_controlsBelow": {
+    "message": "Buttons under the video"
+  },
+  "n_controlsBelow": {
+    "message": "Used by the bar under the video when the placement is Both."
+  },
+  "pv_sound": {
+    "message": "With sound",
+    "description": "Previews option"
   }
 }

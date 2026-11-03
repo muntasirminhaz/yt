@@ -21,7 +21,9 @@
 
 .ytx-bar { position: relative; display: inline-flex; align-items: center; gap: 2px; }
 .ytx-bar.in-player { height: 100%; vertical-align: top; }
-.ytx-bar:not(.in-player) { gap: 4px; margin: 8px 0 4px; padding: 4px; border-radius: 999px; background: rgba(128, 128, 128, 0.12); }
+.ytx-bar:not(.in-player) { gap: 4px; margin: 8px 0 4px; padding: 4px; border-radius: 999px; background: rgba(128, 128, 128, 0.12); color: #0f0f0f; }
+html[dark] .ytx-bar:not(.in-player) { color: #f1f1f1; }
+.ytx-bar:not(.in-player) .ytx-btn { opacity: 1; }
 .ytx-btn, .ytx-item, .ytx-reset { appearance: none; border: 0; background: none; color: inherit; font: 500 13px/1.2 -apple-system, system-ui, sans-serif; cursor: pointer; }
 .ytx-btn { width: 40px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; opacity: 0.9; }
 .ytx-bar.in-player .ytx-btn { height: 100%; color: #fff; }
@@ -32,6 +34,7 @@
 .ytx-menu, .ytx-panel { position: absolute; right: 0; z-index: 2147481000; min-width: 220px; padding: 6px; border-radius: 14px; background: rgba(28, 28, 30, 0.86); -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%); color: #fff; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35); text-align: left; }
 .ytx-bar.in-player .ytx-menu, .ytx-bar.in-player .ytx-panel { bottom: 56px; }
 .ytx-bar:not(.in-player) .ytx-menu, .ytx-bar:not(.in-player) .ytx-panel { top: calc(100% + 6px); right: auto; left: 0; }
+.ytx-bar:not(.in-player) .ytx-up { top: auto; bottom: calc(100% + 6px); }
 .ytx-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; min-width: 360px; }
 .ytx-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; white-space: nowrap; }
 .ytx-item span { flex: 1; text-align: left; }
@@ -72,7 +75,7 @@ html.ytx-audio #movie_player { background: #000 center / contain no-repeat; }
 html.ytx-audio #movie_player video { visibility: hidden; }
 .ytx-copy { margin-left: 6px; padding: 1px 8px; border: 0; border-radius: 999px; background: rgba(128, 128, 128, 0.2); color: inherit; font: 500 11px -apple-system, system-ui, sans-serif; cursor: pointer; vertical-align: middle; }
 html.ytx-hidehomefeed ytd-browse[page-subtype="home"] ytd-rich-grid-renderer, html.ytx-hidehomefeed ytm-browse ytm-rich-grid-renderer,
-html.ytx-hidethumbnails ytd-thumbnail, html.ytx-hidethumbnails ytd-playlist-thumbnail, html.ytx-hidethumbnails yt-thumbnail-view-model, html.ytx-hidethumbnails .media-item-thumbnail-container, html.ytx-hidethumbnails ytd-rich-grid-media #thumbnail,
+html.ytx-hidethumbnails .yt-lockup-view-model__content-image, html.ytx-hidethumbnails .yt-lockup-view-model-wiz__content-image, html.ytx-hidethumbnails yt-lockup-view-model a:has(yt-thumbnail-view-model), html.ytx-previews-off ytd-video-preview, html.ytx-previews-off ytd-moving-thumbnail-renderer, html.ytx-previews-off #video-preview, html.ytx-previewcaptionsoff ytd-video-preview .ytp-caption-window-container, html.ytx-previewcaptionsoff #inline-preview-player .caption-window, html.ytx-hidethumbnails ytd-thumbnail, html.ytx-hidethumbnails ytd-playlist-thumbnail, html.ytx-hidethumbnails yt-thumbnail-view-model, html.ytx-hidethumbnails .media-item-thumbnail-container, html.ytx-hidethumbnails ytd-rich-grid-media #thumbnail,
 html.ytx-hideviews .ytx-views, html.ytx-hideviews ytd-video-meta-block .inline-metadata-item:first-of-type, html.ytx-hideviews ytd-watch-info-text #view-count, html.ytx-hideviews #info-text .view-count, html.ytx-hideviews ytd-video-view-count-renderer, html.ytx-hideviews .ytm-badge-and-byline-item-byline:first-of-type,
 html.ytx-hidechips ytd-feed-filter-chip-bar-renderer, html.ytx-hidechips chip-bar-view-model, html.ytx-hidechips yt-chip-bar-view-model, html.ytx-hidechips ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer chip-bar-view-model:only-child), html.ytx-hidechips yt-chip-cloud-renderer, html.ytx-hidechips ytm-chip-cloud-renderer,
 html.ytx-hideguide #guide, html.ytx-hideguide tp-yt-app-drawer#guide, html.ytx-hideguide ytd-mini-guide-renderer, html.ytx-hideguide #guide-button, html.ytx-hideguide ytm-pivot-bar-renderer,
@@ -113,3 +116,7 @@ html.ytx-grayscale body { filter: grayscale(1); }
 .ytx-ratio { position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; border-radius: 1px; background: #ff3b30; overflow: hidden; }
 .ytx-ratio div { height: 100%; background: #30d158; }
 segmented-like-dislike-button-view-model { position: relative; }
+.ytx-btn .ytx-label { font-size: 12px; white-space: nowrap; }
+.ytx-bar:not(.in-player) { flex-wrap: wrap; }
+.ytx-bar:not(.in-player) .ytx-btn:has(.ytx-label) { width: auto; height: 36px; gap: 6px; padding: 0 10px; }
+[data-ytx-winfull]:not(:root) { position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; max-width: none !important; max-height: none !important; margin: 0 !important; transform: none !important; z-index: 2147483646 !important; object-fit: contain; }

@@ -19,9 +19,9 @@ const guestOff = async () => {
   }).catch((err) => console.warn("[ytx] restore cookie", c.name, err))));
   await browser.storage.local.remove("guestBackup");
 };
-const reloadYouTube = async () => {
+const reloadYouTube = async (bypassCache = false) => {
   const tabs = await browser.tabs.query({ url: "*://*.youtube.com/*" }).catch(() => []);
-  for (const tab of tabs) browser.tabs.reload(tab.id).catch(() => null);
+  for (const tab of tabs) browser.tabs.reload(tab.id, { bypassCache }).catch(() => browser.tabs.reload(tab.id).catch(() => null));
 };
 
 browser.runtime.onInstalled.addListener(async (details) => {
@@ -33,7 +33,7 @@ browser.storage.onChanged.addListener(async (changes, area) => {
   const on = Boolean(changes.settings.newValue?.guestMode);
   if (on === Boolean(changes.settings.oldValue?.guestMode)) return;
   await (on ? guestOn() : guestOff()).catch((err) => console.warn("[ytx] guest", err));
-  await reloadYouTube();
+  await reloadYouTube(true);
 });
 
 const pauseOthers = async (sender) => {
@@ -68,6 +68,7 @@ const api = {
 };
 browser.runtime.onMessage.addListener((msg, sender) => {
   if (msg.type === "openOptions") return browser.runtime.openOptionsPage();
+  if (msg.type === "reloadYouTube") return reloadYouTube();
   if (msg.type === "playing") return pauseOthers(sender);
   if (api[msg.type]) return api[msg.type](msg);
   return undefined;

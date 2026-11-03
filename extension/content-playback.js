@@ -1,7 +1,7 @@
 (() => {
   const ytx = globalThis.ytx;
-  const state = { speed: 1, loadedAt: 0, rightDown: false, bound: new WeakSet(), acc: 0, channel: null, channelSpeeds: {}, positions: {}, lastSaved: 0, pausedByBlur: false, remainingEl: null, remainingAt: 0, sleep: null, sleepTimer: 0, stats: {}, statsAt: 0, statsSaved: 0 };
-  browser.storage.local.get(["channelSpeeds", "positions", "watchStats"]).then((r) => { state.channelSpeeds = r.channelSpeeds ?? {}; state.positions = r.positions ?? {}; state.stats = r.watchStats ?? {}; });
+  const state = { speed: 1, loadedAt: 0, bound: new WeakSet(), acc: 0, wheelAt: 0, positions: {}, lastSaved: 0, pausedByBlur: false, remainingEl: null, remainingAt: 0, sleep: null, sleepTimer: 0, stats: {}, statsAt: 0, statsSaved: 0 };
+  browser.storage.local.get(["positions", "watchStats"]).then((r) => { state.positions = r.positions ?? {}; state.stats = r.watchStats ?? {}; });
   const t = (k) => browser.i18n.getMessage(k);
   const seek = (ctx, delta) => { if (ctx.video) { ctx.video.currentTime = Math.max(0, Math.min(ctx.video.duration || Infinity, ctx.video.currentTime + delta)); ytx.hud(ytx.formatTime(ctx.video.currentTime)); } };
   const frame = (ctx, dir) => { if (ctx.video) { ctx.video.pause(); ctx.video.currentTime = Math.max(0, ctx.video.currentTime + dir / 30); } };
@@ -27,39 +27,42 @@
       browser.storage.local.set({ watchStats: state.stats });
     }
   };
-  const remember = (ctx) => {
-    if (!ctx.settings.speedPerChannel || !state.channel) return;
-    state.channelSpeeds[state.channel] = state.speed;
-    const keys = Object.keys(state.channelSpeeds);
-    if (keys.length > 500) delete state.channelSpeeds[keys[0]];
-    browser.storage.local.set({ channelSpeeds: state.channelSpeeds });
-  };
-  const NOTCH = 50;
+  const NOTCH = 50, SPEED_NOTCH = 100, SPEED_GAP = 200;
 
   const setSpeed = (ctx, speed, show = true) => {
     state.speed = ytx.clampSpeed(speed);
     if (ctx.video) ctx.video.playbackRate = state.speed;
-    if (show) { ytx.hud(`${state.speed}×`); remember(ctx); }
+    if (show) ytx.hud(`${state.speed}×`);
   };
 
   const onRateChange = (ctx) => {
     const rate = ctx.video.playbackRate;
     if (rate === state.speed || ytx.adActive) return;
     if (performance.now() - state.loadedAt < 2000) { ytx.log("speed: re-applying", state.speed, "over", rate); setSpeed(ctx, state.speed, false); }
-    else { state.speed = rate; remember(ctx); }
+    else state.speed = rate;
+  };
+
+  const captionsOn = (ctx, tries = 0) => {
+    if (ctx.shorts) return;
+    ctx.call("captions", ctx.settings.captionsLang === "auto" ? "" : ctx.settings.captionsLang.trim()).then((r) => {
+      ytx.log("captions", r);
+      if (r === true) return;
+      const button = document.querySelector(".ytp-subtitles-button");
+      if (r == null && button?.getAttribute("aria-pressed") === "false") button.click();
+      else if (tries < 5) setTimeout(() => captionsOn(ctx, tries + 1), 1000);
+    });
   };
 
   const onLoad = async (ctx, reason) => {
     state.loadedAt = performance.now();
     const data = await ctx.call("videoData");
-    state.channel = data?.author ?? null;
-    const remembered = ctx.settings.speedPerChannel && state.channel ? state.channelSpeeds[state.channel] : undefined;
-    const base = reason === "boot" || ctx.settings.speedOverride ? ctx.settings.speedDefault : state.speed;
-    setSpeed(ctx, remembered ?? base, false);
-    if (ctx.settings.captionsAuto) setTimeout(() => ctx.call("captions", ctx.settings.captionsLang.trim()).then((r) => { ytx.log("captions", r); if (r !== true) document.querySelector(".ytp-subtitles-button[aria-pressed='false']")?.click(); }), 800);
+    const own = reason === "boot" || ctx.settings.speedOverride ? ctx.settings.speedDefault : state.speed;
+    const base = ctx.shorts && ctx.settings.shortsSpeed !== "same" ? Number(ctx.settings.shortsSpeed) : own;
+    setSpeed(ctx, base, false);
+    if (ctx.settings.captionsAuto) setTimeout(() => captionsOn(ctx), 800);
     const id = data?.id ?? ctx.videoId;
     const pos = ctx.settings.resumePositions && id && !new URLSearchParams(location.search).has("t") ? state.positions[id] : null;
-    if (pos && ctx.video && ctx.video.currentTime < 5 && pos.t > 30 && pos.t < pos.d - 30) { ctx.video.currentTime = pos.t; ytx.hud(`${ytx.formatTime(pos.t)}`); }
+    if (pos && ctx.video && ctx.video.currentTime < 5 && pos.t > 30 && pos.t < pos.d - 30) { ctx.video.currentTime = pos.t; ytx.hud(`${t("h_resumed")} ${ytx.formatTime(pos.t)}`); ytx.log("resume", pos.t); }
   };
 
   const onTime = (ctx) => {
@@ -87,17 +90,22 @@
   const onWheel = (ctx, e) => {
     const s = ctx.settings;
     if (!s.enabled) return;
-    const speedGesture = s.speedWheel && (e.altKey || e.ctrlKey) && (!s.speedWheelRight || state.rightDown);
-    const volumeGesture = s.volumeWheel && !e.altKey && !e.ctrlKey && !e.metaKey && (!s.volumeWheelRight || state.rightDown);
+    const speedGesture = s.speedWheel && (e.altKey || e.ctrlKey);
+    const volumeGesture = s.volumeWheel && !e.altKey && !e.ctrlKey && !e.metaKey;
     if (!speedGesture && !volumeGesture) return;
+    if (ctx.shorts && !speedGesture) return;
     e.preventDefault();
     state.acc += e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
-    const notches = Math.trunc(state.acc / NOTCH);
+    const notch = speedGesture ? SPEED_NOTCH : NOTCH;
+    const notches = Math.trunc(state.acc / notch);
     if (!notches) return;
-    state.acc -= notches * NOTCH;
+    state.acc -= notches * notch;
     const steps = -notches * (s.wheelReverse ? -1 : 1);
-    if (speedGesture) setSpeed(ctx, state.speed + steps * s.speedStep);
-    else ytx.actions.volumeBy(steps * s.volumeStep);
+    if (!speedGesture) return ytx.actions.volumeBy(steps * s.volumeStep);
+    const now = performance.now();
+    if (now - state.wheelAt < SPEED_GAP) { state.acc = 0; return; }
+    state.wheelAt = now;
+    setSpeed(ctx, state.speed + Math.sign(steps) * s.speedStep);
   };
 
   const bind = (ctx) => {
@@ -105,8 +113,6 @@
     if (!player || state.bound.has(player)) return;
     state.bound.add(player);
     player.addEventListener("wheel", (e) => onWheel(ctx, e), { passive: false });
-    player.addEventListener("mousedown", (e) => { if (e.button === 2) state.rightDown = true; });
-    window.addEventListener("mouseup", (e) => { if (e.button === 2) state.rightDown = false; });
     player.addEventListener("click", (e) => {
       if (!ctx.settings.enabled || !e.altKey || !e.target.matches("video")) return;
       e.preventDefault();

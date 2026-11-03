@@ -2,7 +2,7 @@
   const ytx = globalThis.ytx;
   const t = (k) => browser.i18n.getMessage(k);
   const html = document.documentElement;
-  const state = { flip: false, rotate: 0, fill: false, mini: false, cinemaEl: null, observer: null, observed: null, bound: new WeakSet(), filters: null, saveTimer: 0, shortsBound: new WeakSet() };
+  const state = { flip: false, rotate: 0, fill: false, mini: false, cinemaEl: null, observer: null, observed: null, bound: new WeakSet(), filters: null, saveTimer: 0 };
   const FILTER_UNITS = { brightness: "%", contrast: "%", saturate: "%", grayscale: "%", sepia: "%", hue: "deg", invert: "%", blur: "px" };
   const hudToggle = (key, on) => ytx.hud(`${t("a_" + key)} ${t(on ? "h_on" : "h_off")}`);
 
@@ -54,9 +54,11 @@
 
 
   const ytMiniActive = () => Boolean(ytx.ctx.q("player")?.closest("ytd-miniplayer") || document.querySelector("ytd-miniplayer[active], ytd-watch-flexy[hidden]"));
+  const fullscreen = () => Boolean(document.fullscreenElement || document.webkitFullscreenElement || document.querySelector("ytd-watch-flexy[fullscreen]") || document.documentElement.classList.contains("ytx-winfull"));
+  const miniContainer = () => document.querySelector("ytd-watch-flexy[theater] #player-full-bleed-container, ytd-watch-flexy:not([theater]) #player-container-outer, #player-container");
   const setMini = (ctx, on) => {
     const player = ctx.q("player");
-    if (!player || state.mini === on || (on && (state.yielded || ytMiniActive()))) return;
+    if (!player || state.mini === on || (on && (state.yielded || ytMiniActive() || fullscreen()))) return;
     state.mini = on;
     if (on) {
       state.miniHome = player.parentElement;
@@ -71,7 +73,7 @@
     window.dispatchEvent(new Event("resize"));
   };
   const applyMini = (ctx) => {
-    const container = document.querySelector("#player-container-outer, #player-container");
+    const container = miniContainer();
     const on = ctx.settings.enabled && ctx.settings.miniPlayer && !ctx.mobile && ctx.watch && container;
     const [w, h] = ctx.settings.miniSize.split("x");
     html.style.setProperty("--ytx-mini-w", `${w}px`);
@@ -86,7 +88,7 @@
     }
     if (state.observed === container) return;
     state.observer?.disconnect();
-    state.observer = new IntersectionObserver(([entry]) => setMini(ctx, !entry.isIntersecting && ctx.video && !ctx.video.paused && !ytMiniActive()), { threshold: 0.3 });
+    state.observer = new IntersectionObserver(([entry]) => setMini(ctx, !entry.isIntersecting && ctx.video && !ctx.video.paused && !ytMiniActive() && !fullscreen()), { threshold: 0.3 });
     state.observer.observe(container);
     state.observed = container;
   };
@@ -151,7 +153,7 @@
   const autoTheater = (ctx) => {
     if (!ctx.settings.autoTheater || ctx.mobile || !ctx.watch || state.theaterFor === location.href) return;
     state.theaterFor = location.href;
-    setTimeout(() => { if (!document.querySelector("ytd-watch-flexy[theater]")) document.querySelector(".ytp-size-button")?.click(); }, 600);
+    setTimeout(() => { if (!document.querySelector("ytd-watch-flexy[theater]")) { setMini(ctx, false); document.querySelector(".ytp-size-button")?.click(); } }, 600);
   };
 
   ytx.register({
@@ -162,17 +164,17 @@
         const yieldToYouTube = () => { state.yielded = performance.now(); setMini(ctx, false); };
         window.addEventListener("keydown", (e) => { if (e.key === "i" && !e.metaKey && !e.ctrlKey && !e.target.matches?.("input, textarea, [contenteditable]")) yieldToYouTube(); }, true);
         document.addEventListener("click", (e) => { if (e.target.closest?.(".ytp-miniplayer-button")) yieldToYouTube(); }, true);
+        for (const type of ["fullscreenchange", "webkitfullscreenchange", "ytx:winfull"]) document.addEventListener(type, () => setMini(ctx, false));
         new MutationObserver(() => {
           if (ytMiniActive()) yieldToYouTube();
           else if (state.yielded && performance.now() - state.yielded > 500) { state.yielded = 0; state.observed = null; applyMini(ctx); }
-        }).observe(document.documentElement, { attributes: true, subtree: true, attributeFilter: ["active", "enabled", "hidden"] });
+          else if (fullscreen()) setMini(ctx, false);
+          else if (state.observed && state.observed !== miniContainer()) { state.observed = null; applyMini(ctx); }
+        }).observe(document.documentElement, { attributes: true, subtree: true, attributeFilter: ["active", "enabled", "hidden", "theater", "fullscreen"] });
       }
+      if (reason === "boot" || ctx.changed.has("tabFullscreen") || ctx.changed.has("enabled")) document.dispatchEvent(new CustomEvent("ytx:config", { detail: JSON.stringify({ tabFullscreen: ctx.settings.enabled && ctx.settings.tabFullscreen && !ctx.mobile }) }));
       if (reason === "nav") { if (ctx.settings.cinema) ytx.save({ cinema: false }); setMini(ctx, false); state.yielded = 0; state.ab = null; }
       if (reason === "video" || reason === "boot") autoTheater(ctx);
-      if (ctx.shorts && ctx.video && ctx.settings.enabled && ctx.settings.shortsAutoNext) {
-        ctx.video.loop = false;
-        if (!state.shortsBound.has(ctx.video)) { state.shortsBound.add(ctx.video); ctx.video.addEventListener("ended", () => { if (ctx.settings.shortsAutoNext) document.querySelector("#navigation-button-down button, button[aria-label='Next video']")?.click(); }); }
-      }
       if (ctx.video && !state.abBound?.has(ctx.video)) { (state.abBound ??= new WeakSet()).add(ctx.video); ctx.video.addEventListener("timeupdate", () => onTimeAB(ctx)); }
       if (reason === "settings" && ctx.changed.has("filters")) state.filters = null;
       applyVideo(ctx);
@@ -180,7 +182,7 @@
       applyCinema(ctx);
       applyMini(ctx);
     },
-    state: (ctx) => ({ fillCrop: state.fill, loopAB: Boolean(state.ab), audio: ctx.settings.audioMode, guest: ctx.settings.guestMode, loop: ctx.settings.loop, cinema: ctx.settings.cinema, flip: state.flip, filters: ctx.settings.filtersOn, cards: ctx.settings.hideCards, miniPlayer: ctx.settings.miniPlayer, reversePlaylist: html.classList.contains("ytx-reverse") }),
+    state: (ctx) => ({ fillCrop: state.fill, loopAB: Boolean(state.ab), audio: ctx.settings.audioMode, loop: ctx.settings.loop, cinema: ctx.settings.cinema, flip: state.flip, filters: ctx.settings.filtersOn, cards: ctx.settings.hideCards, miniPlayer: ctx.settings.miniPlayer, reversePlaylist: html.classList.contains("ytx-reverse") }),
   });
 
   const toggleSetting = (key, hudKey = key) => async () => {
@@ -192,7 +194,6 @@
   Object.assign(ytx.actions, {
     loop: toggleSetting("loop"),
     audio: toggleSetting("audioMode", "audio"),
-    guest: () => ytx.save({ guestMode: !ytx.ctx.settings.guestMode }),
     cinema: toggleSetting("cinema"),
     filters: toggleSetting("filtersOn", "filters"),
     cards: toggleSetting("hideCards", "cards"),
@@ -200,13 +201,6 @@
     flip: () => { state.flip = !state.flip; applyVideo(ytx.ctx); hudToggle("flip", state.flip); return state.flip; },
     rotate: () => { state.rotate = (state.rotate + 1) % 4; applyVideo(ytx.ctx); ytx.hud(`${state.rotate * 90}°`); },
     fillCrop: () => { state.fill = !state.fill; applyVideo(ytx.ctx); hudToggle("fillCrop", state.fill); return state.fill; },
-    blockChannel: async () => {
-      const data = await ytx.ctx.call("videoData");
-      if (!data?.author) return;
-      const list = ytx.listOf(ytx.ctx.settings.blockedChannels);
-      if (!list.includes(data.author.toLowerCase())) await ytx.save({ blockedChannels: `${ytx.ctx.settings.blockedChannels.trim()}\n${data.author}`.trim() });
-      ytx.hud(`${t("h_blocked_channel")}: ${data.author}`);
-    },
     stop: () => ytx.ctx.call("stop"),
     pip: async () => {
       const v = ytx.ctx.video;

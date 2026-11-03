@@ -1,7 +1,7 @@
 :root { --pane: #ffffff; --side: #ededf2; --sel: rgba(0, 0, 0, 0.06); }
 @media (prefers-color-scheme: dark) { :root { --pane: #1e1e20; --side: #2a2a2d; --sel: rgba(255, 255, 255, 0.08); } }
-body { display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 32px max(16px, env(safe-area-inset-right)) 32px max(16px, env(safe-area-inset-left)); }
-#window { display: flex; width: 100%; max-width: 960px; height: min(760px, calc(100vh - 64px)); border-radius: 14px; overflow: hidden; background: var(--pane); box-shadow: 0 0 0 0.5px var(--line), 0 20px 60px rgba(0, 0, 0, 0.18); }
+body { display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); }
+#window { display: flex; width: 100%; max-width: 960px; height: 100vh; height: 100dvh; border-radius: 0; overflow: hidden; background: var(--pane); box-shadow: 0 0 0 0.5px var(--line), 0 20px 60px rgba(0, 0, 0, 0.18); }
 #sidebar { flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; padding: 14px 10px; background: var(--side); border-right: 0.5px solid var(--line); overflow-y: auto; }
 .brand { display: flex; align-items: center; gap: 8px; padding: 2px 6px; font: -apple-system-headline; font-family: inherit; }
 .brand img { border-radius: 7px; }
@@ -39,6 +39,7 @@ nav a[aria-current="page"] { background: rgba(10, 132, 255, 0.14); color: var(--
 #foot span { margin-left: auto; }
 #toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 12px); padding: 8px 16px; border-radius: 999px; background: rgba(30, 30, 30, 0.85); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); color: #fff; font: 600 14px -apple-system, system-ui, sans-serif; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 10; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
+#toast button { margin-left: 10px; padding: 4px 10px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.2); color: #fff; font: inherit; }
 @keyframes ytx-enter { from { opacity: 0.4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 #scroll.enter > :not([hidden]) { animation: ytx-enter 0.22s cubic-bezier(0.2, 0.7, 0.2, 1); }
 nav a, #list a, .seg button, .row input[type="checkbox"], .preset, button { transition: background-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.15s; }
