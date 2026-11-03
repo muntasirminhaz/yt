@@ -1,0 +1,8 @@
+# Safari + YouTube platform limits (verified in this project)
+
+| Date | Finding | Evidence | Consequence |
+|---|---|---|---|
+| 2026-11-03 | Volume booster is impossible in Safari. `AudioContext.createMediaElementSource(video)` connects and reports `state: running`, gain set to 4, source attached, but the audible level does not change. WebKit does not route MSE (Media Source Extensions) audio, which YouTube uses for every stream, through Web Audio. Tested from both the isolated content-script world and the page world (`world: "MAIN"`). | `[ytx] boost {level: 4, result: {level: 4, state: "running", sources: true}}` in the YouTube tab console, Safari 27.2, macOS 27.2, no change in loudness; same result from a hand-written console snippet in the page context. | Feature removed from settings, toolbar and page bridge. Do not reintroduce unless WebKit ships MSE support in `MediaElementAudioSourceNode` (track https://bugs.webkit.org/ for "MediaElementAudioSourceNode MSE"). |
+| 2026-11-03 | YouTube's CSP blocks an injected `<script src=safari-web-extension://…>` (`strict-dynamic` + Trusted Types). | Bridge calls timed out until `page.js` became a `world: "MAIN"` content script. | Page-world code must be declared in the manifest, never injected. |
+| 2026-11-03 | Ctrl+scroll never reaches the page on macOS Safari; Ctrl+click is the system right-click. | Wheel listener fired for plain and Option scroll only. | Modifier gestures use Option (⌥). |
+| 2026-11-03 | After an extension reinstall or update, open YouTube tabs keep the old content script and lose their `storage.onChanged` listener. | New settings "needed a reload" during development. | `background.js` reloads every youtube.com tab on `runtime.onInstalled`. |

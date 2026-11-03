@@ -1,0 +1,82 @@
+.ytx-hud {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.72);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  color: #fff;
+  font: 600 15px/1 -apple-system, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 60;
+}
+.ytx-hud.show { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .ytx-hud { transition: none; } }
+
+.ytx-bar { position: relative; display: inline-flex; align-items: center; gap: 2px; }
+.ytx-bar.in-player { height: 100%; vertical-align: top; }
+.ytx-bar:not(.in-player) { gap: 4px; margin: 8px 0 4px; padding: 4px; border-radius: 999px; background: rgba(128, 128, 128, 0.12); }
+.ytx-btn, .ytx-item, .ytx-reset { appearance: none; border: 0; background: none; color: inherit; font: 500 13px/1.2 -apple-system, system-ui, sans-serif; cursor: pointer; }
+.ytx-btn { width: 40px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; opacity: 0.9; }
+.ytx-bar.in-player .ytx-btn { height: 100%; color: #fff; }
+.ytx-btn:hover { opacity: 1; background: rgba(128, 128, 128, 0.18); }
+.ytx-btn[aria-pressed="true"], .ytx-item[aria-pressed="true"] { color: #0a84ff; }
+.ytx-btn svg, .ytx-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ytx-item[aria-pressed="true"] svg { stroke-width: 2.2; }
+.ytx-menu, .ytx-panel { position: absolute; right: 0; z-index: 2147481000; min-width: 220px; padding: 6px; border-radius: 14px; background: rgba(28, 28, 30, 0.86); -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%); color: #fff; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35); text-align: left; }
+.ytx-bar.in-player .ytx-menu, .ytx-bar.in-player .ytx-panel { bottom: 56px; }
+.ytx-bar:not(.in-player) .ytx-menu, .ytx-bar:not(.in-player) .ytx-panel { top: calc(100% + 6px); right: auto; left: 0; }
+.ytx-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; min-width: 360px; }
+.ytx-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; white-space: nowrap; }
+.ytx-item:hover { background: rgba(255, 255, 255, 0.12); }
+.ytx-panel { min-width: 260px; }
+.ytx-frow { display: flex; align-items: center; gap: 10px; padding: 6px 8px; font: 500 12px -apple-system, system-ui, sans-serif; }
+.ytx-frow span { width: 72px; }
+.ytx-frow input { flex: 1; accent-color: #0a84ff; }
+.ytx-reset { display: block; width: 100%; padding: 8px; margin-top: 4px; border-radius: 8px; background: rgba(255, 255, 255, 0.12); }
+.ytx-cinema { position: fixed; inset: 0; z-index: 2147483000; background: #000; }
+.ytx-mini-host { position: fixed; width: var(--ytx-mini-w); height: var(--ytx-mini-h); z-index: 2147482000; background: #000; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); border-radius: 12px; overflow: hidden; }
+.ytx-mini-host #movie_player { width: 100% !important; height: 100% !important; }
+html[data-ytx-mini-pos="tl"] .ytx-mini-host { top: 72px; left: 16px; }
+html[data-ytx-mini-pos="tr"] .ytx-mini-host { top: 72px; right: 16px; }
+html[data-ytx-mini-pos="bl"] .ytx-mini-host { bottom: 16px; left: 16px; }
+html[data-ytx-mini-pos="br"] .ytx-mini-host { bottom: 16px; right: 16px; }
+html.ytx-reverse ytd-playlist-panel-renderer #items { display: flex; flex-direction: column-reverse; }
+html.ytx-accent { --yt-spec-static-brand-red: var(--ytx-accent); --yt-spec-call-to-action: var(--ytx-accent); --yt-spec-themed-blue: var(--ytx-accent); --yt-spec-brand-link-text: var(--ytx-accent); --yt-spec-icon-active-other: var(--ytx-accent); }
+html.ytx-accent .ytp-play-progress, html.ytx-accent .ytp-swatch-background-color, html.ytx-accent .ytp-volume-slider-handle::before, html.ytx-accent .ytp-scrubber-button, html.ytx-accent .ytp-menuitem[aria-checked="true"] .ytp-menuitem-toggle-checkbox, html.ytx-accent .ytp-chapter-hover-container .ytp-play-progress, html.ytx-accent ytd-thumbnail-overlay-resume-playback-renderer #progress, html.ytx-accent .ytp-live-badge[disabled="false"]::before { background: var(--ytx-accent) !important; }
+html.ytx-accent .ytx-btn[aria-pressed="true"], html.ytx-accent .ytx-item[aria-pressed="true"], html.ytx-accent yt-formatted-string a, html.ytx-accent #description a, html.ytx-accent .yt-core-attributed-string__link { color: var(--ytx-accent) !important; }
+html.ytx-accent .ytx-frow input { accent-color: var(--ytx-accent); }
+html.ytx-hiderelated #related, html.ytx-hiderelated ytd-watch-next-secondary-results-renderer, html.ytx-hiderelated ytm-item-section-renderer[section-identifier="related-items"],
+html.ytx-hidecomments #comments, html.ytx-hidecomments ytd-comments, html.ytx-hidecomments ytm-comment-section-renderer, html.ytx-hidecomments [section-identifier="comments-entry-point"],
+html.ytx-hidechat #chat, html.ytx-hidechat ytd-live-chat-frame, html.ytx-hidechat #chat-container,
+html.ytx-hideshorts ytd-rich-shelf-renderer[is-shorts], html.ytx-hideshorts ytd-reel-shelf-renderer, html.ytx-hideshorts ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]), html.ytx-hideshorts ytd-guide-entry-renderer:has(a[title="Shorts"]), html.ytx-hideshorts ytd-mini-guide-entry-renderer[aria-label="Shorts"], html.ytx-hideshorts ytm-reel-shelf-renderer, html.ytx-hideshorts ytm-pivot-bar-item-renderer:has(.pivot-shorts), html.ytx-hideshorts ytd-rich-item-renderer:has(a[href^="/shorts/"]), html.ytx-hideshorts ytd-video-renderer:has(a[href^="/shorts/"]),
+html.ytx-hideendscreens .ytp-ce-element,
+html.ytx-hideendwall .html5-endscreen.videowall-endscreen, html.ytx-hideendwall .ytp-endscreen-content, html.ytx-hideendwall .ytp-endscreen-previous, html.ytx-hideendwall .ytp-endscreen-next,
+html.ytx-hidecards .ytp-cards-button, html.ytx-hidecards .ytp-cards-teaser, html.ytx-hidecards .iv-branding,
+html.ytx-hidemorevideos .ytp-pause-overlay, html.ytx-hidemorevideos .ytp-pause-overlay-container,
+html.ytx-hidenotifications ytd-notification-topbar-button-renderer, html.ytx-hidenotifications ytm-notification-topbar-button-renderer { display: none !important; }
+@media (max-width: 700px) {
+  .ytx-menu { position: fixed; inset: auto 0 0 0; min-width: 0; border-radius: 16px 16px 0 0; padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+  .ytx-panel { position: fixed; inset: auto 0 0 0; border-radius: 16px 16px 0 0; }
+  .ytx-btn { width: 44px; height: 44px; }
+}
+html.ytx-audio #movie_player { background: #000 center / contain no-repeat; }
+html.ytx-audio #movie_player video { visibility: hidden; }
+.ytx-copy { margin-left: 6px; padding: 1px 8px; border: 0; border-radius: 999px; background: rgba(128, 128, 128, 0.2); color: inherit; font: 500 11px -apple-system, system-ui, sans-serif; cursor: pointer; vertical-align: middle; }
+html.ytx-hidehomefeed ytd-browse[page-subtype="home"] ytd-rich-grid-renderer, html.ytx-hidehomefeed ytm-browse ytm-rich-grid-renderer,
+html.ytx-hidethumbnails ytd-thumbnail, html.ytx-hidethumbnails ytd-playlist-thumbnail, html.ytx-hidethumbnails yt-thumbnail-view-model, html.ytx-hidethumbnails .media-item-thumbnail-container, html.ytx-hidethumbnails ytd-rich-grid-media #thumbnail,
+html.ytx-hideviews .ytx-views, html.ytx-hideviews ytd-video-meta-block .inline-metadata-item:first-of-type, html.ytx-hideviews ytd-watch-info-text #view-count, html.ytx-hideviews #info-text .view-count, html.ytx-hideviews ytd-video-view-count-renderer, html.ytx-hideviews .ytm-badge-and-byline-item-byline:first-of-type,
+html.ytx-hidechips ytd-feed-filter-chip-bar-renderer, html.ytx-hidechips chip-bar-view-model, html.ytx-hidechips yt-chip-bar-view-model, html.ytx-hidechips ytd-rich-section-renderer:has(> #content > ytd-rich-shelf-renderer chip-bar-view-model:only-child), html.ytx-hidechips yt-chip-cloud-renderer, html.ytx-hidechips ytm-chip-cloud-renderer,
+html.ytx-hideguide #guide, html.ytx-hideguide tp-yt-app-drawer#guide, html.ytx-hideguide ytd-mini-guide-renderer, html.ytx-hideguide #guide-button, html.ytx-hideguide ytm-pivot-bar-renderer,
+html.ytx-hidenavexplore ytd-guide-section-renderer:has(a[href*="/feed/trending"], a[href*="/gaming"], a[href*="UC-9-kyTW8ZkZNDHQJ6FgpwQ"]),
+html.ytx-hidenavyou ytd-guide-entry-renderer:has(a[href="/feed/you"]), html.ytx-hidenavyou ytd-mini-guide-entry-renderer:has(a[href="/feed/you"]), html.ytx-hidenavyou ytd-guide-section-renderer:has(a[href="/feed/you"]):not(:has(a[href="/"])),
+html.ytx-hidenavmore ytd-guide-section-renderer:has(a[href*="/premium"], a[href*="music.youtube.com"], a[href*="youtubekids"]),
+html.ytx-hidecreate ytd-masthead ytd-button-renderer:has(a[href*="/upload"]), html.ytx-hidecreate ytd-masthead ytd-topbar-menu-button-renderer:has([aria-label="Create"]), html.ytx-hidecreate ytd-masthead #buttons > ytd-button-renderer:first-child,
+html.ytx-hidevoicesearch #voice-search-button, html.ytx-hidevoicesearch ytd-masthead .ytd-searchbox + ytd-button-renderer { display: none !important; }
+html.ytx-hidethumbnails ytd-rich-item-renderer, html.ytx-hidethumbnails ytd-compact-video-renderer { min-height: 0; }

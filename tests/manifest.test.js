@@ -14,8 +14,7 @@ test("manifest is MV3 and declares a Safari minimum version", () => {
 });
 
 test("content script targets youtube.com and its subdomains only", () => {
-  const matches = manifest.content_scripts.flatMap((cs) => cs.matches);
-  assert.deepEqual(matches, ["*://*.youtube.com/*"]);
+  for (const cs of manifest.content_scripts) assert.deepEqual(cs.matches, ["*://*.youtube.com/*"]);
   for (const cs of manifest.content_scripts) {
     for (const file of cs.js ?? []) assert.ok(existsSync(join(ext, file)), `${file} exists`);
   }
@@ -26,10 +25,11 @@ test("background entry file exists", () => {
   for (const file of files) assert.ok(existsSync(join(ext, file)), `${file} exists`);
 });
 
-test("icons, popup and default locale exist", () => {
+test("icons, options page and default locale exist; the toolbar button opens settings", () => {
   for (const file of Object.values(manifest.icons)) assert.ok(existsSync(join(ext, file)), `${file} exists`);
-  assert.ok(existsSync(join(ext, manifest.action.default_popup)));
+  assert.ok(!manifest.action.default_popup, "no popup: the action opens the options page");
   assert.ok(existsSync(join(ext, manifest.action.default_icon)));
+  assert.ok(existsSync(join(ext, manifest.options_ui.page)));
   const messages = JSON.parse(readFileSync(join(ext, "_locales", manifest.default_locale, "messages.json"), "utf8"));
   assert.ok(messages.extension_name?.message);
   assert.ok(messages.extension_description?.message);
@@ -40,4 +40,15 @@ test("permissions stay minimal", () => {
   for (const p of [...(manifest.permissions ?? []), ...(manifest.host_permissions ?? [])]) {
     assert.ok(!broad.includes(p), `${p} is broader than this extension needs`);
   }
+});
+
+test("page bridge runs in the main world at document_start; the isolated bundle loads the schema first", () => {
+  const main = manifest.content_scripts.find((cs) => cs.world === "MAIN");
+  assert.deepEqual(main.js, ["page.js"]);
+  assert.equal(main.run_at, "document_start");
+  const isolated = manifest.content_scripts.find((cs) => !cs.world);
+  assert.equal(isolated.js[0], "defaults.js");
+  assert.equal(isolated.run_at, "document_start");
+  assert.ok(!manifest.web_accessible_resources, "nothing needs to be web accessible");
+  for (const cs of manifest.content_scripts) for (const f of cs.css ?? []) assert.ok(existsSync(join(ext, f)), `${f} exists`);
 });

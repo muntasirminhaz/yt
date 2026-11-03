@@ -1,10 +1,565 @@
 {
-    "extension_name": {
-        "message": "yt",
-        "description": "The display name for the extension (placeholder until the product name is chosen; must not contain the word YouTube or YT variants in the final name)."
-    },
-    "extension_description": {
-        "message": "Playback and interface controls for YouTube in Safari.",
-        "description": "Description of what the extension does."
-    }
+  "extension_name": {
+    "message": "yt",
+    "description": "Display name placeholder; the final name must not contain YouTube or YT."
+  },
+  "extension_description": {
+    "message": "Playback and interface controls for YouTube in Safari.",
+    "description": "Store description."
+  },
+  "o_search": {
+    "message": "Search settings"
+  },
+  "s_enabled": {
+    "message": "Enabled on YouTube"
+  },
+  "g_playback": {
+    "message": "Playback"
+  },
+  "g_volume": {
+    "message": "Volume"
+  },
+  "g_quality": {
+    "message": "Quality"
+  },
+  "g_autoplay": {
+    "message": "Autoplay"
+  },
+  "g_player": {
+    "message": "Player"
+  },
+  "g_appearance": {
+    "message": "Appearance"
+  },
+  "s_speedDefault": {
+    "message": "Default speed"
+  },
+  "n_speedDefault": {
+    "message": "Applied to every video. 1 is normal."
+  },
+  "s_speedOverride": {
+    "message": "Start every video at the custom default speed"
+  },
+  "n_speedOverride": {
+    "message": "Off: the speed you last used carries over to the next video."
+  },
+  "s_speedStep": {
+    "message": "Speed step"
+  },
+  "n_speedStep": {
+    "message": "Change per scroll notch or button press."
+  },
+  "s_speedWheel": {
+    "message": "Scroll wheel changes speed"
+  },
+  "n_speedWheel": {
+    "message": "Hold Option (⌥) and scroll over the video."
+  },
+  "s_speedWheelRight": {
+    "message": "Only while the right mouse button is held"
+  },
+  "s_wheelReverse": {
+    "message": "Reverse scroll direction"
+  },
+  "n_wheelReverse": {
+    "message": "Applies to speed and volume."
+  },
+  "s_volumeDefaultOn": {
+    "message": "Set a default volume"
+  },
+  "s_volumeDefault": {
+    "message": "Default volume"
+  },
+  "s_volumeWheel": {
+    "message": "Scroll wheel changes volume"
+  },
+  "n_volumeWheel": {
+    "message": "Scroll over the video without a modifier key."
+  },
+  "s_volumeWheelRight": {
+    "message": "Only while the right mouse button is held"
+  },
+  "s_volumeStep": {
+    "message": "Volume step"
+  },
+  "s_qualityAuto": {
+    "message": "Choose quality automatically"
+  },
+  "s_qualityVideo": {
+    "message": "Videos"
+  },
+  "s_qualityPlaylist": {
+    "message": "Playlists"
+  },
+  "s_qualityFullscreen": {
+    "message": "Different quality in full screen"
+  },
+  "s_qualityFsVideo": {
+    "message": "Videos in full screen"
+  },
+  "s_qualityFsPlaylist": {
+    "message": "Playlists in full screen"
+  },
+  "s_qualityRevert": {
+    "message": "Switch back when leaving full screen"
+  },
+  "s_codecStandardFps": {
+    "message": "Prefer standard frame rates"
+  },
+  "n_codecStandardFps": {
+    "message": "24, 25 or 30 fps instead of 48, 50 or 60. Easier on the battery."
+  },
+  "s_codecAvc": {
+    "message": "Prefer H.264 (MP4)"
+  },
+  "n_codecAvc": {
+    "message": "Instead of VP9 or AV1. Hardware decoding everywhere; caps quality at 1080p."
+  },
+  "s_autoplayOff": {
+    "message": "Turn off YouTube autoplay"
+  },
+  "n_autoplayOff": {
+    "message": "Keeps the Up next switch off."
+  },
+  "s_autoplayBlockBackground": {
+    "message": "Don’t start videos in background tabs"
+  },
+  "s_autoplayBlockForeground": {
+    "message": "Also in the current tab"
+  },
+  "s_autoplayAllowPlaylists": {
+    "message": "Except playlists"
+  },
+  "s_pauseOtherTabs": {
+    "message": "Pause other tabs when a video starts"
+  },
+  "s_cinemaDim": {
+    "message": "Cinema mode dimming"
+  },
+  "s_miniPlayer": {
+    "message": "Mini player while reading comments"
+  },
+  "n_miniPlayer": {
+    "message": "Keeps the video in a corner when you scroll past it."
+  },
+  "s_miniSize": {
+    "message": "Mini player size"
+  },
+  "s_miniPosition": {
+    "message": "Mini player corner"
+  },
+  "s_controlsPlacement": {
+    "message": "Toolbar placement"
+  },
+  "n_controlsPlacement": {
+    "message": "Inside the video controls, or in a bar under the video."
+  },
+  "s_controls": {
+    "message": "Buttons in the toolbar"
+  },
+  "n_controls": {
+    "message": "Every other action stays one tap away in the ••• menu."
+  },
+  "s_theme": {
+    "message": "Theme"
+  },
+  "s_accent": {
+    "message": "Accent colour"
+  },
+  "s_customCss": {
+    "message": "Custom CSS"
+  },
+  "n_customCss": {
+    "message": "Applied on every YouTube page."
+  },
+  "s_hideRelated": {
+    "message": "Hide related videos"
+  },
+  "s_hideComments": {
+    "message": "Hide comments"
+  },
+  "s_hideChat": {
+    "message": "Hide live chat"
+  },
+  "s_hideShorts": {
+    "message": "Hide Shorts"
+  },
+  "s_hideEndScreens": {
+    "message": "Hide end-screen cards"
+  },
+  "s_hideCards": {
+    "message": "Hide info cards"
+  },
+  "s_hideMoreVideos": {
+    "message": "Hide “More videos” when paused"
+  },
+  "s_hideNotifications": {
+    "message": "Hide the notifications bell"
+  },
+  "s_shortsAsVideos": {
+    "message": "Open Shorts as regular videos"
+  },
+  "o_player": {
+    "message": "In the video controls"
+  },
+  "o_below": {
+    "message": "Under the video"
+  },
+  "o_tl": {
+    "message": "Top left"
+  },
+  "o_tr": {
+    "message": "Top right"
+  },
+  "o_bl": {
+    "message": "Bottom left"
+  },
+  "o_br": {
+    "message": "Bottom right"
+  },
+  "o_system": {
+    "message": "Match YouTube"
+  },
+  "o_dark": {
+    "message": "Dark"
+  },
+  "o_accent": {
+    "message": "Dark with accent"
+  },
+  "a_loop": {
+    "message": "Loop"
+  },
+  "a_stop": {
+    "message": "Stop"
+  },
+  "a_reversePlaylist": {
+    "message": "Reverse playlist"
+  },
+  "a_cards": {
+    "message": "Hide cards"
+  },
+  "a_cinema": {
+    "message": "Cinema mode"
+  },
+  "a_flip": {
+    "message": "Flip video"
+  },
+  "a_speedDown": {
+    "message": "Slower"
+  },
+  "a_speedUp": {
+    "message": "Faster"
+  },
+  "a_speedReset": {
+    "message": "Reset speed"
+  },
+  "a_filters": {
+    "message": "Video filters"
+  },
+  "a_miniPlayer": {
+    "message": "Mini player"
+  },
+  "a_pip": {
+    "message": "Picture in Picture"
+  },
+  "a_screenshot": {
+    "message": "Screenshot"
+  },
+  "a_settings": {
+    "message": "Settings"
+  },
+  "g_advanced": {
+    "message": "Advanced"
+  },
+  "s_debug": {
+    "message": "Developer logging"
+  },
+  "n_debug": {
+    "message": "Prints what the extension does to the Web Inspector console on YouTube pages."
+  },
+  "g_toolbar": {
+    "message": "Toolbar"
+  },
+  "a_more": {
+    "message": "More"
+  },
+  "f_brightness": {
+    "message": "Brightness"
+  },
+  "f_contrast": {
+    "message": "Contrast"
+  },
+  "f_saturate": {
+    "message": "Saturation"
+  },
+  "f_grayscale": {
+    "message": "Grayscale"
+  },
+  "f_sepia": {
+    "message": "Sepia"
+  },
+  "f_hue": {
+    "message": "Hue"
+  },
+  "f_invert": {
+    "message": "Invert"
+  },
+  "f_blur": {
+    "message": "Blur"
+  },
+  "f_reset": {
+    "message": "Reset"
+  },
+  "h_on": {
+    "message": "on"
+  },
+  "h_off": {
+    "message": "off"
+  },
+  "n_hideEndScreens": {
+    "message": "The channel and video cards over the last seconds."
+  },
+  "s_hideEndWall": {
+    "message": "Hide suggestions when a video ends"
+  },
+  "n_hideEndWall": {
+    "message": "The grid of videos that covers the player at the end."
+  },
+  "n_autoplayBlockBackground": {
+    "message": "Shows the thumbnail and a play button instead; nothing downloads until you press play."
+  },
+  "n_autoplayBlockForeground": {
+    "message": "Blocks fresh loads only; a video you open while another is playing still starts."
+  },
+  "p_beyond": {
+    "message": "Beyond 2×"
+  },
+  "o_custom": {
+    "message": "Custom"
+  },
+  "z_320x180": {
+    "message": "Small"
+  },
+  "z_400x225": {
+    "message": "Medium"
+  },
+  "z_480x270": {
+    "message": "Large"
+  },
+  "z_640x360": {
+    "message": "Extra large"
+  },
+  "n_miniSize": {
+    "message": "Custom takes a width in pixels; the height follows 16:9."
+  },
+  "n_miniPosition": {
+    "message": "Where the mini player sits."
+  },
+  "n_speedWheelRight": {
+    "message": "Scroll alone keeps scrolling the page."
+  },
+  "n_volumeWheelRight": {
+    "message": "Scroll alone keeps scrolling the page."
+  },
+  "n_volumeDefaultOn": {
+    "message": "Sets YouTube's volume slider when a video loads. Mac only."
+  },
+  "n_volumeDefault": {
+    "message": "0 is silent, 100 is YouTube's maximum."
+  },
+  "n_volumeStep": {
+    "message": "Change per scroll notch."
+  },
+  "n_qualityAuto": {
+    "message": "Picks the nearest available level when the exact one is missing."
+  },
+  "n_qualityVideo": {
+    "message": "For single videos."
+  },
+  "n_qualityPlaylist": {
+    "message": "For videos opened from a playlist or mix."
+  },
+  "n_qualityFullscreen": {
+    "message": "Switches when you enter full screen."
+  },
+  "n_qualityFsVideo": {
+    "message": "For single videos in full screen."
+  },
+  "n_qualityFsPlaylist": {
+    "message": "For playlist videos in full screen."
+  },
+  "n_qualityRevert": {
+    "message": "Otherwise the full-screen quality stays after you exit."
+  },
+  "n_autoplayAllowPlaylists": {
+    "message": "Playlists and mixes keep playing on their own."
+  },
+  "n_pauseOtherTabs": {
+    "message": "Only one YouTube tab plays at a time."
+  },
+  "n_cinemaDim": {
+    "message": "How dark the page around the player gets."
+  },
+  "n_theme": {
+    "message": "Dark forces YouTube's dark theme; accent recolours progress bars and links."
+  },
+  "n_accent": {
+    "message": "Used by the Dark with accent theme."
+  },
+  "n_hideRelated": {
+    "message": "The column of suggested videos next to the player."
+  },
+  "n_hideComments": {
+    "message": "The whole comments section."
+  },
+  "n_hideChat": {
+    "message": "Live chat and chat replay next to streams."
+  },
+  "n_hideShorts": {
+    "message": "Shorts shelves, the Shorts tab and Shorts in results."
+  },
+  "n_hideCards": {
+    "message": "The info-card teaser in the top-right of the player."
+  },
+  "n_hideMoreVideos": {
+    "message": "The row of suggestions over a paused video."
+  },
+  "n_hideNotifications": {
+    "message": "The bell in the top bar."
+  },
+  "n_shortsAsVideos": {
+    "message": "Shorts open in the normal player with comments and speed control."
+  },
+  "s_audioMode": {
+    "message": "Start videos in audio mode"
+  },
+  "n_audioMode": {
+    "message": "Lowest quality with the picture hidden behind the thumbnail; about 95% less data. The toolbar button toggles it per video."
+  },
+  "a_audio": {
+    "message": "Audio mode"
+  },
+  "g_page": {
+    "message": "Watch page"
+  },
+  "s_autoDescription": {
+    "message": "Expand the description"
+  },
+  "n_autoDescription": {
+    "message": "Opens the full description on every video."
+  },
+  "s_autoTranscript": {
+    "message": "Open the transcript"
+  },
+  "n_autoTranscript": {
+    "message": "Shows the transcript panel when a video has one."
+  },
+  "s_autoAsk": {
+    "message": "Open the Ask panel"
+  },
+  "n_autoAsk": {
+    "message": "Opens YouTube's Ask panel when it is offered."
+  },
+  "s_emailCopy": {
+    "message": "Copy button next to email addresses"
+  },
+  "n_emailCopy": {
+    "message": "Adds Copy after any email in the description."
+  },
+  "s_linksNewTab": {
+    "message": "Open links and @mentions in a new tab"
+  },
+  "n_linksNewTab": {
+    "message": "Links in the title and description, and channel mentions. Timestamps still seek."
+  },
+  "h_copied": {
+    "message": "Copied"
+  },
+  "f_copy": {
+    "message": "Copy"
+  },
+  "s_guestMode": {
+    "message": "Privacy mode"
+  },
+  "n_guestMode": {
+    "message": "Warning: experimental. Turning this on saves your youtube.com cookies inside the extension and signs YouTube out, so it sees a first-time visitor; turning it off puts them back. If YouTube signs you in again by itself or anything breaks, turn it off and reload. Reloads YouTube tabs."
+  },
+  "a_guest": {
+    "message": "Privacy mode"
+  },
+  "g_theme": {
+    "message": "Theme"
+  },
+  "s_themeOn": {
+    "message": "Customise the look"
+  },
+  "n_themeOn": {
+    "message": "Turn on to change the theme, accent colour, cinema dimming and add your own CSS."
+  },
+  "g_cleanup": {
+    "message": "Clean up"
+  },
+  "s_hideHomeFeed": {
+    "message": "Hide the home feed"
+  },
+  "n_hideHomeFeed": {
+    "message": "An empty home page; search and subscriptions still work."
+  },
+  "s_hideThumbnails": {
+    "message": "Hide thumbnails"
+  },
+  "n_hideThumbnails": {
+    "message": "Titles only, everywhere."
+  },
+  "s_hideViews": {
+    "message": "Hide view counts"
+  },
+  "n_hideViews": {
+    "message": "On video lists and the watch page."
+  },
+  "s_hideChips": {
+    "message": "Hide topic chips"
+  },
+  "n_hideChips": {
+    "message": "The row of filters above the home feed and related videos."
+  },
+  "s_hideGuide": {
+    "message": "Hide the sidebar"
+  },
+  "n_hideGuide": {
+    "message": "The whole left navigation and its menu button."
+  },
+  "s_hideNavExplore": {
+    "message": "Hide Explore in the sidebar"
+  },
+  "n_hideNavExplore": {
+    "message": "Music, Gaming, Trending and the rest of that section."
+  },
+  "s_hideNavYou": {
+    "message": "Hide You in the sidebar"
+  },
+  "n_hideNavYou": {
+    "message": "The You entry and its section."
+  },
+  "s_hideNavMore": {
+    "message": "Hide More from YouTube"
+  },
+  "n_hideNavMore": {
+    "message": "Premium, Music, Kids and Labs links."
+  },
+  "s_hideCreate": {
+    "message": "Hide the Create button"
+  },
+  "n_hideCreate": {
+    "message": "In the top bar."
+  },
+  "s_hideVoiceSearch": {
+    "message": "Hide voice search"
+  },
+  "n_hideVoiceSearch": {
+    "message": "The microphone next to the search box."
+  },
+  "g_experimental": {
+    "message": "Experimental"
+  }
 }

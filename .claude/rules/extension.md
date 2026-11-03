@@ -19,3 +19,7 @@ paths:
 - No remote code, no `eval`, no inline scripts in extension pages (MV3 CSP). No ads, marketing or purchases inside the extension (App Review 4.4).
 - Localised strings go through `_locales/<locale>/messages.json` and `browser.i18n.getMessage`; user-facing copy never says "YouTube" as part of our product name.
 - After editing JavaScript, Safari only sees it after `scripts/build.sh` (resources are copied into the bundle) or via Safari's "Add Temporary Extension" pointing at `extension/` on macOS.
+- Verified in Safari 27 on YouTube (2026-11-03): the page CSP (`strict-dynamic` + `require-trusted-types-for 'script'`) blocks injected `<script src=extension-url>`; page-world code must be a `content_scripts` entry with `world: "MAIN"` (Safari 18+, ignored below, so `page.js` bails when `browser.runtime` exists). Never use `innerHTML` in content scripts (Trusted Types).
+- WebKit's `MediaElementAudioSourceNode` does not process MSE-backed media, so a Web Audio volume booster is silent on YouTube (verified from both worlds, see `.atlas/knowledge/safari-youtube-limits.md`); the feature is dropped and must not be reintroduced without a WebKit change.
+- Ctrl+scroll never reaches the page on macOS Safari; use Option (⌥)+scroll for modifier-wheel gestures. Ctrl+click is the system right-click; use Option+click.
+
