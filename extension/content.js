@@ -13,7 +13,7 @@
     player: "#movie_player, #shorts-player",
     video: "#movie_player video, #shorts-player video",
     rightControls: mobile ? ".player-controls-bottom" : ".ytp-right-controls",
-    below: mobile ? "#player-container-id, #player" : "#below",
+    below: mobile ? ".watch-below-the-player" : "#below",
   };
   const q = (key, scope = document) => scope.querySelector(SEL[key]);
 

@@ -191,7 +191,7 @@
       if (!host) continue;
       const bar = build(ctx, inPlayer, placement === "both" && !inPlayer ? ctx.settings.controlsBelow : ctx.settings.controls);
       bar.dataset.sig = signature;
-      ctx.mobile ? host.after(bar) : host.prepend(bar);
+      host.prepend(bar);
       bars.push(bar);
     }
     ytx.log("toolbar", { placement, bars: bars.length });

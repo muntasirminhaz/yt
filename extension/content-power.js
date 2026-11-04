@@ -191,7 +191,7 @@
     if (!(s.enabled && s.findPanels)) unmountFind();
   };
 
-  const ownerHandle = () => document.querySelector("ytd-video-owner-renderer a[href^='/@'], #owner a[href^='/@']")?.getAttribute("href")?.slice(1) ?? "";
+  const ownerHandle = () => document.querySelector("ytd-video-owner-renderer a[href^='/@'], #owner a[href^='/@'], ytm-slim-owner-renderer a[href^='/@'], ytm-slim-video-metadata-section-renderer a[href^='/@']")?.getAttribute("href")?.slice(1) ?? "";
   const applySkips = async (ctx) => {
     const skips = ytx.parseSkips(ctx.settings.channelSkips);
     const v = ctx.video;
@@ -201,6 +201,8 @@
     await wait(600);
     if (ctx.videoId !== id) return;
     const author = (await ctx.call("videoData"))?.author ?? "";
+    if (skips.some((x) => x.match.startsWith("@"))) await retry(() => ownerHandle(), 8, 500);
+    if (ctx.videoId !== id) return;
     const handle = ownerHandle();
     state.skip = skips.find((x) => ytx.matchList(handle, [x.match]) || ytx.matchList(author, [x.match])) ?? null;
     state.skipId = id;
