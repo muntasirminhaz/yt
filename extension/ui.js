@@ -56,13 +56,13 @@
     return box;
   };
 
-  const shortcuts = (row, value) => {
+  const shortcuts = (row, value, settings) => {
     const ytx = globalThis.ytx;
     const box = el("div", { className: "keys" });
     box.dataset.value = JSON.stringify(value);
     let current = { ...value };
     const commit = () => { box.dataset.value = JSON.stringify(current); fire(box); };
-    for (const id of ytx.ACTIONS) {
+    for (const id of ytx.actionsFor(settings)) {
       const key = el("button", { type: "button", className: "key", textContent: current[id] ? ytx.comboLabel(current[id]) : t("k_none") });
       key.classList.toggle("empty", !current[id]);
       key.addEventListener("click", () => {
@@ -127,8 +127,8 @@
     return box;
   };
 
-  const control = (row, value) => {
-    if (row.type === "shortcuts") return shortcuts(row, value);
+  const control = (row, value, settings) => {
+    if (row.type === "shortcuts") return shortcuts(row, value, settings);
     if (row.type === "link") { const b = el("button", { type: "button", className: "plain", textContent: t("b_" + row.key) }); b.addEventListener("click", () => { location.hash = "welcome"; }); return b; }
     if (row.type === "backup") return backup();
     if (row.type === "switch") {
@@ -140,7 +140,7 @@
     if (row.type === "dropdown") { const s = el("select", {}, row.options.map((o) => el("option", { value: o, textContent: optionLabel(row, o) }))); s.value = String(value); if (s.selectedIndex < 0) s.selectedIndex = 0; return s; }
     if (row.type === "choice") return choice(row, value);
     if (row.type === "set") {
-      return el("div", { className: "set" }, row.options.map((o) =>
+      return el("div", { className: "set" }, (row.options === globalThis.ytx.ACTIONS ? globalThis.ytx.actionsFor(settings) : row.options).map((o) =>
         el("label", {}, [el("input", { type: "checkbox", value: o, checked: value.includes(o) }), el("span", { textContent: optionLabel(row, o) }, badge(o))])));
     }
     if (row.type === "textarea") return el("textarea", { value, rows: 6 });
@@ -158,7 +158,7 @@
   };
 
   const renderRow = (row, settings) => {
-    const node = control(row, settings[row.key]);
+    const node = control(row, settings[row.key], settings);
     const stack = ["textarea", "set", "choice", "shortcuts", "backup"].includes(row.type) || (row.type === "select" && row.options.length > 2);
     const labelled = ["switch", "range", "number", "textarea", "color", "dropdown"].includes(row.type);
     const hint = row.actions ? row.actions.map((id) => settings.shortcuts?.[id] && `${globalThis.ytx.comboLabel(settings.shortcuts[id])} ${t("a_" + id)}`).filter(Boolean).join(" · ") : "";

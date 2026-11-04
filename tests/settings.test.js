@@ -83,3 +83,35 @@ test("recommended shortcuts name real actions and carry a modifier", () => {
 test("shortcut hints on rows name real actions", () => {
   for (const row of rows) for (const id of row.actions ?? []) assert.ok(ACTIONS.includes(id), `${row.key} action ${id}`);
 });
+
+test("gated actions name real settings and hide until their feature is on", () => {
+  const { NEEDS, actionsFor } = globalThis.ytx;
+  for (const [action, key] of Object.entries(NEEDS)) { assert.ok(ACTIONS.includes(action), `${action} action`); assert.ok(key in DEFAULTS, `${action} needs ${key}`); }
+  assert.equal(actionsFor(DEFAULTS).length, ACTIONS.length - Object.keys(NEEDS).length);
+  assert.ok(actionsFor({ ...DEFAULTS, chapterMaker: true }).includes("chapters"));
+  for (const row of rows.filter((r) => r.type === "set")) for (const o of row.options) assert.ok(messages[(row.prefix ?? "o_") + o]?.message, `${row.key} option ${o}`);
+});
+
+test("AI words match whole words and hashtags", () => {
+  const { aiPatterns, aiMatch, DEFAULTS: d } = globalThis.ytx;
+  const pats = aiPatterns(d.aiKeywords);
+  assert.ok(aiMatch("First ai generated ad #aigeneratedvideo", pats));
+  assert.ok(aiMatch("Made with Veo 3!", pats));
+  assert.ok(!aiMatch("Sorachi island travel", pats));
+  assert.ok(!aiMatch("Runway show in Paris", pats));
+  assert.ok(!aiMatch("The AI revolution explained", pats));
+});
+
+test("storyboard tiles, heat map peaks, SRT, counts and channel skips parse", () => {
+  const { storyboardTile, heatPath, heatPeaks, srt, parseCount, parseSkips } = globalThis.ytx;
+  const spec = "https://i.ytimg.com/sb/x/storyboard3_L$L/$N.jpg?sqp=Q|48#27#100#10#10#0#default#rs$A0|80#45#108#10#10#2000#M$M#rs$A1|160#90#108#5#5#2000#M$M#rs$A2";
+  assert.deepEqual(storyboardTile(spec, 75, 213), { url: "https://i.ytimg.com/sb/x/storyboard3_L2/M1.jpg?sqp=Q&sigh=rs$A2", x: 320, y: 180, w: 160, h: 90 });
+  assert.equal(storyboardTile(spec, 5, 213, 0).url, "https://i.ytimg.com/sb/x/storyboard3_L0/default.jpg?sqp=Q&sigh=rs$A0");
+  assert.equal(storyboardTile("", 1, 10), null);
+  const peaks = heatPeaks(heatPath("M 0,100 C 100,100 200,20 300,20 C 400,20 500,80 600,80 C 700,80 800,5 900,5 C 950,5 1000,100 1000,100", 1000));
+  assert.deepEqual(peaks.map((p) => [Math.round(p.t), p.v]), [[800, 95], [200, 80]]);
+  assert.equal(srt([{ t: 0, text: "Hi" }, { t: 61.5, text: "There" }]), "1\n00:00:00,000 --> 00:01:01,500\nHi\n\n2\n00:01:01,500 --> 00:01:05,500\nThere\n");
+  assert.equal(parseCount("525M subscribers"), 525e6);
+  assert.equal(parseCount("1,234 videos"), 1234);
+  assert.deepEqual(parseSkips("@mkbhd 15 30\nLinus Tech Tips 0:12, 1:00\nnothing"), [{ match: "@mkbhd", start: 15, end: 30 }, { match: "linus tech tips", start: 12, end: 60 }]);
+});

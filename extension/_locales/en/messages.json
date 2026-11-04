@@ -1331,5 +1331,521 @@
   "pv_sound": {
     "message": "With sound",
     "description": "Previews option"
+  },
+  "g_power": {
+    "message": "Power tools"
+  },
+  "s_findPanels": {
+    "message": "Search comments and live chat"
+  },
+  "n_findPanels": {
+    "message": "Adds a search box to the comments header and to the live chat. Type @name to filter by author, or a time such as 1:30. YouTube’s transcript panel already has its own search box."
+  },
+  "s_loopExtras": {
+    "message": "Loop count and loop links"
+  },
+  "n_loopExtras": {
+    "message": "Adds a repeat count and a Copy loop link button to the A–B loop panel, and opens links that carry a loop."
+  },
+  "s_wlAutoRemove": {
+    "message": "Remove finished videos from Watch Later"
+  },
+  "n_wlAutoRemove": {
+    "message": "When a video from your Watch Later list ends, it is removed from the list through YouTube’s own menu."
+  },
+  "s_wlRemoveWatched": {
+    "message": "Remove watched button on Watch Later"
+  },
+  "n_wlRemoveWatched": {
+    "message": "Adds a button to the Watch Later page that removes every video you have mostly watched. A second tap confirms."
+  },
+  "s_channelVideosTab": {
+    "message": "Open channels on their Videos tab"
+  },
+  "n_channelVideosTab": {
+    "message": "Channel pages switch from Home to Videos, so trailers do not play."
+  },
+  "s_commentsBeside": {
+    "message": "Comments beside the video"
+  },
+  "n_commentsBeside": {
+    "message": "Moves the comments into the column next to the video. Pairs with Hide related videos."
+  },
+  "s_commentTime": {
+    "message": "Insert the current time in comments"
+  },
+  "n_commentTime": {
+    "message": "Adds a Time button to the comment box that inserts the current playback time as a timestamp."
+  },
+  "s_chatTidy": {
+    "message": "Tidy the live chat"
+  },
+  "n_chatTidy": {
+    "message": "Hide avatars, badges or emoji-only lines, and open Live chat instead of Top chat."
+  },
+  "ct_avatars": {
+    "message": "Hide avatars"
+  },
+  "ct_badges": {
+    "message": "Hide badges"
+  },
+  "ct_emojiOnly": {
+    "message": "Hide emoji-only lines"
+  },
+  "ct_liveMode": {
+    "message": "Open Live chat, not Top chat"
+  },
+  "s_chatFilter": {
+    "message": "Show in the live chat"
+  },
+  "n_chatFilter": {
+    "message": "Everyone, members and moderators only, or paid messages only."
+  },
+  "cf_all": {
+    "message": "Everyone"
+  },
+  "cf_members": {
+    "message": "Members"
+  },
+  "cf_paid": {
+    "message": "Paid"
+  },
+  "s_channelSkips": {
+    "message": "Skip intros and outros per channel"
+  },
+  "n_channelSkips": {
+    "message": "One channel per line, then the seconds to skip at the start and to cut from the end: @handle 15 30 or Channel name 0:15. The Intro ends here button sets the start for the current channel."
+  },
+  "s_thumbViewer": {
+    "message": "Full-size thumbnail viewer"
+  },
+  "n_thumbViewer": {
+    "message": "Option-click any thumbnail, or use the Open thumbnail button, to view it at full size."
+  },
+  "s_exactStats": {
+    "message": "Exact date, views and likes"
+  },
+  "n_exactStats": {
+    "message": "Shows the exact publish time, view count and like count under the video."
+  },
+  "s_searchFade": {
+    "message": "Fade search results that lack your words"
+  },
+  "n_searchFade": {
+    "message": "Results whose title, snippet and channel contain none of your search words are dimmed."
+  },
+  "s_timestampPreview": {
+    "message": "Preview frames on timestamp links"
+  },
+  "n_timestampPreview": {
+    "message": "Hover a timestamp in the comments or the description to see that frame."
+  },
+  "s_hideAiVideos": {
+    "message": "Hide AI-generated videos"
+  },
+  "n_hideAiVideos": {
+    "message": "YouTube does not label AI content in feeds, so this hides cards whose title, hashtags or channel name match the words below."
+  },
+  "s_aiKeywords": {
+    "message": "AI words"
+  },
+  "n_aiKeywords": {
+    "message": "One per line, matched as whole words."
+  },
+  "g_creator": {
+    "message": "Creator tools"
+  },
+  "s_transcriptSave": {
+    "message": "Save the transcript as a file"
+  },
+  "n_transcriptSave": {
+    "message": "Adds a Save transcript button that downloads the transcript with timestamps."
+  },
+  "s_transcriptFormat": {
+    "message": "Transcript format"
+  },
+  "n_transcriptFormat": {
+    "message": "Plain text with times, or SubRip captions."
+  },
+  "tf_txt": {
+    "message": "Text"
+  },
+  "tf_srt": {
+    "message": "SRT"
+  },
+  "s_factsPanel": {
+    "message": "Video facts panel"
+  },
+  "n_factsPanel": {
+    "message": "Tags, category, IDs, caption languages, exact publish time, ad breaks, most replayed moments, end screen elements and cards, with copy buttons, under the video."
+  },
+  "s_velocityBadge": {
+    "message": "Velocity and engagement badge"
+  },
+  "n_velocityBadge": {
+    "message": "Views per day since publish, likes per view and comments per view, under the video."
+  },
+  "s_adBreakMarks": {
+    "message": "Mark ad breaks on the progress bar"
+  },
+  "n_adBreakMarks": {
+    "message": "Yellow marks where YouTube schedules mid-roll ads. Server-stitched ads are not visible."
+  },
+  "s_chapterMaker": {
+    "message": "Chapter maker"
+  },
+  "n_chapterMaker": {
+    "message": "Adds a Chapters button: mark moments while watching, name them, seed from a timestamped comment and copy a ready chapter list. Drafts are kept per video."
+  },
+  "s_commentTriage": {
+    "message": "Comment filters"
+  },
+  "n_commentTriage": {
+    "message": "Adds Questions, Timestamps, Members and Unanswered filters above the comments."
+  },
+  "s_savedReplies": {
+    "message": "Saved replies"
+  },
+  "n_savedReplies": {
+    "message": "One reply per line. A menu in every comment box inserts one; nothing is sent until you tap Reply."
+  },
+  "s_channelTracker": {
+    "message": "Track channels"
+  },
+  "n_channelTracker": {
+    "message": "On a tracked channel’s page, subscriber and video counts are saved on each visit and the change since your last visit is shown. Export everything as CSV from there."
+  },
+  "s_trackedChannels": {
+    "message": "Tracked channels"
+  },
+  "n_trackedChannels": {
+    "message": "One @handle or channel name per line. The Track button on a channel page adds it."
+  },
+  "s_thumbTest": {
+    "message": "Test a thumbnail and title in the feed"
+  },
+  "n_thumbTest": {
+    "message": "Adds a card at the top of the home feed and search results where you place your own image and title to see them next to real videos. Nothing is uploaded."
+  },
+  "g_access": {
+    "message": "Accessibility"
+  },
+  "s_captionStyle": {
+    "message": "Custom caption style"
+  },
+  "n_captionStyle": {
+    "message": "Applies the size, colours and position below through the player’s own caption settings."
+  },
+  "s_captionSize": {
+    "message": "Caption size"
+  },
+  "n_captionSize": {
+    "message": "Relative to YouTube’s default."
+  },
+  "s_captionColor": {
+    "message": "Text colour"
+  },
+  "n_captionColor": {
+    "message": "Colour of the caption text."
+  },
+  "s_captionBg": {
+    "message": "Background colour"
+  },
+  "n_captionBg": {
+    "message": "Colour behind the caption text."
+  },
+  "s_captionBgOpacity": {
+    "message": "Background opacity"
+  },
+  "n_captionBgOpacity": {
+    "message": "0% hides the background."
+  },
+  "s_captionEdge": {
+    "message": "Text edge"
+  },
+  "n_captionEdge": {
+    "message": "A shadow or outline around the letters."
+  },
+  "ce_none": {
+    "message": "None"
+  },
+  "ce_shadow": {
+    "message": "Drop shadow"
+  },
+  "ce_raised": {
+    "message": "Raised"
+  },
+  "ce_depressed": {
+    "message": "Depressed"
+  },
+  "ce_outline": {
+    "message": "Outline"
+  },
+  "cc_white": {
+    "message": "White"
+  },
+  "cc_yellow": {
+    "message": "Yellow"
+  },
+  "cc_green": {
+    "message": "Green"
+  },
+  "cc_cyan": {
+    "message": "Cyan"
+  },
+  "cc_blue": {
+    "message": "Blue"
+  },
+  "cc_magenta": {
+    "message": "Magenta"
+  },
+  "cc_red": {
+    "message": "Red"
+  },
+  "cc_black": {
+    "message": "Black"
+  },
+  "s_captionPosition": {
+    "message": "Caption position"
+  },
+  "n_captionPosition": {
+    "message": "Bottom, raised above the controls, or centred."
+  },
+  "cp_default": {
+    "message": "Bottom"
+  },
+  "cp_raised": {
+    "message": "Raised"
+  },
+  "cp_center": {
+    "message": "Centred"
+  },
+  "a_setIntro": {
+    "message": "Intro ends here"
+  },
+  "a_thumbnail": {
+    "message": "Open thumbnail"
+  },
+  "a_saveTranscript": {
+    "message": "Save transcript"
+  },
+  "a_chapters": {
+    "message": "Chapters"
+  },
+  "fd_placeholder": {
+    "message": "Search… @name for an author"
+  },
+  "ab_times": {
+    "message": "Repeat"
+  },
+  "ab_forever": {
+    "message": "∞"
+  },
+  "ab_copy": {
+    "message": "Copy loop link"
+  },
+  "h_copied_loop": {
+    "message": "Loop link copied"
+  },
+  "h_removed_wl": {
+    "message": "Removed from Watch Later"
+  },
+  "h_wl_failed": {
+    "message": "Watch Later menu not found"
+  },
+  "wl_remove": {
+    "message": "Remove watched"
+  },
+  "wl_confirm": {
+    "message": "Tap again to remove"
+  },
+  "wl_none": {
+    "message": "Nothing watched here"
+  },
+  "wl_done": {
+    "message": "Removed"
+  },
+  "cm_time": {
+    "message": "Time"
+  },
+  "h_skipped_intro": {
+    "message": "Skipped intro"
+  },
+  "h_skipped_outro": {
+    "message": "Skipped outro"
+  },
+  "h_intro_set": {
+    "message": "Intro ends at"
+  },
+  "h_no_channel": {
+    "message": "Channel not found"
+  },
+  "lb_open": {
+    "message": "Open image"
+  },
+  "lb_close": {
+    "message": "Close"
+  },
+  "ex_views": {
+    "message": "views"
+  },
+  "ex_likes": {
+    "message": "likes"
+  },
+  "ex_published": {
+    "message": "Published"
+  },
+  "fp_title": {
+    "message": "Video facts"
+  },
+  "fp_tags": {
+    "message": "Tags"
+  },
+  "fp_category": {
+    "message": "Category"
+  },
+  "fp_videoId": {
+    "message": "Video ID"
+  },
+  "fp_channelId": {
+    "message": "Channel ID"
+  },
+  "fp_captions": {
+    "message": "Captions"
+  },
+  "fp_published": {
+    "message": "Published"
+  },
+  "fp_length": {
+    "message": "Length"
+  },
+  "fp_adBreaks": {
+    "message": "Ad breaks"
+  },
+  "fp_replayed": {
+    "message": "Most replayed"
+  },
+  "fp_endscreen": {
+    "message": "End screen"
+  },
+  "fp_cards": {
+    "message": "Cards"
+  },
+  "fp_copyTags": {
+    "message": "Copy tags"
+  },
+  "fp_copyAll": {
+    "message": "Copy all"
+  },
+  "fp_none": {
+    "message": "None"
+  },
+  "fp_noHeat": {
+    "message": "No heat map on this video"
+  },
+  "vb_views": {
+    "message": "views/day"
+  },
+  "vb_likes": {
+    "message": "likes"
+  },
+  "vb_comments": {
+    "message": "comments"
+  },
+  "ch_title": {
+    "message": "Chapters"
+  },
+  "ch_add": {
+    "message": "Mark now"
+  },
+  "ch_seed": {
+    "message": "From comments"
+  },
+  "ch_copy": {
+    "message": "Copy chapters"
+  },
+  "ch_clear": {
+    "message": "Clear"
+  },
+  "ch_rule": {
+    "message": "Needs 3 or more chapters, the first at 0:00, each 10 s or more apart."
+  },
+  "ch_ok": {
+    "message": "Ready to paste into the description."
+  },
+  "ch_intro": {
+    "message": "Intro"
+  },
+  "ch_name": {
+    "message": "Chapter name"
+  },
+  "ch_noSeed": {
+    "message": "No timestamped comment loaded"
+  },
+  "h_copied_chapters": {
+    "message": "Chapters copied"
+  },
+  "tr_all": {
+    "message": "All"
+  },
+  "tr_questions": {
+    "message": "Questions"
+  },
+  "tr_timestamps": {
+    "message": "Timestamps"
+  },
+  "tr_members": {
+    "message": "Members"
+  },
+  "tr_unanswered": {
+    "message": "Unanswered"
+  },
+  "sr_pick": {
+    "message": "Saved reply…"
+  },
+  "tk_track": {
+    "message": "Track this channel"
+  },
+  "tk_since": {
+    "message": "Since"
+  },
+  "tk_subs": {
+    "message": "subscribers"
+  },
+  "tk_videos": {
+    "message": "videos"
+  },
+  "tk_export": {
+    "message": "Export CSV"
+  },
+  "tk_first": {
+    "message": "First visit saved"
+  },
+  "tk_header": {
+    "message": "Channel header not found"
+  },
+  "tt_title": {
+    "message": "Thumbnail test"
+  },
+  "tt_image": {
+    "message": "Choose image"
+  },
+  "tt_name": {
+    "message": "Title"
+  },
+  "tt_channel": {
+    "message": "Channel name"
+  },
+  "tt_place": {
+    "message": "Place in feed"
+  },
+  "tt_remove": {
+    "message": "Remove"
+  },
+  "h_saved_file": {
+    "message": "File saved"
+  },
+  "h_loop_done": {
+    "message": "Loop done"
   }
 }

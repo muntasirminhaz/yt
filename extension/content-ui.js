@@ -32,6 +32,10 @@
     screenshot: ["M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z", "M12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"],
     reversePlaylist: ["M7 4v16M4 17l3 3 3-3", "M17 20V4M14 7l3-3 3 3"],
     settings: ["M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z", "M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"],
+    setIntro: ["M4 12h10", "M10 8l4 4-4 4", "M18 5v14"],
+    thumbnail: ["M3 6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z", "M3 15l5-4 4 3 4-5 5 5", "M8.5 9.5h.01"],
+    saveTranscript: ["M12 4v11", "M8 11l4 4 4-4", "M5 19h14"],
+    chapters: ["M4 6h16M4 12h10M4 18h13", "M18 10v4M16 12h4"],
     more: ["M5 12h.01M12 12h.01M19 12h.01"],
   };
   const TOGGLES = ["audio", "loop", "loopAB", "fillCrop", "sleepTimer", "cinema", "flip", "filters", "cards", "miniPlayer", "reversePlaylist"];
@@ -61,6 +65,7 @@
   };
 
   const bars = [];
+  let waiting = false;
   const parseTime = (text) => { const parts = String(text).trim().split(":").map(Number); return parts.some(Number.isNaN) ? NaN : parts.reduce((a, b) => a * 60 + b, 0); };
   const buildAB = (ctx) => {
     const panel = document.createElement("div");
@@ -78,10 +83,20 @@
       row.append(Object.assign(document.createElement("span"), { textContent: t(key === "a" ? "ab_from" : "ab_to") }), input, now);
       panel.append(row);
     }
+    if (ctx.settings.loopExtras) {
+      const row = document.createElement("label");
+      row.className = "ytx-frow";
+      inputs.times = Object.assign(document.createElement("input"), { type: "number", min: 1, max: 999, placeholder: t("ab_forever"), inputMode: "numeric" });
+      inputs.times.addEventListener("change", commit);
+      row.append(Object.assign(document.createElement("span"), { textContent: t("ab_times") }), inputs.times);
+      const copy = Object.assign(document.createElement("button"), { type: "button", className: "ytx-reset", textContent: t("ab_copy") });
+      copy.addEventListener("click", () => ytx.actions.copyLoopLink?.());
+      panel.append(row, copy);
+    }
     const clear = Object.assign(document.createElement("button"), { type: "button", className: "ytx-reset", textContent: t("ab_clear") });
-    clear.addEventListener("click", () => { inputs.a.value = inputs.b.value = ""; ytx.actions.setAB({}); refresh(); });
+    clear.addEventListener("click", () => { for (const input of Object.values(inputs)) input.value = ""; ytx.actions.setAB({}); refresh(); });
     panel.append(clear);
-    function commit() { ytx.actions.setAB({ a: parseTime(inputs.a.value), b: parseTime(inputs.b.value) }); refresh(); }
+    function commit() { ytx.actions.setAB({ a: parseTime(inputs.a.value), b: parseTime(inputs.b.value), times: Number(inputs.times?.value) || 0 }); refresh(); }
     return panel;
   };
   const run = async (id) => { await ytx.actions[id]?.(); refresh(); };
@@ -113,7 +128,7 @@
     const menu = document.createElement("div");
     menu.className = "ytx-menu";
     menu.hidden = true;
-    for (const id of ytx.ACTIONS) {
+    for (const id of ytx.actionsFor(ctx.settings)) {
       const item = document.createElement("button");
       item.type = "button";
       item.className = "ytx-item";
@@ -155,14 +170,15 @@
     bar.menu = buildMenu(ctx, bar);
     bar.panel = buildPanel(ctx, bar);
     bar.ab = buildAB(ctx);
-    for (const id of ids) if (ytx.ACTIONS.includes(id)) bar.append(button(id, t("a_" + id), () => (id === "filters" ? toggle(bar, bar.panel, ctx) : id === "loopAB" ? toggle(bar, bar.ab, ctx) : run(id)), labels));
+    const allowed = ytx.actionsFor(ctx.settings);
+    for (const id of ids) if (allowed.includes(id)) bar.append(button(id, t("a_" + id), () => (id === "filters" ? toggle(bar, bar.panel, ctx) : id === "loopAB" ? toggle(bar, bar.ab, ctx) : run(id)), labels));
     bar.append(button("more", t("a_more"), () => toggle(bar, bar.menu, ctx), labels));
     for (const el of [bar.menu, bar.panel, bar.ab]) el.addEventListener("click", (e) => e.stopPropagation());
     bar.append(bar.menu, bar.panel, bar.ab);
     return bar;
   };
 
-  const sig = (ctx) => [ctx.settings.controlsPlacement, ctx.settings.toolbarLabels, ctx.settings.controls.join(","), ctx.settings.controlsBelow.join(","), JSON.stringify(ctx.settings.shortcuts ?? {})].join(":");
+  const sig = (ctx) => [ctx.settings.controlsPlacement, ctx.settings.toolbarLabels, ctx.settings.controls.join(","), ctx.settings.controlsBelow.join(","), JSON.stringify(ctx.settings.shortcuts ?? {}), ctx.settings.loopExtras, ytx.actionsFor(ctx.settings).length].join(":");
   const unmount = () => { for (const bar of bars) bar.remove(); bars.length = 0; };
   const mount = (ctx) => {
     const placement = ctx.mobile ? "below" : ctx.settings.controlsPlacement;
@@ -189,8 +205,10 @@
         document.addEventListener("click", closeAll);
         document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAll(); });
       }
-      if (!ctx.settings.enabled || !ctx.watch) { unmount(); return; }
+      if (!ctx.settings.enabled || !ctx.watch) { unmount(); if (waiting) { waiting = false; ytx.scanner.set("toolbar", null); } return; }
       mount(ctx);
+      const need = ctx.mobile || ctx.settings.controlsPlacement !== "both" ? 1 : 2;
+      if (bars.length < need && !waiting && document.body) { waiting = true; ytx.scanner.set("toolbar", () => { mount(ctx); if (bars.length >= need) { waiting = false; ytx.scanner.set("toolbar", null); refresh(); } }); }
       refresh();
     },
   });

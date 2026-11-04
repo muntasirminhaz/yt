@@ -42,7 +42,7 @@ html[dark] .ytx-bar:not(.in-player) { color: #f1f1f1; }
 .ytx-item:hover { background: rgba(255, 255, 255, 0.12); }
 .ytx-panel { min-width: 260px; }
 .ytx-frow { display: flex; align-items: center; gap: 10px; padding: 6px 8px; font: 500 12px -apple-system, system-ui, sans-serif; }
-.ytx-frow span { width: 72px; }
+.ytx-frow > span { width: 72px; }
 .ytx-frow input { flex: 1; accent-color: #0a84ff; }
 .ytx-reset { display: block; width: 100%; padding: 8px; margin-top: 4px; border-radius: 8px; background: rgba(255, 255, 255, 0.12); }
 .ytx-cinema { position: fixed; inset: 0; z-index: 2147483000; background: #000; }
@@ -120,3 +120,54 @@ segmented-like-dislike-button-view-model { position: relative; }
 .ytx-bar:not(.in-player) { flex-wrap: wrap; }
 .ytx-bar:not(.in-player) .ytx-btn:has(.ytx-label) { width: auto; height: 36px; gap: 6px; padding: 0 10px; }
 [data-ytx-winfull]:not(:root) { position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; max-width: none !important; max-height: none !important; margin: 0 !important; transform: none !important; z-index: 2147483646 !important; object-fit: contain; }
+.ytx-find { display: block; width: 100%; margin: 6px 0; padding: 6px 10px; border: 0; border-radius: 8px; background: rgba(128, 128, 128, 0.14); color: inherit; font: 500 13px -apple-system, system-ui, sans-serif; }
+ytd-comments-header-renderer .ytx-find { max-width: 420px; margin: 8px 0; }
+yt-live-chat-header-renderer .ytx-find { width: auto; flex: 1; min-width: 0; margin: 0 8px; }
+.ytx-find-out, .ytx-triage-out, .ytx-emoji-out { display: none !important; }
+.ytx-faded { opacity: 0.3; }
+.ytx-faded:hover { opacity: 1; }
+html.ytx-chat-avatars yt-live-chat-text-message-renderer #author-photo, html.ytx-chat-badges yt-live-chat-author-chip #chat-badges, html.ytx-chat-badges yt-live-chat-author-badge-renderer,
+html[data-ytx-chat="members"] yt-live-chat-text-message-renderer:not([author-type="member"]):not([author-type="moderator"]):not([author-type="owner"]),
+html[data-ytx-chat="paid"] yt-live-chat-text-message-renderer { display: none !important; }
+html.ytx-beside ytd-watch-flexy:not([theater]):not([fullscreen]) ytd-comments#comments { position: absolute; top: var(--ytx-beside-top, 0px); left: var(--ytx-beside-left, 100%); width: var(--ytx-beside-width, 396px); margin: 0; }
+.ytx-wl { margin: 8px 0 0; padding: 8px 14px; border: 0; border-radius: 999px; background: #ff3b30; color: #fff; font: 500 13px -apple-system, system-ui, sans-serif; cursor: pointer; }
+.ytx-lightbox { position: fixed; inset: 0; z-index: 2147483000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: rgba(0, 0, 0, 0.9); cursor: zoom-out; }
+.ytx-lightbox img { max-width: 96vw; max-height: 86vh; border-radius: 8px; }
+.ytx-lightbox a { padding: 8px 16px; border-radius: 999px; background: rgba(255, 255, 255, 0.14); color: #fff; font: 500 13px -apple-system, system-ui, sans-serif; text-decoration: none; }
+.ytx-meta { margin: 6px 0 2px; font: 400 13px -apple-system, system-ui, sans-serif; opacity: 0.85; }
+.ytx-tip { position: fixed; z-index: 2147483000; border-radius: 6px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4); background-repeat: no-repeat; pointer-events: none; }
+.ytx-facts, .ytx-chapters { position: static; margin: 8px 0; max-width: 100%; }
+.ytx-facts summary { padding: 6px 8px; font: 600 13px -apple-system, system-ui, sans-serif; cursor: pointer; }
+.ytx-fact { align-items: flex-start; }
+.ytx-fact > span { flex: none; width: 96px; opacity: 0.7; }
+.ytx-fact-body { flex: 1; display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; min-width: 0; word-break: break-word; }
+.ytx-facts .ytx-copy, .ytx-chapters .ytx-copy, .ytx-track .ytx-copy { margin: 0; padding: 3px 10px; font-size: 12px; }
+.ytx-chapters .ytx-marks { display: flex; flex-direction: column; gap: 4px; }
+.ytx-chapters input { flex: 1; min-width: 0; padding: 4px 8px; border: 0; border-radius: 6px; background: rgba(255, 255, 255, 0.14); color: #fff; font: 500 13px -apple-system, system-ui, sans-serif; }
+.ytx-chapters input.ytx-time { flex: none; width: 6em; font-family: ui-monospace, -apple-system, monospace; }
+.ytx-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.ytx-row .ytx-reset, .ytx-test .ytx-reset { display: inline-block; width: auto; margin: 0; padding: 6px 10px; }
+.ytx-note { padding: 4px 8px; font: 500 12px -apple-system, system-ui, sans-serif; opacity: 0.8; }
+.ytx-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.ytx-chip { padding: 6px 12px; border: 0; border-radius: 999px; background: rgba(128, 128, 128, 0.14); color: inherit; font: 500 13px -apple-system, system-ui, sans-serif; cursor: pointer; }
+.ytx-chip[aria-pressed="true"] { background: #0f0f0f; color: #fff; }
+html[dark] .ytx-chip[aria-pressed="true"] { background: #f1f1f1; color: #0f0f0f; }
+.ytx-ctime { margin-right: 8px; }
+.ytx-replies { max-width: 180px; margin-right: 8px; font: 500 13px -apple-system, system-ui, sans-serif; }
+.ytx-track { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; font: 400 13px -apple-system, system-ui, sans-serif; }
+.ytx-test { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 16px; padding: 8px 12px; border-radius: 12px; background: rgba(128, 128, 128, 0.12); font: 500 13px -apple-system, system-ui, sans-serif; }
+.ytx-test input[type="text"] { flex: 1; min-width: 140px; padding: 6px 8px; border: 0; border-radius: 6px; background: rgba(128, 128, 128, 0.18); color: inherit; font: inherit; }
+.ytx-test .ytx-reset { background: #0a84ff; color: #fff; }
+.ytx-test-card { width: calc(100% / var(--ytd-rich-grid-items-per-row, 4) - var(--ytd-rich-grid-item-margin, 16px)); margin: 0 calc(var(--ytd-rich-grid-item-margin, 16px) / 2) 40px; color: #0f0f0f; font-family: Roboto, Arial, sans-serif; }
+html[dark] .ytx-test-card { color: #f1f1f1; }
+.ytx-test-card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; background: #000; }
+.ytx-test-meta { display: flex; gap: 12px; margin-top: 12px; }
+.ytx-test-avatar { flex: none; width: 36px; height: 36px; border-radius: 50%; background: rgba(128, 128, 128, 0.4); }
+.ytx-test-title { max-height: 44px; overflow: hidden; font-size: 16px; font-weight: 500; line-height: 22px; }
+.ytx-test-sub { margin-top: 4px; font-size: 14px; color: #606060; }
+html[dark] .ytx-test-sub { color: #aaa; }
+.ytx-test-card.ytx-list { display: flex; gap: 16px; width: auto; margin: 0 0 16px; }
+.ytx-test-card.ytx-list img { flex: none; width: 360px; }
+.ytx-test-card.ytx-list .ytx-test-title { max-height: none; font-size: 18px; }
+html[data-ytx-cap="raised"] .caption-window.ytp-caption-window-bottom { bottom: 22% !important; }
+html[data-ytx-cap="center"] .caption-window.ytp-caption-window-bottom { top: 50% !important; bottom: auto !important; transform: translateY(-50%) !important; }

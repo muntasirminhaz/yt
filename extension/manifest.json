@@ -47,6 +47,8 @@
                 "content-sponsors.js",
                 "content-feeds.js",
                 "content-ads.js",
+                "content-power.js",
+                "content-creator.js",
                 "content-ui.js"
             ],
             "css": [

@@ -6,8 +6,9 @@
   const TITLE = "#video-title, h3 a, .yt-lockup-metadata-view-model__title, .media-item-headline, .compact-media-item-headline";
   const DURATION = ".ytd-thumbnail-overlay-time-status-renderer #text, ytd-thumbnail-overlay-time-status-renderer, badge-shape .yt-badge-shape__text, .yt-thumbnail-overlay-badge-view-model, .ytm-thumbnail-overlay-time-status-renderer";
   const COMMENTS = "ytd-comment-thread-renderer, ytd-comment-view-model, ytm-comment-thread-renderer";
-  let lists = { channels: [], keywords: [], comments: [] };
-  let opts = { shorter: 0, longer: 0, caps: false, frames: false };
+  let lists = { channels: [], keywords: [], comments: [], ai: [] };
+  let opts = { shorter: 0, longer: 0, caps: false, frames: false, fade: [] };
+  const words = (q) => [...new Set(String(q ?? "").toLowerCase().split(/[^\p{L}\p{N}#]+/u).filter((w) => w.length >= 3))].slice(0, 8);
 
   const scan = () => {
     for (const card of document.querySelectorAll(CARDS)) {
@@ -16,11 +17,13 @@
       const title = titleEl?.textContent ?? "";
       const handle = card.querySelector("a[href^='/@']")?.getAttribute("href")?.slice(1) ?? "";
       let blocked = (lists.channels.length && (ytx.matchList(name, lists.channels) || ytx.matchList(handle, lists.channels))) || (lists.keywords.length && ytx.matchList(title, lists.keywords));
+      if (!blocked && lists.ai.length) blocked = ytx.aiMatch(`${title} ${name}`, lists.ai);
       if (!blocked && (opts.shorter || opts.longer)) {
         const seconds = ytx.parseDuration(card.querySelector(DURATION)?.textContent);
         if (Number.isFinite(seconds) && ((opts.shorter && seconds < opts.shorter * 60) || (opts.longer && seconds > opts.longer * 60))) blocked = true;
       }
       card.classList.toggle("ytx-blocked", Boolean(blocked));
+      if (opts.fade.length && card.matches("ytd-video-renderer")) { const text = `${title} ${name} ${card.querySelector(".metadata-snippet-text, #description-text")?.textContent ?? ""}`.toLowerCase(); card.classList.toggle("ytx-faded", !opts.fade.some((w) => text.includes(w))); }
       if (opts.caps && titleEl && !titleEl.dataset.ytxCaps && ytx.mostlyCaps(title)) { titleEl.dataset.ytxCaps = "1"; titleEl.textContent = ytx.titleCase(title.trim()); if (titleEl.title) titleEl.title = titleEl.textContent; }
       if (opts.frames) {
         const id = ytx.videoIdFrom(card.querySelector("a[href*='watch?v='], a[href^='/shorts/']")?.href ?? "");
@@ -54,11 +57,12 @@
       if (reason === "boot") for (const type of ["play", "playing", "volumechange"]) document.addEventListener(type, onPreviewMedia, true);
       if (previews !== "allow") for (const v of document.querySelectorAll(PREVIEW_VIDEO)) holdPreview(v, "settings");
       if (s.enabled && s.homeRedirect !== "none" && location.pathname === "/" && (reason === "boot" || reason === "nav")) { location.replace(TARGETS[s.homeRedirect]); return; }
-      lists = { channels: s.enabled ? ytx.listOf(s.blockedChannels) : [], keywords: s.enabled ? ytx.listOf(s.blockedKeywords) : [], comments: s.enabled ? ytx.listOf(s.blockedCommentWords) : [] };
-      opts = { shorter: s.enabled ? s.hideShorterThan : 0, longer: s.enabled ? s.hideLongerThan : 0, caps: s.enabled && s.fixCaps, frames: s.enabled && s.thumbFrames && !ctx.mobile };
-      const active = lists.channels.length || lists.keywords.length || lists.comments.length || opts.shorter || opts.longer || opts.caps || opts.frames;
+      lists = { channels: s.enabled ? ytx.listOf(s.blockedChannels) : [], keywords: s.enabled ? ytx.listOf(s.blockedKeywords) : [], comments: s.enabled ? ytx.listOf(s.blockedCommentWords) : [], ai: s.enabled && s.hideAiVideos ? ytx.aiPatterns(s.aiKeywords) : [] };
+      opts = { shorter: s.enabled ? s.hideShorterThan : 0, longer: s.enabled ? s.hideLongerThan : 0, caps: s.enabled && s.fixCaps, frames: s.enabled && s.thumbFrames && !ctx.mobile, fade: s.enabled && s.searchFade && location.pathname === "/results" ? words(new URLSearchParams(location.search).get("search_query")) : [] };
+      const active = lists.channels.length || lists.keywords.length || lists.comments.length || lists.ai.length || opts.shorter || opts.longer || opts.caps || opts.frames || opts.fade.length;
       if (document.body) ytx.scanner.set("blocked", active ? scan : null);
       if (!active) for (const card of document.querySelectorAll(".ytx-blocked")) card.classList.remove("ytx-blocked");
+      if (!opts.fade.length) for (const card of document.querySelectorAll(".ytx-faded")) card.classList.remove("ytx-faded");
     },
   });
 })();

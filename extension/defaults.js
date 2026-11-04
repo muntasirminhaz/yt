@@ -23,10 +23,15 @@
   const quality = (key, def, extra) => row(key, "select", def, { options: QUALITIES, labels: QUALITY_LABELS, ...extra });
   const SIZES = ["320x180", "400x225", "480x270", "640x360"];
 
-  const ACTIONS = ["speedDown", "speedUp", "speedReset", "seekBack", "seekForward", "frameBack", "frameForward", "audio", "loop", "loopAB", "chapterPrev", "chapterNext", "undoSkip", "sleepTimer", "stop", "cinema", "miniPlayer", "pip", "flip", "rotate", "fillCrop", "filters", "cards", "screenshot", "copyLink", "copyTranscript", "reversePlaylist", "settings"];
+  const ACTIONS = ["speedDown", "speedUp", "speedReset", "seekBack", "seekForward", "frameBack", "frameForward", "audio", "loop", "loopAB", "chapterPrev", "chapterNext", "undoSkip", "sleepTimer", "stop", "cinema", "miniPlayer", "pip", "flip", "rotate", "fillCrop", "filters", "cards", "screenshot", "copyLink", "copyTranscript", "reversePlaylist", "setIntro", "thumbnail", "saveTranscript", "chapters", "settings"];
+  const NEEDS = { setIntro: "channelSkips", thumbnail: "thumbViewer", saveTranscript: "transcriptSave", chapters: "chapterMaker" };
+  const actionsFor = (s) => ACTIONS.filter((id) => !NEEDS[id] || s[NEEDS[id]]);
+  const CAP_COLORS = { white: "#fff", yellow: "#ff0", green: "#0f0", cyan: "#0ff", blue: "#00f", magenta: "#f0f", red: "#f00", black: "#080808" };
+  const CAP_EDGES = { none: 0, shadow: 4, raised: 1, depressed: 2, outline: 3 };
+  const AI_WORDS = "ai generated\nai-generated\nai video\nai videos\nai film\nai films\nai animation\nai animations\nai music\nai cover\nai covers\nai song\nai songs\nai art\nai short\nai shorts\nai slop\nmade with ai\n#ai\n#aivideo\n#aiart\n#aigenerated\n#aigeneratedvideo\nveo 3\nveo3\nveo 3.1\nsora 2\nsora ai\nopenai sora\nkling ai\nrunway gen\nrunway ml\npika labs\nluma dream\nluma ai\nhailuo\nmidjourney\nseedance\nsuno ai\nudio";
   const SB_CATEGORIES = { sponsor: "skip", selfpromo: "skip", interaction: "skip", intro: "mark", outro: "mark", preview: "off", music_offtopic: "off", filler: "off" };
   // note: built but not yet verified on YouTube in Safari; delete a key once it is confirmed working.
-  const BETA = new Set(["backgroundPlay", "previewCaptionsOff"]);
+  const BETA = new Set(["backgroundPlay", "previewCaptionsOff", "findPanels", "loopExtras", "wlAutoRemove", "wlRemoveWatched", "channelVideosTab", "commentsBeside", "commentTime", "chatTidy", "chatFilter", "channelSkips", "thumbViewer", "exactStats", "searchFade", "timestampPreview", "hideAiVideos", "transcriptSave", "factsPanel", "velocityBadge", "adBreakMarks", "chapterMaker", "commentTriage", "savedReplies", "channelTracker", "thumbTest", "captionStyle", "setIntro", "thumbnail", "saveTranscript", "chapters"]);
   const LANGS = "ab aa af ak sq am ar hy as ay az bn ba eu be bho bs br bg my ca ceb zh-Hans zh-Hant co hr cs da dv nl dz en eo et ee fo fj fil fi fr gaa gl lg ka de el gn gu ht ha haw iw hi hmn hu is ig id iu ga it ja jv kl kn kk kha km rw ko kri ku ky lo la lv ln lt lua luo lb mk mg ms ml mt gv mi mr mn mfe ne new nso no ny oc or om os pam ps fa pl pt pt-PT pa qu ro rn ru sm sg sa gd sr crs sn sd si sk sl so st es su sw ss sv tg ta tt te th bo ti to ts tn tum tr tk uk ur ug uz ve vi war cy fy wo xh yi yo zu".split(" ");
   const langNames = () => { try { const names = new Intl.DisplayNames([navigator.language], { type: "language" }); return Object.fromEntries(LANGS.map((code) => [code, names.of(code)])); } catch { return {}; } };
   const LANG_NAMES = langNames();
@@ -154,6 +159,46 @@
       sw("customCssOn"),
       row("customCss", "textarea", "", { parent: "customCssOn" }),
     ] },
+    { id: "power", rows: [
+      sw("findPanels"),
+      sw("loopExtras"),
+      sw("wlAutoRemove"),
+      sw("wlRemoveWatched", false, { ...NO_PHONE }),
+      sw("channelVideosTab"),
+      sw("commentsBeside", false, { ...NO_PHONE }),
+      sw("commentTime", false, { ...NO_PHONE }),
+      row("chatTidy", "set", [], { options: ["avatars", "badges", "emojiOnly", "liveMode"], prefix: "ct_" }),
+      row("chatFilter", "select", "all", { options: ["all", "members", "paid"], prefix: "cf_" }),
+      row("channelSkips", "textarea", "", { actions: ["setIntro"] }),
+      sw("thumbViewer", false, { actions: ["thumbnail"] }),
+      sw("exactStats"),
+      sw("searchFade"),
+      sw("timestampPreview", false, { ...NO_PHONE }),
+      sw("hideAiVideos"),
+      row("aiKeywords", "textarea", AI_WORDS, { parent: "hideAiVideos" }),
+    ] },
+    { id: "creator", rows: [
+      sw("transcriptSave", false, { actions: ["saveTranscript"] }),
+      row("transcriptFormat", "select", "txt", { options: ["txt", "srt"], prefix: "tf_", parent: "transcriptSave" }),
+      sw("factsPanel", false, { ...NO_PHONE }),
+      sw("velocityBadge", false, { ...NO_PHONE }),
+      sw("adBreakMarks", false, { ...NO_PHONE }),
+      sw("chapterMaker", false, { ...NO_PHONE, actions: ["chapters"] }),
+      sw("commentTriage", false, { ...NO_PHONE }),
+      row("savedReplies", "textarea", "", { ...NO_PHONE }),
+      sw("channelTracker", false, { ...NO_PHONE }),
+      row("trackedChannels", "textarea", "", { parent: "channelTracker", ...NO_PHONE }),
+      sw("thumbTest", false, { ...NO_PHONE }),
+    ] },
+    { id: "access", rows: [
+      sw("captionStyle"),
+      row("captionSize", "select", 0, { options: [-2, -1, 0, 1, 2, 3, 4], labels: { "-2": "50%", "-1": "75%", 0: "100%", 1: "150%", 2: "200%", 3: "300%", 4: "400%" }, parent: "captionStyle" }),
+      row("captionColor", "select", "white", { options: Object.keys(CAP_COLORS), prefix: "cc_", parent: "captionStyle" }),
+      row("captionBg", "select", "black", { options: Object.keys(CAP_COLORS), prefix: "cc_", parent: "captionStyle" }),
+      row("captionBgOpacity", "select", 0.75, { options: [0, 0.25, 0.5, 0.75, 1], labels: { 0: "0%", 0.25: "25%", 0.5: "50%", 0.75: "75%", 1: "100%" }, parent: "captionStyle" }),
+      row("captionEdge", "select", "none", { options: Object.keys(CAP_EDGES), prefix: "ce_", parent: "captionStyle" }),
+      row("captionPosition", "select", "default", { options: ["default", "raised", "center"], prefix: "cp_", parent: "captionStyle" }),
+    ] },
     { id: "shortcuts", rows: [row("shortcuts", "shortcuts", {}, { ...NO_PHONE, recommended: { speedDown: "Alt+Minus", speedUp: "Alt+Equal", speedReset: "Alt+Digit0", seekBack: "Alt+ArrowLeft", seekForward: "Alt+ArrowRight", frameBack: "Alt+Comma", frameForward: "Alt+Period", loop: "Alt+KeyL", loopAB: "Alt+KeyB", chapterPrev: "Alt+BracketLeft", chapterNext: "Alt+BracketRight", cinema: "Alt+KeyC", miniPlayer: "Alt+KeyM", pip: "Alt+KeyP", audio: "Alt+KeyA", screenshot: "Alt+KeyS", sleepTimer: "Alt+KeyZ", copyLink: "Alt+Shift+KeyC", undoSkip: "Alt+Backspace" } })] },
     { id: "privacy", rows: [sw("guestMode")] },
     { id: "advanced", rows: [sw("debug"), row("backup", "backup", null), row("welcome", "link", null)] },
@@ -198,6 +243,44 @@
   const parseDuration = (text) => { const parts = String(text ?? "").trim().split(":").map(Number); return parts.length && parts.every(Number.isFinite) ? parts.reduce((a, b) => a * 60 + b, 0) : NaN; };
   const titleCase = (text) => text.replace(/\S+/g, (w) => (/[A-Z]/.test(w) && w.length > 1 && w === w.toUpperCase() ? w[0] + w.slice(1).toLowerCase() : w));
   const mostlyCaps = (text) => { const letters = text.replace(/[^A-Za-z]/g, ""); return letters.length >= 8 && letters.replace(/[^A-Z]/g, "").length / letters.length > 0.6; };
+  const escapeRe = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const aiPatterns = (text) => listOf(text).map((w) => new RegExp("(^|[^\\p{L}\\p{N}])" + escapeRe(w) + "(?![\\p{L}\\p{N}])", "iu"));
+  const aiMatch = (text, patterns) => patterns.some((re) => re.test(String(text ?? "")));
+  const parseCount = (text) => { const m = String(text ?? "").replace(/,/g, "").match(/([\d.]+)\s*([KMB])?/i); return m ? Math.round(Number(m[1]) * ({ K: 1e3, M: 1e6, B: 1e9 }[m[2]?.toUpperCase()] ?? 1)) : NaN; };
+  const parseSkips = (text) => listOf(text).map((line) => {
+    const parts = line.split(/[\s,|]+/).filter(Boolean);
+    const nums = [];
+    while (parts.length > 1 && nums.length < 2 && /^\d+(:\d+)*$/.test(parts.at(-1))) nums.unshift(parseDuration(parts.pop()));
+    return { match: parts.join(" "), start: nums[0] ?? 0, end: nums[1] ?? 0 };
+  }).filter((x) => x.match && (x.start || x.end));
+  const storyboardTile = (spec, t, duration, level = 2) => {
+    const [base, ...levels] = String(spec ?? "").split("|");
+    if (!base || !levels.length) return null;
+    const L = Math.min(level, levels.length - 1);
+    const [w, h, count, rows, cols, interval, name, sig] = levels[L].split("#");
+    const ms = Number(interval) || (Number(count) && duration ? (duration * 1000) / Number(count) : 0);
+    if (!ms || !Number(rows) || !Number(cols)) return null;
+    const frame = Math.max(0, Math.min(Number(count) - 1, Math.floor((t * 1000) / ms)));
+    const per = Number(rows) * Number(cols);
+    const idx = frame % per;
+    const url = base.replace("$L", String(L)).replace("$N", name.replace("$M", String(Math.floor(frame / per)))) + "&sigh=" + sig;
+    return { url, x: (idx % Number(cols)) * Number(w), y: Math.floor(idx / Number(cols)) * Number(h), w: Number(w), h: Number(h) };
+  };
+  const heatPath = (d, duration) => {
+    const nums = (String(d ?? "").match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number);
+    const pts = [];
+    for (let i = 0; i + 1 < nums.length; i += 2) pts.push({ t: (nums[i] / 1000) * duration, v: 100 - nums[i + 1] });
+    return pts;
+  };
+  const heatPeaks = (pts, n = 5) => {
+    const peaks = pts.filter((p, i) => p.v > 0 && (i === 0 || p.v > pts[i - 1].v) && (i === pts.length - 1 || p.v >= pts[i + 1].v)).sort((a, b) => b.v - a.v);
+    const out = [];
+    const span = pts.length ? pts.at(-1).t - pts[0].t : 0;
+    for (const p of peaks) { if (out.length >= n) break; if (out.every((o) => Math.abs(o.t - p.t) > span * 0.03)) out.push(p); }
+    return out.sort((a, b) => b.v - a.v);
+  };
+  const srtTime = (sec) => { const ms = Math.max(0, Math.round(sec * 1000)); const p = (v, l = 2) => String(v).padStart(l, "0"); return `${p(Math.floor(ms / 3600000))}:${p(Math.floor(ms / 60000) % 60)}:${p(Math.floor(ms / 1000) % 60)},${p(ms % 1000, 3)}`; };
+  const srt = (lines) => lines.map((l, i) => `${i + 1}\n${srtTime(l.t)} --> ${srtTime(lines[i + 1]?.t ?? l.t + 4)}\n${l.text}\n`).join("\n");
   const merge = (stored) => ({ ...DEFAULTS, ...stored });
   const load = async () => merge((await browser.storage.local.get("settings")).settings);
   const save = async (patch) => {
@@ -214,5 +297,5 @@
     return order.find((q) => available.includes(q)) ?? available.find((q) => q !== "auto") ?? wanted;
   };
 
-  globalThis.ytx = { SCHEMA, DEFAULTS, ACTIONS, QUALITY_LABELS, merge, load, save, watch, clampSpeed, pickQuality, device, comboOf, comboLabel, PRESETS, SB_CATEGORIES, BETA, RELOAD, formatTime, listOf, matchList, chapterStarts, sbPrefix, videoIdFrom, parseDuration, titleCase, mostlyCaps, reset: () => browser.storage.local.set({ settings: {} }) };
+  globalThis.ytx = { SCHEMA, DEFAULTS, ACTIONS, QUALITY_LABELS, merge, load, save, watch, clampSpeed, pickQuality, device, comboOf, comboLabel, PRESETS, SB_CATEGORIES, BETA, RELOAD, formatTime, listOf, matchList, chapterStarts, sbPrefix, videoIdFrom, parseDuration, titleCase, mostlyCaps, NEEDS, actionsFor, CAP_COLORS, CAP_EDGES, aiPatterns, aiMatch, parseCount, parseSkips, storyboardTile, heatPath, heatPeaks, srt, reset: () => browser.storage.local.set({ settings: {} }) };
 })();

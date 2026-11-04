@@ -80,6 +80,33 @@
       return "queued";
     },
     cue: () => { const p = player(); const id = p?.getVideoData?.().video_id; if (id) p.cueVideoById(id); return id ?? null; },
+    details: () => {
+      const p = player();
+      const id = p?.getVideoData?.()?.video_id;
+      let r = p?.getPlayerResponse?.();
+      if (!r?.videoDetails && globalThis.ytInitialPlayerResponse?.videoDetails?.videoId === id) r = globalThis.ytInitialPlayerResponse;
+      if (!r?.videoDetails) return null;
+      const d = r.videoDetails;
+      const m = r.microformat?.playerMicroformatRenderer ?? {};
+      const sec = (x) => Number(x) / 1000;
+      const text = (x) => x?.simpleText ?? x?.runs?.map((run) => run.text).join("") ?? "";
+      const placements = (r.adPlacements ?? []).map((a) => a.adPlacementRenderer?.config?.adPlacementConfig).filter(Boolean);
+      return {
+        id: d.videoId, title: d.title, author: d.author, channelId: d.channelId, length: Number(d.lengthSeconds), views: Number(m.viewCount ?? d.viewCount), published: m.publishDate ?? null, category: m.category ?? null, keywords: d.keywords ?? [], live: Boolean(d.isLiveContent),
+        captions: (r.captions?.playerCaptionsTracklistRenderer?.captionTracks ?? []).map((t) => t.languageCode + (t.kind === "asr" ? " (auto)" : "")),
+        storyboard: r.storyboards?.playerStoryboardSpecRenderer?.spec ?? null,
+        heat: ((globalThis.ytInitialData?.frameworkUpdates?.entityBatchUpdate?.mutations ?? []).map((m) => m.payload?.macroMarkersListEntity).find((e) => e?.externalVideoId === d.videoId && e.markersList?.markerType === "MARKER_TYPE_HEATMAP")?.markersList.markers ?? []).map((m) => [Number(m.startMillis) / 1000, Number(m.intensityScoreNormalized) || 0]),
+        preroll: placements.some((c) => c.kind === "AD_PLACEMENT_KIND_START"),
+        adBreaks: placements.filter((c) => c.kind === "AD_PLACEMENT_KIND_MILLISECONDS").map((c) => sec(c.adTimeOffset?.offsetStartMilliseconds)).filter((x) => Number.isFinite(x) && x > 0),
+        endscreen: (r.endscreen?.endscreenRenderer?.elements ?? []).map((e) => e.endscreenElementRenderer).filter(Boolean).map((e) => ({ style: e.style, title: text(e.title), start: sec(e.startMs), end: sec(e.endMs), url: e.endpoint?.commandMetadata?.webCommandMetadata?.url ?? "" })),
+        cards: (r.cards?.cardCollectionRenderer?.cards ?? []).map((c) => c.cardRenderer).filter(Boolean).map((c) => ({ t: sec(c.cueRanges?.[0]?.startCardActiveMs ?? 0), text: text(c.teaser?.simpleCardTeaserRenderer?.message) })),
+      };
+    },
+    captionStyle: (opts) => {
+      const p = player();
+      if (!p?.setOption) return null;
+      try { p.loadModule?.("captions"); for (const [k, v] of Object.entries(opts)) p.setOption("captions", k, v); return true; } catch (err) { return String(err); }
+    },
   };
   document.addEventListener("ytx:call", (e) => {
     const { id, method, args } = JSON.parse(e.detail);

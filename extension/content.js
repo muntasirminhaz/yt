@@ -34,7 +34,7 @@
     set(name, fn) {
       if (fn) scanner.fns.set(name, fn); else scanner.fns.delete(name);
       if (scanner.fns.size && !scanner.observer && document.body) {
-        scanner.observer = new MutationObserver(() => { clearTimeout(scanner.timer); scanner.timer = setTimeout(runScans, 300); });
+        scanner.observer = new MutationObserver(() => { if (!scanner.timer) scanner.timer = setTimeout(() => { scanner.timer = 0; runScans(); }, 300); });
         scanner.observer.observe(document.body, { childList: true, subtree: true });
       }
       if (!scanner.fns.size && scanner.observer) { scanner.observer.disconnect(); scanner.observer = null; }

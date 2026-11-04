@@ -1,4 +1,4 @@
-const { SCHEMA, DEFAULTS, RELOAD, t, el, button, renderRow, reveal, load, watch, save, PRESETS, device } = globalThis.ytx;
+const { SCHEMA, DEFAULTS, RELOAD, ACTIONS, NEEDS, t, el, button, renderRow, reveal, load, watch, save, PRESETS, device } = globalThis.ytx;
 const NS = "http://www.w3.org/2000/svg";
 const ICONS = {
   home: ["#007aff", "M3 11l9-7 9 7", "M5 10v10h14V10", "M10 20v-6h4v6"],
@@ -15,6 +15,9 @@ const ICONS = {
   autoplay: ["#34c759", "M12 3a9 9 0 1 1-9 9", "M3 3v5h5", "M10 9l5 3-5 3z"],
   volume: ["#ff3b30", "M11 5L6 9H2v6h4l5 4z", "M15 9.5a3.5 3.5 0 0 1 0 5", "M18 6.5a7.5 7.5 0 0 1 0 11"],
   page: ["#8e8e93", "M5 3h10l4 4v14H5z", "M15 3v4h4", "M8 12h8M8 16h8"],
+  power: ["#ff9f0a", "M13 2L4 14h7l-1 8 9-12h-7z"],
+  creator: ["#bf5af2", "M4 9h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z", "M4 9l-1-4 15-3 1 4", "M8 8l2-4M13 7l2-4", "M10 13l5 3-5 3z"],
+  access: ["#30d158", "M12 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z", "M4 9l8 1.5L20 9", "M12 10.5V15l-3 6M12 15l3 6"],
   theme: ["#ffcc00", "M12 3a9 9 0 0 0 0 18c1 0 1.5-.7 1.5-1.5 0-1-.5-1.5-.5-2.5 0-1 .8-1.5 2-1.5H17a4 4 0 0 0 4-4c0-4.5-4-8.5-9-8.5z", "M7.5 10.5h.01M10.5 7h.01M15 7h.01"],
   shortcuts: ["#636366", "M3 7h18v10H3z", "M6 10h1M9 10h1M12 10h1M15 10h1M18 10h1M7 14h10"],
   privacy: ["#5ac8fa", "M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z", "M9.5 12l2 2 4-4"],
@@ -69,7 +72,8 @@ listGroup.append(entry("support"));
 reveal(main, settings);
 watch((next) => {
   const full = { ...DEFAULTS, ...next };
-  for (const g of groups) if (g.rows.some((row) => JSON.stringify(settings[row.key]) !== JSON.stringify(full[row.key]) || (row.actions && JSON.stringify(settings.shortcuts) !== JSON.stringify(full.shortcuts)))) sections[g.id].replaceChildren(...render(g, full));
+  const gated = Object.values(NEEDS).some((k) => JSON.stringify(settings[k]) !== JSON.stringify(full[k]));
+  for (const g of groups) if (g.rows.some((row) => JSON.stringify(settings[row.key]) !== JSON.stringify(full[row.key]) || (row.actions && JSON.stringify(settings.shortcuts) !== JSON.stringify(full.shortcuts)) || (gated && (row.type === "shortcuts" || row.options === ACTIONS)))) sections[g.id].replaceChildren(...render(g, full));
   Object.assign(settings, full);
   reveal(main, full);
 });

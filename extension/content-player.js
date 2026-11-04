@@ -134,7 +134,24 @@
   };
   const onTimeAB = (ctx) => {
     const v = ctx.video;
-    if (state.ab && v && v.currentTime >= state.ab.b) v.currentTime = state.ab.a;
+    if (!state.ab || !v || v.currentTime < state.ab.b) return;
+    if (state.ab.times && ++state.ab.done >= state.ab.times) { state.ab = null; ytx.hud(t("h_loop_done")); ytx.refreshUi?.(); return; }
+    v.currentTime = state.ab.a;
+  };
+  const loopFromUrl = (ctx) => {
+    const p = new URLSearchParams(location.search);
+    const m = p.get("loop")?.match(/^(\d+)-(\d+)$/);
+    if (m && ctx.settings.loopExtras) ytx.actions.setAB({ a: Number(m[1]), b: Number(m[2]), times: Number(p.get("times")) || 0 });
+  };
+  const copyLoopLink = (ctx) => {
+    const id = ctx.videoId;
+    if (!id || !state.ab) return;
+    const u = new URL("https://www.youtube.com/watch");
+    u.searchParams.set("v", id);
+    u.searchParams.set("t", String(Math.floor(state.ab.a)));
+    u.searchParams.set("loop", `${Math.floor(state.ab.a)}-${Math.ceil(state.ab.b)}`);
+    if (state.ab.times) u.searchParams.set("times", String(state.ab.times));
+    navigator.clipboard.writeText(u.href).then(() => ytx.hud(t("h_copied_loop")));
   };
   const copyLink = (ctx) => {
     const id = ctx.videoId;
@@ -174,6 +191,7 @@
       }
       if (reason === "boot" || ctx.changed.has("tabFullscreen") || ctx.changed.has("enabled")) document.dispatchEvent(new CustomEvent("ytx:config", { detail: JSON.stringify({ tabFullscreen: ctx.settings.enabled && ctx.settings.tabFullscreen && !ctx.mobile }) }));
       if (reason === "nav") { if (ctx.settings.cinema) ytx.save({ cinema: false }); setMini(ctx, false); state.yielded = 0; state.ab = null; }
+      if ((reason === "boot" || reason === "nav") && ctx.watch) loopFromUrl(ctx);
       if (reason === "video" || reason === "boot") autoTheater(ctx);
       if (ctx.video && !state.abBound?.has(ctx.video)) { (state.abBound ??= new WeakSet()).add(ctx.video); ctx.video.addEventListener("timeupdate", () => onTimeAB(ctx)); }
       if (reason === "settings" && ctx.changed.has("filters")) state.filters = null;
@@ -214,7 +232,8 @@
     chapterNext: () => jumpChapter(ytx.ctx, 1),
     copyLink: () => copyLink(ytx.ctx),
     copyTranscript,
-    setAB: ({ a, b }) => { state.ab = Number.isFinite(a) && Number.isFinite(b) && b > a ? { a, b } : null; return state.ab; },
+    setAB: ({ a, b, times }) => { state.ab = Number.isFinite(a) && Number.isFinite(b) && b > a ? { a, b, times: Number(times) || 0, done: 0 } : null; return state.ab; },
+    copyLoopLink: () => copyLoopLink(ytx.ctx),
     getAB: () => state.ab,
     reversePlaylist: () => { const on = html.classList.toggle("ytx-reverse"); hudToggle("reversePlaylist", on); return on; },
     settings: () => browser.runtime.sendMessage({ type: "openOptions" }),

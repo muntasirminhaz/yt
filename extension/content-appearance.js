@@ -1,7 +1,10 @@
 (() => {
   const ytx = globalThis.ytx;
   const html = document.documentElement;
-  const HIDE = ytx.SCHEMA.flatMap((g) => g.rows).map((r) => r.key).filter((k) => k.startsWith("hide"));
+  const HIDE = ytx.SCHEMA.flatMap((g) => g.rows).map((r) => r.key).filter((k) => k.startsWith("hide") && k !== "hideAiVideos");
+  const CAP_DEFAULT = { fontSizeIncrement: 0, color: "#fff", background: "#080808", backgroundOpacity: 0.75, charEdgeStyle: 0 };
+  const CAP_KEYS = ["enabled", "captionStyle", "captionSize", "captionColor", "captionBg", "captionBgOpacity", "captionEdge"];
+  const capOptions = (s) => ({ fontSizeIncrement: s.captionSize, color: ytx.CAP_COLORS[s.captionColor] ?? "#fff", background: ytx.CAP_COLORS[s.captionBg] ?? "#080808", backgroundOpacity: s.captionBgOpacity, charEdgeStyle: ytx.CAP_EDGES[s.captionEdge] ?? 0 });
   const syncTheme = (ctx, want, reason) => {
     let tried = "";
     try { tried = sessionStorage.getItem("ytxTheme") ?? ""; } catch { /* storage blocked */ }
@@ -41,6 +44,9 @@
       const mismatch = want === "dark" ? !html.hasAttribute("dark") : want === "light" ? html.hasAttribute("dark") : false;
       if (reason === "settings" ? ctx.changed.has("theme") || ctx.changed.has("enabled") : mismatch) syncTheme(ctx, want, reason);
       else if (!mismatch) { try { sessionStorage.removeItem("ytxTheme"); } catch { /* storage blocked */ } }
+      const capOn = s.enabled && s.captionStyle;
+      html.dataset.ytxCap = capOn ? s.captionPosition : "";
+      if (ctx.video && (reason === "settings" ? CAP_KEYS.some((k) => ctx.changed.has(k)) : capOn && reason !== "nav")) ctx.call("captionStyle", capOn ? capOptions(s) : CAP_DEFAULT).then((r) => ytx.log("caption style", r));
       html.classList.toggle("ytx-accent", theme === "accent");
       html.classList.toggle("ytx-amoled", theme === "amoled");
       html.style.setProperty("--ytx-accent", s.accent);
