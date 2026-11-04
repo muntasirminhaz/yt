@@ -134,9 +134,9 @@
   };
   const onTimeAB = (ctx) => {
     const v = ctx.video;
-    if (!state.ab || !v || v.currentTime < state.ab.b) return;
+    if (!state.ab || !v || v.seeking || v.currentTime < state.ab.b) return;
     if (state.ab.times && ++state.ab.done >= state.ab.times) { state.ab = null; ytx.hud(t("h_loop_done")); ytx.refreshUi?.(); return; }
-    v.currentTime = state.ab.a;
+    ctx.call("seek", state.ab.a).then((r) => { if (r === null) v.currentTime = state.ab?.a ?? v.currentTime; });
   };
   const loopFromUrl = (ctx) => {
     const p = new URLSearchParams(location.search);

@@ -1,0 +1,21 @@
+const base = process.env.WD_BASE ?? "http://127.0.0.1:4444";
+const req = async (method, path, body) => {
+  const r = await fetch(base + path, { method, headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+  const j = await r.json();
+  if (j.value?.error) throw new Error(`${j.value.error}: ${j.value.message}`);
+  return j.value;
+};
+export const open = async () => { const v = await req("POST", "/session", { capabilities: { alwaysMatch: { browserName: "safari" } } }); return v.sessionId; };
+export const go = (s, url) => req("POST", `/session/${s}/url`, { url });
+export const exec = (s, script, args = []) => req("POST", `/session/${s}/execute/sync`, { script, args });
+export const execAsync = (s, script, args = []) => req("POST", `/session/${s}/execute/async`, { script, args });
+export const shot = (s) => req("GET", `/session/${s}/screenshot`);
+export const quit = (s) => req("DELETE", `/session/${s}`);
+export const timeouts = (s, script) => req("POST", `/session/${s}/timeouts`, { script });
+export const handles = (s) => req("GET", `/session/${s}/window/handles`);
+export const switchTo = (s, h) => req("POST", `/session/${s}/window`, { handle: h });
+export const url = (s) => req("GET", `/session/${s}/url`);
+export const frame = (s, id) => req("POST", `/session/${s}/frame`, { id });
+export const rect = (s, r) => req("POST", `/session/${s}/window/rect`, r);
+export const closeWindow = (s) => req("DELETE", `/session/${s}/window`);
+export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

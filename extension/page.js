@@ -49,6 +49,7 @@
     qualities: () => player()?.getAvailableQualityLevels?.() ?? [],
     state: () => player()?.getPlayerState?.(),
     stop: () => player()?.stopVideo?.(),
+    seek: (t) => { const p = player(); if (!p?.seekTo) return null; p.seekTo(t, true); return true; },
     loop: (on) => { player()?.setLoopVideo?.(Boolean(on)); return true; },
     videoData: () => { const d = player()?.getVideoData?.(); return d ? { id: d.video_id, title: d.title, author: d.author } : null; },
     captions: (lang) => {

@@ -12,7 +12,7 @@ export default [
     },
   },
   {
-    files: ["tests/**/*.js", "eslint.config.js"],
+    files: ["tests/**/*.js", "tests/**/*.mjs", "eslint.config.js"],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "module",
