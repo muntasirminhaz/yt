@@ -2,6 +2,7 @@
   const ytx = globalThis.ytx;
   const t = (k) => browser.i18n.getMessage(k);
   const html = document.documentElement;
+  const firstUrl = location.href;
   const state = { flip: false, rotate: 0, fill: false, mini: false, cinemaEl: null, observer: null, observed: null, bound: new WeakSet(), filters: null, saveTimer: 0 };
   const FILTER_UNITS = { brightness: "%", contrast: "%", saturate: "%", grayscale: "%", sepia: "%", hue: "deg", invert: "%", blur: "px" };
   const hudToggle = (key, on) => ytx.hud(`${t("a_" + key)} ${t(on ? "h_on" : "h_off")}`);
@@ -138,10 +139,14 @@
     if (state.ab.times && ++state.ab.done >= state.ab.times) { state.ab = null; ytx.hud(t("h_loop_done")); ytx.refreshUi?.(); return; }
     ctx.call("seek", state.ab.a).then((r) => { if (r === null) v.currentTime = state.ab?.a ?? v.currentTime; });
   };
+  // note: YouTube may rewrite the address before boot, so the parameters are also read from the URL the page was opened with
   const loopFromUrl = (ctx) => {
-    const p = new URLSearchParams(location.search);
-    const m = p.get("loop")?.match(/^(\d+)-(\d+)$/);
-    if (m) state.urlLoop = { id: ctx.videoId, a: Number(m[1]), b: Number(m[2]), times: Number(p.get("times")) || 0 };
+    const sources = [new URLSearchParams(location.search)];
+    if (ytx.videoIdFrom(firstUrl) === ctx.videoId) sources.push(new URL(firstUrl).searchParams);
+    for (const p of sources) {
+      const m = p.get("loop")?.match(/^(\d+)-(\d+)$/);
+      if (m) { state.urlLoop = { id: ctx.videoId, a: Number(m[1]), b: Number(m[2]), times: Number(p.get("times")) || 0 }; break; }
+    }
     if (state.urlLoop?.id !== ctx.videoId) state.urlLoop = null;
     if (state.urlLoop && ctx.settings.loopExtras) ytx.actions.setAB(state.urlLoop);
   };

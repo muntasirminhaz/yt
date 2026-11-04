@@ -1345,7 +1345,7 @@
     "message": "Loop count and loop links"
   },
   "n_loopExtras": {
-    "message": "Adds a repeat count and a Copy loop link button to the A–B loop panel, and opens links that carry a loop."
+    "message": "Adds a repeat count and a Copy loop link button to the A–B loop panel, and opens links that carry a loop. On iPhone, YouTube’s redirect drops the link parameters, so only the count applies there."
   },
   "s_wlAutoRemove": {
     "message": "Remove finished videos from Watch Later"
