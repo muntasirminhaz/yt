@@ -1,8 +1,9 @@
 (() => {
   const root = document.documentElement;
-  if (root.dataset.ytx) return;
-  root.dataset.ytx = "1";
   const ytx = globalThis.ytx;
+  // note: Safari injects the scripts again after an extension reload; the first instance keeps running until the tab reloads, so the second one gets inert stubs instead of throwing in every module
+  if (root.dataset.ytx) { Object.assign(ytx, { register() {}, actions: {}, scanner: { set() {} }, hud() {}, log() {}, call: () => Promise.resolve(undefined), ctx: { settings: ytx.DEFAULTS, changed: new Set() }, feature: () => undefined }); return; }
+  root.dataset.ytx = "1";
   const features = [];
   const mobile = location.hostname.startsWith("m.");
   const pending = new Map();
