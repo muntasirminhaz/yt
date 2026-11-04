@@ -171,3 +171,4 @@ html[dark] .ytx-test-sub { color: #aaa; }
 .ytx-test-card.ytx-list .ytx-test-title { max-height: none; font-size: 18px; }
 html[data-ytx-cap="raised"] .caption-window.ytp-caption-window-bottom { bottom: 22% !important; }
 html[data-ytx-cap="center"] .caption-window.ytp-caption-window-bottom { top: 50% !important; bottom: auto !important; transform: translateY(-50%) !important; }
+html.ytx-capstyle .ytp-caption-segment { color: var(--ytx-cap-color) !important; background-color: var(--ytx-cap-bg) !important; }

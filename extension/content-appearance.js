@@ -46,6 +46,10 @@
       else if (!mismatch) { try { sessionStorage.removeItem("ytxTheme"); } catch { /* storage blocked */ } }
       const capOn = s.enabled && s.captionStyle;
       html.dataset.ytxCap = capOn ? s.captionPosition : "";
+      html.classList.toggle("ytx-capstyle", Boolean(capOn));
+      const bg = ytx.CAP_COLORS[s.captionBg] ?? "#080808";
+      html.style.setProperty("--ytx-cap-color", ytx.CAP_COLORS[s.captionColor] ?? "#fff");
+      html.style.setProperty("--ytx-cap-bg", `rgb(from ${bg} r g b / ${s.captionBgOpacity})`);
       if (ctx.video && (reason === "settings" ? CAP_KEYS.some((k) => ctx.changed.has(k)) : capOn && reason !== "nav")) ctx.call("captionStyle", capOn ? capOptions(s) : CAP_DEFAULT).then((r) => ytx.log("caption style", r));
       html.classList.toggle("ytx-accent", theme === "accent");
       html.classList.toggle("ytx-amoled", theme === "amoled");

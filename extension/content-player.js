@@ -8,7 +8,7 @@
 
   const filterCss = (filters) => Object.entries(filters).map(([k, v]) => `${k === "hue" ? "hue-rotate" : k}(${v}${FILTER_UNITS[k]})`).join(" ");
   const applyAudio = (ctx) => {
-    const on = ctx.settings.enabled && ctx.settings.audioMode && ctx.watch;
+    const on = ctx.settings.enabled && (ctx.settings.audioMode || (ctx.settings.audioOnBlur && ytx.audioAway)) && ctx.watch;
     html.classList.toggle("ytx-audio", on);
     const player = ctx.q("player");
     const id = new URLSearchParams(location.search).get("v");
@@ -141,7 +141,9 @@
   const loopFromUrl = (ctx) => {
     const p = new URLSearchParams(location.search);
     const m = p.get("loop")?.match(/^(\d+)-(\d+)$/);
-    if (m && ctx.settings.loopExtras) ytx.actions.setAB({ a: Number(m[1]), b: Number(m[2]), times: Number(p.get("times")) || 0 });
+    if (m) state.urlLoop = { id: ctx.videoId, a: Number(m[1]), b: Number(m[2]), times: Number(p.get("times")) || 0 };
+    if (state.urlLoop?.id !== ctx.videoId) state.urlLoop = null;
+    if (state.urlLoop && ctx.settings.loopExtras) ytx.actions.setAB(state.urlLoop);
   };
   const copyLoopLink = (ctx) => {
     const id = ctx.videoId;
@@ -158,13 +160,38 @@
     if (!id || !ctx.video) return;
     navigator.clipboard.writeText(`https://youtu.be/${id}?t=${Math.floor(ctx.video.currentTime)}`).then(() => ytx.hud(t("h_copied_link")));
   };
-  const copyTranscript = async () => {
+  // note: the transcript markup changes between YouTube builds, so lines are found by their time stamps rather than by element names
+  const transcriptLines = () => {
+    const panel = document.querySelector("ytd-engagement-panel-section-list-renderer[target-id='engagement-panel-searchable-transcript']");
+    const lines = [];
+    for (const el of panel?.querySelectorAll("#content *") ?? []) {
+      if (el.children.length || el.closest(".ytx-find")) continue;
+      const stamp = el.textContent.trim();
+      if (!/^\d{1,2}:\d{2}(?::\d{2})?$/.test(stamp)) continue;
+      let seg = el.parentElement;
+      while (seg && seg.parentElement !== panel && seg.textContent.trim() === stamp) seg = seg.parentElement;
+      const text = seg.textContent.replace(stamp, "").replace(/\s+/g, " ").trim();
+      const t = ytx.parseDuration(stamp);
+      if (text && Number.isFinite(t) && lines.at(-1)?.t !== t) lines.push({ t, text });
+    }
+    return lines;
+  };
+  ytx.transcript = () => {
+    const lines = transcriptLines();
+    if (lines.length) return lines;
+    const panel = document.querySelector("ytd-engagement-panel-section-list-renderer[target-id='engagement-panel-searchable-transcript']");
     const button = document.querySelector("ytd-video-description-transcript-section-renderer button, button[aria-label='Show transcript']");
-    if (button && !document.querySelector("ytd-transcript-segment-renderer")) button.click();
-    for (let i = 0; i < 10 && !document.querySelector("ytd-transcript-segment-renderer"); i++) await new Promise((r) => setTimeout(r, 300));
-    const lines = [...document.querySelectorAll("ytd-transcript-segment-renderer")].map((seg) => `${seg.querySelector(".segment-timestamp")?.textContent.trim() ?? ""} ${seg.querySelector(".segment-text")?.textContent.trim() ?? ""}`.trim());
-    if (!lines.length) { ytx.hud(t("h_no_transcript")); return; }
-    await navigator.clipboard.writeText(lines.join("\n"));
+    if (!button) { ytx.hud(t("h_no_transcript")); return []; }
+    if (panel?.getAttribute("visibility") === "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED") { ytx.hud(t("h_no_transcript")); return []; }
+    document.querySelector("#description-inline-expander #expand")?.click();
+    button.click();
+    ytx.hud(t("h_transcript_opening"));
+    return [];
+  };
+  const copyTranscript = async () => {
+    const lines = ytx.transcript();
+    if (!lines.length) return;
+    await navigator.clipboard.writeText(lines.map((l) => `${ytx.formatTime(l.t)} ${l.text}`).join("\n"));
     ytx.hud(t("h_copied_transcript"));
   };
   const autoTheater = (ctx) => {

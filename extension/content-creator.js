@@ -22,15 +22,10 @@
     return true;
   };
 
-  const readTranscript = async () => {
-    const button = document.querySelector("ytd-video-description-transcript-section-renderer button, button[aria-label='Show transcript']");
-    if (button && !document.querySelector("ytd-transcript-segment-renderer")) button.click();
-    await ytx.retry(() => document.querySelector("ytd-transcript-segment-renderer"), 10, 300);
-    return [...document.querySelectorAll("ytd-transcript-segment-renderer")].map((seg) => ({ t: ytx.parseDuration(seg.querySelector(".segment-timestamp")?.textContent), text: seg.querySelector(".segment-text")?.textContent.trim() ?? "" })).filter((l) => Number.isFinite(l.t));
-  };
-  ytx.actions.saveTranscript = async () => {
-    const lines = await readTranscript();
-    if (!lines.length) { ytx.hud(t("h_no_transcript")); return; }
+  // note: Safari only allows a download or clipboard write right after a click, so the first press opens the transcript panel and the second press saves
+  ytx.actions.saveTranscript = () => {
+    const lines = ytx.transcript();
+    if (!lines.length) return;
     const srt = ytx.ctx.settings.transcriptFormat === "srt";
     download(`${pageTitle()}.${srt ? "srt" : "txt"}`, srt ? ytx.srt(lines) : lines.map((l) => `${ytx.formatTime(l.t)} ${l.text}`).join("\n"));
     ytx.hud(t("h_saved_file"));

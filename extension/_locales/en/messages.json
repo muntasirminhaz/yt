@@ -1369,7 +1369,7 @@
     "message": "Comments beside the video"
   },
   "n_commentsBeside": {
-    "message": "Moves the comments into the column next to the video. Pairs with Hide related videos."
+    "message": "Shows the comments in the column next to the video, aligned with the player when related videos are hidden. Theater mode keeps YouTube’s layout."
   },
   "s_commentTime": {
     "message": "Insert the current time in comments"
@@ -1847,5 +1847,20 @@
   },
   "h_loop_done": {
     "message": "Loop done"
+  },
+  "s_audioOnBlur": {
+    "message": "Audio only while the tab is hidden"
+  },
+  "n_audioOnBlur": {
+    "message": "When you switch to another tab, minimise the window or cover it completely, the picture is hidden and only the sound plays on; the picture returns when the tab is visible again. Nothing is reloaded, so the sound never jumps. A window that is merely unfocused keeps its picture."
+  },
+  "s_audioOnBlurQuality": {
+    "message": "Also drop to 144p while away"
+  },
+  "n_audioOnBlurQuality": {
+    "message": "Saves data after five seconds away. YouTube reloads the stream at every quality change, so expect a short hiccup when it drops and again when you return."
+  },
+  "h_transcript_opening": {
+    "message": "Transcript opening, press again"
   }
 }

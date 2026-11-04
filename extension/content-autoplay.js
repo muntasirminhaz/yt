@@ -9,9 +9,9 @@
     const s = ctx.settings;
     if (!s.enabled || !s.autoplayBlockBackground || state.blockedFor === location.href) return false;
     if (playlist() && s.autoplayAllowPlaylists) return false;
-    if (performance.now() - state.playerGestureAt < 1500) return false;
+    if (performance.now() - state.playerGestureAt < 1500 || performance.now() - state.playingAt < 5000) return false;
     if (document.hidden) return true;
-    return s.autoplayBlockForeground && performance.now() - state.playingAt > 5000;
+    return s.autoplayBlockForeground;
   };
 
   const onPlay = (ctx) => {

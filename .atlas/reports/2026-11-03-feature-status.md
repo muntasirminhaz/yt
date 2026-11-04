@@ -32,8 +32,14 @@ Legend
 | Privacy | Privacy mode (section renamed from Experimental) | Cookies backed up and removed, local and session storage cleared, tabs reloaded bypassing the cache; YouTube sees a first-time visitor | On: signed out, player works. Off: signed in again |
 | Advanced | Developer logging; Backup Export (dated file name), Copy settings, Import, two-step Reset all; Welcome page | | |
 | Power tools | Open channels on their Videos tab | After landing on a channel’s Home, the Videos tab is clicked | Click a channel name on a card | |
-| Power tools | Comments beside the video | Comments are positioned (not moved) in the right column: aligned with the player when related videos are hidden, otherwise below the sidebar; theater and full screen keep YouTube’s layout | Turn on Hide related too; scroll the comments column | |
+| Power tools | Comments beside the video | Comments are positioned (not moved) in the right column: aligned with the player when related videos are hidden, otherwise below the sidebar; more comments keep loading; theater and full screen keep YouTube’s layout | Turn on Hide related too; scroll the comments column | |
+| Power tools | Insert the current time in comments | A Time button in every comment box inserts m:ss | Open a reply box, signed in | |
+| Creator tools | Mark ad breaks on the progress bar | Yellow marks at mid-roll cue times from the player response | A long monetised video, signed in | |
 | Power tools | Tidy the live chat | Avatars, badges and emoji-only lines hidden; Live chat picked over Top chat | A live stream or a replay with chat | |
+| Quality | Audio only while you’re away; Also drop to 144p while away | Picture hidden while the tab or window is unfocused, sound continues with no reload; the child switch drops to 144p after five seconds away and restores on return (one stream reload each way) | Switch tabs for ten seconds while a video plays | |
+| Creator tools | Velocity and engagement badge | views/day since publish, likes ÷ views, comments ÷ views under the info line | Any watch page | |
+| Creator tools | Comment filters | Chips above the comments: All, Questions, Timestamps, Members, Unanswered | Click each chip | |
+| Creator tools | Saved replies | A Saved reply… menu in every comment box inserts the chosen line | Open a reply box | |
 | Options page | Sidebar, search, iPhone drill-down, device detection, Saved toast, Home, Support, Welcome presets, per-section "YouTube's defaults" and "Recommended", shortcut hints, Learn more links, permission pre-step, Reload toast, full-height panel | | |
 
 ## 2. Beta (badge shown) and new this round (no badge), please verify
@@ -47,7 +53,6 @@ Legend
 | Power tools | Search comments and live chat | A search box in the comments header and in the live chat header; @name filters by author; `1:30` matches timestamps. YouTube’s transcript panel has its own Search transcript box, so none is added there | Type a word in the comments box; type @ and an author; search inside a live chat | |
 | Power tools | Loop count and loop links | The A–B panel gains Repeat (blank = forever) and Copy loop link; a link with `&loop=A-B&times=N` sets the loop on load | Set A–B and Repeat 2, watch it stop looping; copy the link and open it in a new tab | |
 | Power tools | Remove finished videos from Watch Later; Remove watched button on Watch Later | In the last 6 s of a Watch Later video the playlist item's ⋮ menu "Remove from Watch later" is clicked; on `/playlist?list=WL` a red button removes every video 90 % watched after a confirming tap | Play a Watch Later video to the end; open Watch Later and tap the button twice | English menu text |
-| Power tools | Insert the current time in comments (Beta) | A Time button in every comment box inserts m:ss | Open a reply box, signed in | |
 | Power tools | Show in the live chat (Beta) | Everyone, members and moderators only, or paid messages only | Pick Members on a busy stream | |
 | Power tools | Skip intros and outros per channel + Intro ends here | `@handle 15 30` seeks to 0:15 and jumps to the end 30 s early (autoplay then moves on); the toolbar action writes the current time for the current channel | Add a line for a channel you watch; press the action at the intro's end | |
 | Power tools | Full-size thumbnail viewer + Open thumbnail | ⌥-click any card, or the action: a lightbox with maxres (hqdefault fallback) and an Open image link | ⌥-click a home card | |
@@ -57,14 +62,10 @@ Legend
 | Power tools | Hide AI-generated videos + AI words | Cards whose title or channel name match a word (whole words, hashtags included) disappear; the list is editable | Search "veo 3" | Heuristic: YouTube exposes no label in feeds |
 | Creator tools | Save the transcript as a file (Text or SRT) + Save transcript | Opens the transcript panel if needed, downloads `<title>.txt` or `.srt` (next line's start as end time); YouTube's panel has its own Search transcript box | Press the action on a video with a transcript (the automation profile never loads transcript content) | |
 | Creator tools | Video facts panel | Collapsible panel under the video: tags with Copy, category, IDs, caption languages, publish time, length, ad breaks, most replayed peaks, end screen elements and cards with seek buttons, Copy all | Open it on a monetised video with chapters | |
-| Creator tools | Velocity and engagement badge | views/day since publish, likes ÷ views, comments ÷ views under the info line | Any watch page | |
-| Creator tools | Mark ad breaks on the progress bar | Yellow marks at mid-roll cue times from the player response | A long monetised video, signed in (guests in the automation profile receive no ad placements at all) | |
 | Creator tools | Chapter maker + Chapters | Panel under the video: Mark now, From comments (best timestamped comment), Copy chapters, Clear; validation line; drafts kept per video | Mark three moments, name them, copy | |
-| Creator tools | Comment filters | Chips above the comments: All, Questions, Timestamps, Members, Unanswered (no creator reply indicator) | Click each chip | Loaded comments only |
-| Creator tools | Saved replies | A "Saved reply…" menu in every comment box inserts the chosen line | Add two lines, open a reply box | |
 | Creator tools | Track channels + Tracked channels | On a tracked channel page: the change since the previous day's visit and Export CSV; untracked channels show Track this channel | Visit a tracked channel on two days | Counts are rounded (525M) |
 | Creator tools | Test a thumbnail and title in the feed | A panel above the home feed and search results; Place in feed inserts a card with your image and title in position 2 | Choose an image, type a title, Place in feed | Local only |
-| Accessibility | Custom caption style: size, text colour, background colour and opacity, text edge, position | Applied through the player's own caption options (`fontSizeIncrement`, `color`, `background`, `backgroundOpacity`, `charEdgeStyle`); position by CSS; YouTube's defaults restored when switched off | Turn captions on, pick 200 %, yellow, raised. Not checkable by automation: the signed-out automation profile never renders captions | |
+| Accessibility | Custom caption style: size, text colour, background colour and opacity, text edge, position | Size and edge through the player’s caption options; text and background colour also forced by CSS because the player ignored the colour option on desktop; position by CSS | Pick 200 %, yellow, raised | |
 
 Combos worth one pass: Blocked channels + Hide watched on the home page; embeds on another site; Home stats after a few minutes of playback.
 
