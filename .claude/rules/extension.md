@@ -6,7 +6,7 @@ paths:
 
 # Rules for the WebExtension (`extension/`)
 
-- Everything inside `extension/` ships inside the `.appex`; tests, tooling, notes and fixtures stay outside it. Any new subfolder must be added to `opaque-folders` on the `extension` entry in `yt.xcodeproj/project.xcproj`, or Xcode flattens it into the bundle's `Resources/`.
+- Everything inside `extension/` ships inside the `.appex`; tests, tooling, notes and fixtures stay outside it. Any new subfolder must be added to `opaque-folders` on the `extension` entry in `Commander.xcodeproj/project.xcproj`, or Xcode flattens it into the bundle's `Resources/`.
 - Use the `browser.*` namespace with Promises; feature-detect anything newer than iOS 17 / macOS 14 (`storage.session`, `registerContentScripts`, `content_scripts.world`, `runtime.getDocumentId`).
 - Content scripts do not run until the user grants site access, and `run_at` is honoured only on later loads: every content script must work when injected mid-page.
 - YouTube is a single-page app and Safari lacks `webNavigation.onHistoryStateUpdated`: detect navigation in the content script (MutationObserver on the player/title, `popstate`, or YouTube's `yt-navigate-finish` event, which is community lore, so keep a fallback).

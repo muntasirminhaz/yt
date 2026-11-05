@@ -15,7 +15,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const device = process.env.DEVICE ?? "17e";
 const udid = sh(`xcrun simctl list devices booted -j | jq -r --arg d "${device}" '[.devices[][] | select(.name | contains($d))][0].udid // empty'`);
 if (!udid) { console.log("boot the iPhone 17e simulator first: scripts/run-ios-sim.sh Debug \"iPhone 17e\""); process.exit(1); }
-const db = sh(`find "$HOME/Library/Developer/CoreSimulator/Devices/${udid}/data/Containers/Data/Application" -path "*WebExtensions/Default/cyberm3.yt.Extension*" -name LocalStorage.db 2>/dev/null | head -1`);
+const db = sh(`find "$HOME/Library/Developer/CoreSimulator/Devices/${udid}/data/Containers/Data/Application" -path "*WebExtensions/Default/com.cyberm3.commander.Extension*" -name LocalStorage.db 2>/dev/null | head -1`);
 if (!db) { console.log("extension storage not found; enable the extension in the simulator once"); process.exit(1); }
 mkdirSync(".atlas/tmp/wd", { recursive: true });
 const setSettings = (settings) => {

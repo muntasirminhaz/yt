@@ -98,7 +98,7 @@
     const exportBtn = el("button", { type: "button", textContent: t("b_export") });
     exportBtn.addEventListener("click", async () => {
       const settings = await ytx.load();
-      const a = el("a", { href: URL.createObjectURL(new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" })), download: `yt-settings-${stamp()}.json` });
+      const a = el("a", { href: URL.createObjectURL(new Blob([JSON.stringify(settings, null, 2)], { type: "application/json" })), download: `commander-settings-${stamp()}.json` });
       document.body.append(a);
       a.click();
       a.remove();

@@ -33,7 +33,7 @@ The page is written for YouTube API Services clients; this extension does not ca
 | `<Name> for YouTube` | "Playfield for YouTube" | allowed | the construction the brand page permits; 21 characters |
 | `<Name>: <function> for YouTube` | "Playfield: Controls for YouTube" | allowed only at 30 characters or fewer (this one is 31) | 2.3.7 limit |
 | `YouTube <anything>` | "YouTube Controls", "YouTube Speed" | forbidden | the YouTube name leads the product name; Google's forbidden examples have this shape |
-| `YT…`, `You-Tube…`, `UTube…` | "YT Control", "YTBoost" | forbidden | "any abbreviation, acronym, or variant"; the internal `yt` placeholder is in this class and must not ship |
+| `YT…`, `You-Tube…`, `UTube…` | "YT Control", "YTBoost" | forbidden | "any abbreviation, acronym, or variant" |
 | `Tube…` or `…Tube` | "TubeControl", "SpeedTube" | risky, avoid | arguably a "variant"; Google decides and we cannot pre-clear it (judgment) |
 | Existing product names | "Enhancer for YouTube" (an existing browser extension noted in `.atlas/research`) | forbidden | copycat name under 5.2.1; likely App Store Connect name conflict |
 | Names implying Google endorsement | "Official…", "…by YouTube", "YouTube Labs" | forbidden | brand page endorsement rule; 5.2.1 "misleading" |
@@ -67,15 +67,6 @@ Before fixing a name: search the App Store (iOS and Mac), the Chrome Web Store a
 
 Field limits: https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information.
 
-## Rename checklist for the `yt` placeholder (grep, 2026-11-02)
+## Rename (done 2026-11-05)
 
-| Location | Change |
-|---|---|
-| `yt.xcodeproj/project.xcproj` | `PRODUCT_NAME` (`yt`, `yt Extension`), `INFOPLIST_KEY_CFBundleDisplayName` (`yt`, `yt Extension`), target names and the schemes that follow them. Bundle IDs `cyberm3.yt` and `cyberm3.yt.Extension` are invisible to users and may stay; if changed, do it before the first upload (whether App Store Connect locks the bundle ID after the first build is unverified) and keep the extension ID `<app id>.Extension` with no extra period (https://developer.apple.com/forums/thread/680350) |
-| `Shared (App)/ViewController.swift` line 19 | `extensionBundleIdentifier` must equal the extension bundle ID |
-| `extension/_locales/en/messages.json` | `extension_name` (shown in Safari's extension lists) |
-| `Shared (App)/Resources/Base.lproj/Main.html` lines 13-17, `Shared (App)/Resources/Script.js` lines 5-7 | "yt's extension" copy and the icon alt text |
-| `macOS (App)/Base.lproj/Main.storyboard` | menu titles "About yt", "Hide yt", "Quit yt", "yt Help" and the window title |
-| `scripts/*.sh` | scheme names follow the targets; re-check after renaming |
-| App Store Connect | name and subtitle entered when the record is created |
-| `README.md`, `package.json` | not user-facing; tidy with the rename |
+The `yt` placeholder became "Commander" (project, targets, products, display names, `extension_name`, container copy, storyboard menus, bundle IDs `com.cyberm3.commander` and `com.cyberm3.commander.Extension`). Record in `.atlas/runbooks/rename-checklist.md`. App Store Connect gets the listing name "Commander for YouTube" when the record is created.

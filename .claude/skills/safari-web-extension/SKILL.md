@@ -18,7 +18,7 @@ description: Safari Web Extension workflow for anything under extension/ (manife
 | Icons | `extension/images/` | Sizes in `references/manifest-checklist.md` |
 | Capabilities | `extension/manifest.json` | Walk `references/manifest-checklist.md` first |
 | Native side | `Shared (Extension)/SafariWebExtensionHandler.swift` | `apple-host-app` skill |
-| New subfolder under `extension/` | `yt.xcodeproj/project.xcproj`, `opaque-folders` on the `extension` entry | Otherwise Xcode flattens it into the bundle `Resources/` |
+| New subfolder under `extension/` | `Commander.xcodeproj/project.xcproj`, `opaque-folders` on the `extension` entry | Otherwise Xcode flattens it into the bundle `Resources/` |
 
 ## Feature workflow
 

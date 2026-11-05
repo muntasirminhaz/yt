@@ -1,11 +1,11 @@
 # PrivacyInfo.xcprivacy: keys, reason codes, App Privacy answers
 
-## Where the files live in this repo (read from `yt.xcodeproj/project.xcproj`, 2026-11-02)
+## Where the files live in this repo (read from `Commander.xcodeproj/project.xcproj`, 2026-11-02)
 
 | File | Attached to | Mechanism | Lands in |
 |---|---|---|---|
-| `Shared (App)/PrivacyInfo.xcprivacy` | `yt (iOS)`, `yt (macOS)` | `membership-exceptions.inclusions` list of the `Shared (App)` folder; new files in that folder must be listed by hand | app bundle root on iOS, `Contents/Resources/` on macOS; Xcode places it (https://developer.apple.com/documentation/bundleresources/adding-a-privacy-manifest-to-your-app-or-third-party-sdk) |
-| `Shared (Extension)/PrivacyInfo.xcprivacy` | `yt Extension (iOS)`, `yt Extension (macOS)` | folder `target-membership` | inside `yt Extension.appex` |
+| `Shared (App)/PrivacyInfo.xcprivacy` | `Commander (iOS)`, `Commander (macOS)` | `membership-exceptions.inclusions` list of the `Shared (App)` folder; new files in that folder must be listed by hand | app bundle root on iOS, `Contents/Resources/` on macOS; Xcode places it (https://developer.apple.com/documentation/bundleresources/adding-a-privacy-manifest-to-your-app-or-third-party-sdk) |
+| `Shared (Extension)/PrivacyInfo.xcprivacy` | `Commander Extension (iOS)`, `Commander Extension (macOS)` | folder `target-membership` | inside `Commander Extension.appex` |
 
 Both files declare `NSPrivacyTracking` false and empty `NSPrivacyTrackingDomains`, `NSPrivacyCollectedDataTypes`, `NSPrivacyAccessedAPITypes`. No Swift file uses `UserDefaults`, file dates, uptime or disk-space APIs (grep, 2026-11-02), so the empty manifests are correct today.
 

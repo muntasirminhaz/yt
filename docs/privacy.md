@@ -2,7 +2,7 @@
 
 Last updated: 5 November 2026
 
-yt is a Safari extension that adds playback and interface controls to youtube.com, with a small companion app. It is made by an individual developer.
+Commander is a Safari extension that adds playback and interface controls to youtube.com, with a small companion app. It is made by an individual developer.
 
 ## What is collected
 

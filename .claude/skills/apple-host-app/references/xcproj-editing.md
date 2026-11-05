@@ -1,4 +1,4 @@
-# Editing yt.xcodeproj/project.xcproj (Xcode 27.2 JSON5 project format)
+# Editing Commander.xcodeproj/project.xcproj (Xcode 27.2 JSON5 project format)
 
 Legend: `(local)` = (local, verified on this Mac 2026-11-02); `(unverified)` = not confirmed in an official source; "research note" = local tests recorded in `.atlas/research/2026-11-02-xcode27-xcproj-format-notes.md`. Every `xcrun`/`xcodebuild` call needs `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` `(local)`.
 
@@ -31,33 +31,33 @@ Legend: `(local)` = (local, verified on this Mac 2026-11-02); `(unverified)` = n
 
 | Task | Command | Status |
 | --- | --- | --- |
-| List targets | `xcrun xcodeproj target list --project yt.xcodeproj` | `(local)` |
-| Folder tree | `xcrun xcodeproj group ls --project yt.xcodeproj` | `(local)` |
-| Phases of a target | `xcrun xcodeproj target info --target "yt Extension (macOS)" --project yt.xcodeproj` (prints `1 sources, 2 frameworks, 3 resources`) | `(local)` |
-| Read a setting | `xcrun xcodeproj setting get SWIFT_VERSION --target "yt (iOS)" --project yt.xcodeproj`; omit `--target` for project level; `--config Debug` to scope | `(local)` |
-| Dump settings | `xcrun xcodeproj setting list --target "yt (iOS)" --config Release --project yt.xcodeproj` | help `(local)` |
-| Set one value | `xcrun xcodeproj setting set MACOSX_DEPLOYMENT_TARGET 14.0 --target "yt Extension (macOS)" --project yt.xcodeproj` | help `(local)`; not executed |
-| Set a list | `xcrun xcodeproj setting set-multi OTHER_LDFLAGS -- -framework SafariServices -framework WebKit --target "yt (iOS)" --project yt.xcodeproj` (`--` before values starting with `-`) | help `(local)`; not executed |
-| Per-configuration value | `xcrun xcodeproj setting set VALIDATE_PRODUCT YES --target "yt (iOS)" --config Release --project yt.xcodeproj`; never write a `[config=...]` key name | help `(local)` |
-| Remove a setting | `xcrun xcodeproj setting unset DEVELOPMENT_TEAM --project yt.xcodeproj` | help `(local)` |
-| Include one file from a synced folder | `xcrun xcodeproj group include SharedSettings.swift --group "/Shared (Extension)" --target "yt (iOS)" --project yt.xcodeproj` (bare file name, must exist on disk) | help `(local)` |
-| Include a whole synced folder | `xcrun xcodeproj group include --group "/extension" --target "yt Extension (iOS)" --project yt.xcodeproj` | help `(local)` |
-| Exclude a file | `xcrun xcodeproj group exclude yt.entitlements --group "/iOS (App)" --target "yt (iOS)" --project yt.xcodeproj` | help `(local)` |
-| Add a synced folder | `xcrun xcodeproj group add Config --filesystem-path Config --project yt.xcodeproj` (path relative to the parent group's directory; must exist) | help `(local)` |
-| Target dependency | `xcrun xcodeproj target add-dependency "yt (iOS)" "yt Extension (iOS)" --project yt.xcodeproj` (already present; duplicates and cycles rejected) | help `(local)` |
-| New target | `xcrun xcodeproj target add ytTests --product-type unit-test-bundle --project yt.xcodeproj`, then `target phase add ...` and `setting set ...` | help `(local)`; not executed |
+| List targets | `xcrun xcodeproj target list --project Commander.xcodeproj` | `(local)` |
+| Folder tree | `xcrun xcodeproj group ls --project Commander.xcodeproj` | `(local)` |
+| Phases of a target | `xcrun xcodeproj target info --target "Commander Extension (macOS)" --project Commander.xcodeproj` (prints `1 sources, 2 frameworks, 3 resources`) | `(local)` |
+| Read a setting | `xcrun xcodeproj setting get SWIFT_VERSION --target "Commander (iOS)" --project Commander.xcodeproj`; omit `--target` for project level; `--config Debug` to scope | `(local)` |
+| Dump settings | `xcrun xcodeproj setting list --target "Commander (iOS)" --config Release --project Commander.xcodeproj` | help `(local)` |
+| Set one value | `xcrun xcodeproj setting set MACOSX_DEPLOYMENT_TARGET 14.0 --target "Commander Extension (macOS)" --project Commander.xcodeproj` | help `(local)`; not executed |
+| Set a list | `xcrun xcodeproj setting set-multi OTHER_LDFLAGS -- -framework SafariServices -framework WebKit --target "Commander (iOS)" --project Commander.xcodeproj` (`--` before values starting with `-`) | help `(local)`; not executed |
+| Per-configuration value | `xcrun xcodeproj setting set VALIDATE_PRODUCT YES --target "Commander (iOS)" --config Release --project Commander.xcodeproj`; never write a `[config=...]` key name | help `(local)` |
+| Remove a setting | `xcrun xcodeproj setting unset DEVELOPMENT_TEAM --project Commander.xcodeproj` | help `(local)` |
+| Include one file from a synced folder | `xcrun xcodeproj group include SharedSettings.swift --group "/Shared (Extension)" --target "Commander (iOS)" --project Commander.xcodeproj` (bare file name, must exist on disk) | help `(local)` |
+| Include a whole synced folder | `xcrun xcodeproj group include --group "/extension" --target "Commander Extension (iOS)" --project Commander.xcodeproj` | help `(local)` |
+| Exclude a file | `xcrun xcodeproj group exclude Commander.entitlements --group "/iOS (App)" --target "Commander (iOS)" --project Commander.xcodeproj` | help `(local)` |
+| Add a synced folder | `xcrun xcodeproj group add Config --filesystem-path Config --project Commander.xcodeproj` (path relative to the parent group's directory; must exist) | help `(local)` |
+| Target dependency | `xcrun xcodeproj target add-dependency "Commander (iOS)" "Commander Extension (iOS)" --project Commander.xcodeproj` (already present; duplicates and cycles rejected) | help `(local)` |
+| New target | `xcrun xcodeproj target add ytTests --product-type unit-test-bundle --project Commander.xcodeproj`, then `target phase add ...` and `setting set ...` | help `(local)`; not executed |
 | Packages | `xcrun xcodeproj pkg add <url> --from 1.0.0 --product <P> --target "<t>"` (none used; new deps need approval) | help `(local)` |
-| Canonical format + validation | `xcrun xcprojformatter --update yt.xcodeproj` | `(local)` |
-| Parse check | `xcodebuild -list -project yt.xcodeproj` | `(local)` |
-| Convert | `xcodebuild -project yt.xcodeproj -convert-project pbxproj` writes `project.pbxproj` (objectVersion 110, folders become `PBXFileSystemSynchronizedRootGroup`); `-convert-project xcproj` converts back; a wrong name prints the accepted list | flag `(local)`; behaviour research note |
+| Canonical format + validation | `xcrun xcprojformatter --update Commander.xcodeproj` | `(local)` |
+| Parse check | `xcodebuild -list -project Commander.xcodeproj` | `(local)` |
+| Convert | `xcodebuild -project Commander.xcodeproj -convert-project pbxproj` writes `project.pbxproj` (objectVersion 110, folders become `PBXFileSystemSynchronizedRootGroup`); `-convert-project xcproj` converts back; a wrong name prints the accepted list | flag `(local)`; behaviour research note |
 
 No CLI covers `opaque-folders` or the exception arrays beyond include/exclude (`xcrun xcodeproj help group`, `(local)`): edit those by hand, then format.
 
 ## Hand-edit procedure
 
-1. Edit `yt.xcodeproj/project.xcproj`; keep the writer's trailing-comma style.
-2. `xcrun xcprojformatter --update yt.xcodeproj`. It decodes and re-encodes: bad JSON5 fails, but comments, unknown keys and duplicate keys are dropped silently, so a misspelled key disappears instead of erroring (research note; https://artemnovichkov.com/blog/xcode-projects-for-the-command-line-and-coding-agents).
-3. `xcodebuild -list -project yt.xcodeproj`, then `git diff yt.xcodeproj` must show only the intended change.
+1. Edit `Commander.xcodeproj/project.xcproj`; keep the writer's trailing-comma style.
+2. `xcrun xcprojformatter --update Commander.xcodeproj`. It decodes and re-encodes: bad JSON5 fails, but comments, unknown keys and duplicate keys are dropped silently, so a misspelled key disappears instead of erroring (research note; https://artemnovichkov.com/blog/xcode-projects-for-the-command-line-and-coding-agents).
+3. `xcodebuild -list -project Commander.xcodeproj`, then `git diff Commander.xcodeproj` must show only the intended change.
 4. `scripts/build.sh macos` and `scripts/build.sh ios` before the change is considered done.
 
 ## Pitfalls

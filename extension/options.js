@@ -118,7 +118,7 @@ const foot = document.getElementById("foot");
 const exportLink = el("a", { href: "#", textContent: t("f_export") });
 exportLink.addEventListener("click", async (e) => {
   e.preventDefault();
-  const a = el("a", { href: URL.createObjectURL(new Blob([JSON.stringify(await load(), null, 2)], { type: "application/json" })), download: "yt-settings.json" });
+  const a = el("a", { href: URL.createObjectURL(new Blob([JSON.stringify(await load(), null, 2)], { type: "application/json" })), download: "commander-settings.json" });
   document.body.append(a); a.click(); a.remove();
 });
 foot.append(el("a", { href: "#welcome", textContent: t("f_welcome") }), el("a", { href: "#support", textContent: t("f_support") }), exportLink, el("span", { textContent: `${name} ${manifest.version}` }));

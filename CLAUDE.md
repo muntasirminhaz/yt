@@ -64,7 +64,7 @@ Project Gotchas (non-obvious; verify before relying):
 - Layout: the Xcode project and its source folders sit at the repo root; `extension/` is the WebExtension exactly as shipped and the xcproj references it as a sibling folder; `tests/` and `scripts/` stay outside both so nothing extra ships. Project names (scheme, bundle IDs) live in `scripts/env.sh`.
 - `xcode-select` points at Command Line Tools and `sudo` is unavailable: always use `DEVELOPER_DIR` (the scripts do).
 - "Allow unsigned extensions" in Safari resets every time Safari quits; no Apple Developer team is configured yet, so local builds are unsigned or ad-hoc signed.
-- Naming: never put "YouTube" or "YT" in the public app name or icon; "<Name> for YouTube" is permitted. The internal name `yt` is a placeholder renamed once before the App Store Connect record exists (`.atlas/runbooks/rename-checklist.md`).
+- Naming: never put "YouTube" or "YT" in the public app name or icon; "<Name> for YouTube" is permitted. The product is "Commander" (App Store listing "Commander for YouTube"); the rename record is `.atlas/runbooks/rename-checklist.md`.
 - Everything else that is path-specific (Safari API limits, xcproj editing, entitlements, App Review rules) lives in `.claude/rules/extension.md` and `.claude/rules/swift.md`, which load automatically when those files are touched.
 
 Skills routing:

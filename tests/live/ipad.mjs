@@ -13,7 +13,7 @@ const check = (name, ok, detail) => { results.push([name, ok, detail]); console.
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const udid = sh(`xcrun simctl list devices booted -j | jq -r '[.devices[][] | select(.name | contains("iPad"))][0].udid // empty'`);
 if (!udid) { console.log("boot an iPad simulator first: scripts/run-ios-sim.sh Debug \"iPad Pro 13-inch (M5)\""); process.exit(1); }
-const db = sh(`find "$HOME/Library/Developer/CoreSimulator/Devices/${udid}/data/Containers/Data/Application" -path "*WebExtensions/Default/cyberm3.yt.Extension*" -name LocalStorage.db 2>/dev/null | head -1`);
+const db = sh(`find "$HOME/Library/Developer/CoreSimulator/Devices/${udid}/data/Containers/Data/Application" -path "*WebExtensions/Default/com.cyberm3.commander.Extension*" -name LocalStorage.db 2>/dev/null | head -1`);
 if (!db) { console.log("extension storage not found; enable the extension in the simulator once"); process.exit(1); }
 mkdirSync(".atlas/tmp/wd", { recursive: true });
 const setSettings = (settings) => {

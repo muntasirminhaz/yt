@@ -13,7 +13,7 @@ Xcode calls this "Sign to Run Locally". From the shell: `CODE_SIGN_STYLE=Manual 
 ## 3. Team signing (after enrolment)
 
 1. Enrol, then either sign in to Xcode once (Xcode > Settings > Accounts) so `-allowProvisioningUpdates` can create certificates and profiles, or create an App Store Connect API key and pass `-authenticationKeyPath`, `-authenticationKeyID`, `-authenticationKeyIssuerID` to xcodebuild. Source: `xcodebuild -help` (local) and https://developer.apple.com/library/archive/technotes/tn2339/_index.html.
-2. Put the team ID in the project once: `xcrun xcodeproj setting set DEVELOPMENT_TEAM <TEAMID> --project yt.xcodeproj` for each target (or edit the four `build-settings` blocks and run `xcprojformatter --update`).
+2. Put the team ID in the project once: `xcrun xcodeproj setting set DEVELOPMENT_TEAM <TEAMID> --project Commander.xcodeproj` for each target (or edit the four `build-settings` blocks and run `xcprojformatter --update`).
 3. Register the App Group in the developer account before the first signed build that uses it; both apps and both extensions need the entitlement. https://developer.apple.com/documentation/xcode/configuring-app-groups
 4. Expect a one-time Keychain dialog ("codesign wants to sign using key"): click Always Allow.
 

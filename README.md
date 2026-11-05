@@ -1,6 +1,6 @@
-# yt: Safari Web Extension for YouTube (macOS + iOS)
+# Commander for YouTube: Safari Web Extension (macOS + iOS)
 
-A Safari Web Extension that adds playback and interface controls to youtube.com, packaged inside an iOS app and a macOS app for App Store distribution. `yt` is the internal placeholder name; the public name is chosen before the App Store Connect record exists and must not contain "YouTube" or "YT" (YouTube brand rules allow "<Name> for YouTube").
+A Safari Web Extension that adds playback and interface controls to youtube.com, packaged inside an iOS app and a macOS app for App Store distribution. The product is "Commander"; the App Store listing name is "Commander for YouTube" (YouTube brand rules allow "<Name> for YouTube" and forbid "YouTube" or "YT" inside the name itself).
 
 Status (2026-11-05): feature complete for a first release and passing the live Safari suites on Mac, iPhone and iPad simulators (`tests/live/`). Waiting on the product name, icons and a Developer Program team; see `.atlas/runbooks/rename-checklist.md` and `.atlas/reports/2026-11-03-feature-status.md`.
 
@@ -9,7 +9,7 @@ Status (2026-11-05): feature complete for a first release and passing the live S
 | Path | What |
 |---|---|
 | `extension/` | The WebExtension exactly as Safari loads it: `manifest.json` (MV3), `background.js`, `content.js`, `popup.*`, `_locales/`, `images/`. Everything here ships. |
-| `yt.xcodeproj` | Xcode 27.2 project (JSON5 `project.xcproj`). Targets: `yt (iOS)`, `yt (macOS)`, `yt Extension (iOS)`, `yt Extension (macOS)`. |
+| `Commander.xcodeproj` | Xcode 27.2 project (JSON5 `project.xcproj`). Targets: `Commander (iOS)`, `Commander (macOS)`, `Commander Extension (iOS)`, `Commander Extension (macOS)`. |
 | `Shared (App)/`, `iOS (App)/`, `macOS (App)/` | Container app (the thing users install from the App Store). |
 | `Shared (Extension)/`, `iOS (Extension)/`, `macOS (Extension)/` | Extension targets: `SafariWebExtensionHandler.swift` (native messaging) plus Info.plists. |
 | `tests/` | JavaScript tests (`node --test`). |
@@ -39,5 +39,5 @@ Enable the extension in macOS Safari: Settings > Advanced > "Show features for w
 - Minimum OS: iOS 17.0 and macOS 14.0 for app and extension alike; `manifest.json` declares `strict_min_version` 17.0.
 - Host access is limited to `*://*.youtube.com/*`; no other permissions until a feature needs them.
 - Work through the scripts, not raw `xcodebuild`; logs land in `.atlas/tmp/build/`.
-- Edit the project file with `xcrun xcodeproj` where possible and run `xcrun xcprojformatter --update yt.xcodeproj` after hand edits; new subfolders under `extension/` must be listed in `opaque-folders`.
+- Edit the project file with `xcrun xcodeproj` where possible and run `xcrun xcprojformatter --update Commander.xcodeproj` after hand edits; new subfolders under `extension/` must be listed in `opaque-folders`.
 - Conventional Commits; `main` always builds; no force pushes.

@@ -6,7 +6,7 @@ metadata:
   author: Agent quality patterns
   version: "1.0"
   focus: error_recovery, rework_prevention, systematic_diagnosis
-  adapted_for: yt Safari extension (JS + Swift)
+  adapted_for: Commander Safari extension (JS + Swift)
 ---
 
 # Debugging and Error Recovery
@@ -59,7 +59,7 @@ Symptom fixes to avoid: a 500 ms `setInterval`, or forcing a full reload. Both m
 
 - Content script: Safari Web Inspector on the YouTube tab; `console.log` output appears there.
 - Background and popup: Develop menu, Web Extension Background Content; or inspect the popup.
-- Swift handler: `os_log` lines in Console.app, or `log stream --predicate 'subsystem CONTAINS "cyberm3.yt"'` redirected to `.atlas/tmp/`.
+- Swift handler: `os_log` lines in Console.app, or `log stream --predicate 'subsystem CONTAINS "com.cyberm3.commander"'` redirected to `.atlas/tmp/`.
 - Build and test failures: the scripts write `.atlas/tmp/build/<name>.log`; grep `error:|failed`, never read the whole log.
 - Time a suspect path; anything over a frame on `timeupdate` is a performance bug.
 

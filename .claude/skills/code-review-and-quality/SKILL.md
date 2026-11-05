@@ -6,7 +6,7 @@ metadata:
   author: Agent quality patterns
   version: "1.0"
   focus: rework_prevention, quality_enforcement, feedback_speed
-  adapted_for: yt Safari extension (JS + Swift)
+  adapted_for: Commander Safari extension (JS + Swift)
 ---
 
 # Code Review and Quality
@@ -38,7 +38,7 @@ Valid: "feat: mute autoplay toggle. background.js, content.js, popup.*, one test
 | Lint | `scripts/lint.sh` | ESLint and swift-format report nothing |
 | Tests | `scripts/test.sh` | `JS TESTS OK` (includes the manifest test); Swift ok, or skipped with no target |
 | Build | `scripts/build.sh macos`, plus `ios` when iOS files changed | exit 0, no `error:` in the log |
-| Project file | `xcrun xcprojformatter --update yt.xcodeproj && xcodebuild -list` after hand edits | all four targets listed |
+| Project file | `xcrun xcprojformatter --update Commander.xcodeproj && xcodebuild -list` after hand edits | all four targets listed |
 | Dependencies | `git diff package.json` | no runtime deps; new dev deps approved |
 
 ## 3. Fast Feedback Loop

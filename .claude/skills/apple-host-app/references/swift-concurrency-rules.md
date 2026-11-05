@@ -1,11 +1,11 @@
 # Swift concurrency rules for this project
 
-Build settings (local, `yt.xcodeproj/project.xcproj`): `SWIFT_VERSION = 5.0` (Swift 5 language mode) and `SWIFT_APPROACHABLE_CONCURRENCY = YES` on all four targets; `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` on the two app targets only. Xcode 27.2 compiles with the Swift 6.4 toolchain. Sources: https://developer.apple.com/documentation/xcode/build-settings-reference, https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/, the vendored `swift-concurrency-expert` skill.
+Build settings (local, `Commander.xcodeproj/project.xcproj`): `SWIFT_VERSION = 5.0` (Swift 5 language mode) and `SWIFT_APPROACHABLE_CONCURRENCY = YES` on all four targets; `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` on the two app targets only. Xcode 27.2 compiles with the Swift 6.4 toolchain. Sources: https://developer.apple.com/documentation/xcode/build-settings-reference, https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/, the vendored `swift-concurrency-expert` skill.
 
 ## What the settings mean here
 
-- App targets (`yt (iOS)`, `yt (macOS)`): every type and function is implicitly `@MainActor` unless marked `nonisolated`. UI code needs no annotations. Background work must opt out explicitly (`nonisolated func`, `@concurrent` where supported, or a `Task.detached`).
-- Extension targets (`yt Extension (iOS)`, `yt Extension (macOS)`): no default isolation. `SafariWebExtensionHandler` methods are nonisolated and are invoked by the system on an extension request queue. Do not touch UI there; there is none.
+- App targets (`Commander (iOS)`, `Commander (macOS)`): every type and function is implicitly `@MainActor` unless marked `nonisolated`. UI code needs no annotations. Background work must opt out explicitly (`nonisolated func`, `@concurrent` where supported, or a `Task.detached`).
+- Extension targets (`Commander Extension (iOS)`, `Commander Extension (macOS)`): no default isolation. `SafariWebExtensionHandler` methods are nonisolated and are invoked by the system on an extension request queue. Do not touch UI there; there is none.
 - Language mode 5 means concurrency violations are warnings, not errors. Treat warnings as errors in review; switching to Swift 6 mode (`SWIFT_VERSION = 6`) is a later, deliberate step after the handler code stabilises.
 
 ## Rules for the native-messaging handler

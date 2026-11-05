@@ -64,5 +64,5 @@ All quotes: https://developer.apple.com/app-store/review/guidelines/ (page state
 
 | Guideline | Summary (wording not re-verified today, unverified) | Pass criterion |
 |---|---|---|
-| 2.1 App Completeness | Crashes, placeholder text, broken links and missing test information are the most common rejection (https://github.com/CharlesWiltgen/Axiom app-store-submission) | Release build tested on device and Mac; no `yt` placeholder strings; Notes for Review complete |
+| 2.1 App Completeness | Crashes, placeholder text, broken links and missing test information are the most common rejection (https://github.com/CharlesWiltgen/Axiom app-store-submission) | Release build tested on device and Mac; no placeholder strings; Notes for Review complete |
 | 2.4.5 (i) macOS | Mac App Store apps must be sandboxed; `ENABLE_APP_SANDBOX = YES` is already set on both macOS targets | Sandbox stays on; entitlements limited to what features need |

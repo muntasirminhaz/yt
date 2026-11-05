@@ -6,7 +6,7 @@ metadata:
   author: Agent execution patterns
   version: "1.0"
   focus: execution_quality, error_prevention, rework_avoidance
-  adapted_for: yt Safari extension (JS + Swift)
+  adapted_for: Commander Safari extension (JS + Swift)
 ---
 
 # Planning and Task Breakdown

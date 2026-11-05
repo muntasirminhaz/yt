@@ -6,7 +6,7 @@ metadata:
   author: Agent execution patterns
   version: "1.0"
   focus: rework_prevention, quality_assurance, safety
-  adapted_for: yt Safari extension (JS + Swift)
+  adapted_for: Commander Safari extension (JS + Swift)
 ---
 
 # Incremental Implementation
@@ -65,7 +65,7 @@ Run all of these; any failure blocks the commit.
 | Lint JS and Swift | `scripts/lint.sh` |
 | Tests (JS now; Swift once a target exists; includes `tests/manifest.test.js`) | `scripts/test.sh` |
 | Headless build | `scripts/build.sh macos`; `scripts/build.sh ios` when iOS files changed |
-| Project file valid after hand edits | `xcrun xcprojformatter --update yt.xcodeproj && xcodebuild -list` |
+| Project file valid after hand edits | `xcrun xcprojformatter --update Commander.xcodeproj && xcodebuild -list` |
 
 ## 5. Test-as-You-Go Pattern
 

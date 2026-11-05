@@ -6,7 +6,7 @@ metadata:
   author: Inspired by ponytail (DietrichGebert/ponytail, MIT)
   version: "1.0"
   focus: write_less, reuse_first, smallest_diff
-  adapted_for: yt Safari extension (JS + Swift)
+  adapted_for: Commander Safari extension (JS + Swift)
 ---
 
 # Minimal Code Ladder

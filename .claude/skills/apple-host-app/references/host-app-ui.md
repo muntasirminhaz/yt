@@ -13,7 +13,7 @@ Sources: App Store Review Guidelines https://developer.apple.com/app-store/revie
 - `Shared (App)/ViewController.swift`: a `WKWebView` that loads `Resources/Base.lproj/Main.html` with `Script.js` and `Style.css`, shows "platform-mac" or "platform-ios" copy.
 - macOS only: `SFSafariExtensionManager.getStateOfSafariExtension(withIdentifier:)` reports whether the extension is enabled, and the "Quit and Open Safari Settings…" button calls `SFSafariApplication.showPreferencesForExtension(withIdentifier:)` then terminates the app. macOS 13+ wording says "Safari Settings" instead of "Preferences".
 - iOS: no API to query or open the extension state; the page can only explain Settings > Apps > Safari > Extensions.
-- `extensionBundleIdentifier = "cyberm3.yt.Extension"` is hard-coded in the view controller; update it when the product is renamed.
+- `extensionBundleIdentifier = "com.cyberm3.commander.Extension"` is hard-coded in the view controller; update it when the product is renamed.
 
 ## Choosing a UI approach when settings arrive
 

@@ -15,14 +15,14 @@ Run before editing `extension/manifest.json` or adding files under `extension/`.
 | Check | Detail | Source |
 | --- | --- | --- |
 | `browser_specific_settings.safari.strict_min_version` stays `"17.0"` | Matches `IPHONEOS_DEPLOYMENT_TARGET` 17.0 and `MACOSX_DEPLOYMENT_TARGET` 14.0 (Safari 17); the test asserts the value | https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Browser_compatibility_for_manifest.json , `.claude/rules/swift.md` |
-| Raising it | Change both deployment targets in `yt.xcodeproj/project.xcproj` (app and extension targets must stay equal) and the test in the same diff | https://developer.apple.com/documentation/safariservices/troubleshooting-your-safari-web-extension |
+| Raising it | Change both deployment targets in `Commander.xcodeproj/project.xcproj` (app and extension targets must stay equal) and the test in the same diff | https://developer.apple.com/documentation/safariservices/troubleshooting-your-safari-web-extension |
 
 ## 3. Files and folders
 
 | Check | Detail | Source |
 | --- | --- | --- |
 | Every referenced file exists under `extension/` | `js`, `css`, `default_popup`, `default_icon`, `icons`, `_locales/<default_locale>/messages.json`; the test checks presence | `tests/manifest.test.js` |
-| New subfolder | Add it to `opaque-folders` on the `extension` folder entry in `yt.xcodeproj/project.xcproj` (currently `_locales`, `images`), then `xcrun xcprojformatter --update yt.xcodeproj` and `xcodebuild -list`; without it Xcode flattens the folder into the bundle `Resources/` | `.atlas/research/2026-11-02-xcode27-xcproj-format-notes.md` |
+| New subfolder | Add it to `opaque-folders` on the `extension` folder entry in `Commander.xcodeproj/project.xcproj` (currently `_locales`, `images`), then `xcrun xcprojformatter --update Commander.xcodeproj` and `xcodebuild -list`; without it Xcode flattens the folder into the bundle `Resources/` | `.atlas/research/2026-11-02-xcode27-xcproj-format-notes.md` |
 | Only shipped files inside `extension/` | Tests, fixtures and notes stay outside; everything inside is copied into the `.appex` | https://developer.apple.com/documentation/safariservices/running-your-safari-web-extension |
 
 ## 4. Background

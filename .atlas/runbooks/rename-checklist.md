@@ -1,41 +1,26 @@
-# Rename checklist (placeholder `yt` to the final product name)
+# Rename record: `yt` placeholder to Commander (done 2026-11-05)
 
-Do this once, before the App Store Connect record exists (bundle IDs are locked after that). Keep "YouTube" and "YT" variants out of the public name and icon; "<Name> for YouTube" is permitted by YouTube's brand rules (see the `app-store-compliance` skill).
-
-## Decide
-
-| Item | Current | New |
-|---|---|---|
-| Product and project name | `yt` (`yt.xcodeproj`, targets `yt (iOS)`, `yt (macOS)`, `yt Extension (iOS)`, `yt Extension (macOS)`, products `yt.app`, `yt Extension.appex`) | |
-| App bundle ID (shared by iOS and macOS) | `cyberm3.yt` | reverse-DNS, e.g. `com.cyberm3.<name>` |
-| Extension bundle ID (must be `<app id>.Extension`) | `cyberm3.yt.Extension` | |
-| Display name | `yt` | |
-| Extension display name and description | `extension/_locales/en/messages.json` | |
-
-## Files that carry the names
-
-| File | What to change |
+| Item | Value |
 |---|---|
-| `yt.xcodeproj/project.xcproj` | target names, `PRODUCT_NAME`, `PRODUCT_BUNDLE_IDENTIFIER` (4 targets), `INFOPLIST_KEY_CFBundleDisplayName`, product references, the `yt.xcodeproj` folder name itself; run `xcrun xcprojformatter --update` and `xcodebuild -list` afterwards |
-| `scripts/env.sh` | `PROJECT_FILE`, `PRODUCT_NAME`, `APP_BUNDLE_ID`, `EXT_BUNDLE_ID`, `SCHEME_MAC`, `SCHEME_IOS` (every script reads these) |
-| `Shared (App)/ViewController.swift` | `extensionBundleIdentifier` |
-| `Shared (App)/Resources/Base.lproj/Main.html` | the sentences, the icon alt text, and the privacy and support URLs if the repository is renamed |
-| `extension/options.js` | the privacy policy URL on the Support page |
-| `docs/privacy.md`, `docs/support.md` | the product name in prose; publish with GitHub > Settings > Pages > branch `main`, folder `/docs` (nothing is published until that is switched on) |
-| `extension/_locales/en/messages.json` | `extension_name`, `extension_description` |
-| `package.json` | `name`, `description` |
-| `README.md`, `CLAUDE.md`, `.claude/rules/swift.md`, `.claude/skills/*/SKILL.md` and references, `.atlas/runbooks/*.md` | prose mentions; find them with the grep below |
-| App Store Connect | app name, subtitle, keywords (created after the rename) |
+| Product, project, display name | `Commander` (`Commander.xcodeproj`, targets `Commander (iOS)`, `Commander (macOS)`, `Commander Extension (iOS)`, `Commander Extension (macOS)`, products `Commander.app`, `Commander Extension.appex`) |
+| App Store listing name | `Commander for YouTube` (entered when the App Store Connect record is created; "for YouTube" is the descriptor Google's brand page permits) |
+| Bundle IDs | `com.cyberm3.commander`, `com.cyberm3.commander.Extension` |
+| Extension name (`_locales`) | `Commander`; description unchanged |
+| GitHub repository | still `yt`, so the privacy and support URLs stay `https://muntasirminhaz.github.io/yt/`; if the repository is renamed, update `Main.html`, `extension/options.js` and the compliance skill |
 
-## Also before the first archive
+Files changed: `Commander.xcodeproj/project.xcproj`, `scripts/env.sh`, `Shared (App)/ViewController.swift`, `Shared (App)/Resources/Base.lproj/Main.html`, `macOS (App)/Base.lproj/Main.storyboard`, `extension/_locales/en/messages.json`, `extension/options.js` and `extension/ui.js` (settings file name), `tests/live/*.mjs` (simulator storage path), `package.json`, `docs/privacy.md`, `README.md`, `CLAUDE.md`, `.claude/rules/*.md`, `.claude/skills/**`.
+
+After the rename, Safari treats the extension as new: enable it again in Safari > Settings > Extensions (macOS) and Settings > Apps > Safari > Extensions (iOS), and re-grant youtube.com.
+
+## Still before the first archive
 
 - App icons: `Shared (App)/Assets.xcassets/AppIcon.appiconset` and `LargeIcon.imageset` are empty; add a 1024 px icon for iOS and the macOS sizes (or an Icon Composer file) and fill both `Contents.json`.
 - Extension icons in `extension/images/` and the toolbar SVG still show the template artwork.
-- `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION` in the project file and `version` in `extension/manifest.json` should agree.
+- `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION` in the project file and `version` in `extension/manifest.json` should agree (1.0 / 1 / 1.0 today).
 
 ## Verify
 
 ```sh
-grep -rn 'cyberm3\|yt\.app\|"yt (\|yt Extension' --include='*.sh' --include='*.swift' --include='*.json' --include='*.xcproj' --include='*.html' --include='*.md' . | grep -v node_modules | grep -v '.atlas/tmp'
+grep -rnI '\byt\b' --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=tmp . | grep -v 'yt-' | grep -v '\.atlas/\(plans\|reports\|research\|knowledge\)'
 scripts/build.sh macos && scripts/build.sh ios && scripts/test.sh
 ```

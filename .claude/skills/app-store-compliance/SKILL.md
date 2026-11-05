@@ -9,11 +9,11 @@ Product facts this skill assumes; update the row when a fact changes.
 
 | Fact | Value |
 |---|---|
-| Distribution | App Store on iOS and macOS from one App Store Connect record; app bundle ID `cyberm3.yt`, extension `cyberm3.yt.Extension`; universal purchase |
+| Distribution | App Store on iOS and macOS from one App Store Connect record; app bundle ID `com.cyberm3.commander`, extension `com.cyberm3.commander.Extension`; universal purchase |
 | Business | Free; no in-app purchase, no ads, no accounts, no analytics. Three opt-in features reach community servers behind optional host permissions (SponsorBlock and DeArrow at sponsor.ajay.app: 4-character hash prefix of the video ID; Return YouTube Dislike: the video ID); otherwise no network calls of our own |
 | Policy and support pages | `docs/privacy.md`, `docs/support.md`, meant for GitHub Pages at `https://muntasirminhaz.github.io/yt/`; linked from `Main.html` and the extension's Support page; Notes for Review draft in `.atlas/runbooks/review-notes.md` |
 | Version 1 scope | Playback and interface controls on `*://*.youtube.com/*`; no ads blocked or skipped |
-| Name | `yt` is an internal placeholder; the public name is fixed before the App Store Connect record exists |
+| Name | Product and display name "Commander" (renamed 2026-11-05); App Store listing name "Commander for YouTube"; GitHub repository still `yt`, so the Pages URLs keep `/yt/` |
 | Team | No Apple Developer Program team yet; device, TestFlight and App Store builds wait for enrolment |
 | Privacy manifests | `Shared (App)/PrivacyInfo.xcprivacy`, `Shared (Extension)/PrivacyInfo.xcprivacy`; today: no tracking, nothing collected, no required-reason APIs |
 
@@ -43,7 +43,7 @@ Run the matching rows before writing code. A failed row is a blocker to raise, n
 | # | Item | Detail |
 |---|---|---|
 | 1 | Program and record | Enrolled; Account Holder signed the latest agreement; team set on all four targets; record created with the final name and the app bundle ID; both platforms on one record |
-| 2 | Name and marks | Final name and icon pass `references/naming-and-trademark.md`; placeholder `yt` removed from every location in its rename checklist |
+| 2 | Name and marks | Name "Commander" done; icon still to be drawn and must pass `references/naming-and-trademark.md` |
 | 3 | Build | Release archive per platform tested on a device and a Mac running the current OS: extension enables, content script runs after the site grant, popup is a sheet on iPhone and a popover on iPad and Mac, no crash |
 | 4 | Manifest | `extension/manifest.json` permissions and hosts minimal; `scripts/test.sh js` green |
 | 5 | Privacy manifests | Both files match the code; privacy report generated from the archive |
@@ -63,7 +63,7 @@ Run the matching rows before writing code. A failed row is a blocker to raise, n
 | "<Name> for YouTube" and "works with YouTube" are the permitted references | same page |
 | No YouTube logo, icon, colour scheme, typography or "product icons" imitated in our icon or art; never alter a YouTube mark | same page |
 | No third-party trademarks or copycat names in bundle, metadata or developer name; name at most 30 characters; no trademarked terms packed into metadata | 5.2.1, 2.3.7 |
-| Bundle IDs `cyberm3.yt*` are not user-visible and may stay; the product name, display names, menu titles, `_locales` name and container copy must be renamed first | `references/naming-and-trademark.md` |
+| Bundle IDs `com.cyberm3.commander*` are not user-visible and may stay; the product name, display names, menu titles, `_locales` name and container copy must be renamed first | `references/naming-and-trademark.md` |
 
 ## Ad blocking: each party's stated position
 

@@ -14,7 +14,7 @@ import WebKit
     typealias PlatformViewController = NSViewController
 #endif
 
-let extensionBundleIdentifier = "cyberm3.yt.Extension"
+let extensionBundleIdentifier = "com.cyberm3.commander.Extension"
 
 class ViewController: PlatformViewController, WKNavigationDelegate, WKScriptMessageHandler {
 

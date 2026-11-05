@@ -1,5 +1,5 @@
 {
-  "name": "yt-safari-extension",
+  "name": "commander-safari-extension",
   "version": "1.0.0",
   "private": true,
   "description": "Safari Web Extension for YouTube (macOS + iOS): dev tooling only; the shipped extension has no runtime dependencies",

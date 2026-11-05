@@ -47,7 +47,7 @@ Rules: one reply per request; never throw out of `beginRequest`; unknown `type` 
 
 ```js
 export async function native(type, payload = {}) {
-  const reply = await browser.runtime.sendNativeMessage("cyberm3.yt.Extension", { type, v: 1, payload });
+  const reply = await browser.runtime.sendNativeMessage("com.cyberm3.commander.Extension", { type, v: 1, payload });
   if (!reply?.ok) throw new Error(reply?.error?.message ?? "native call failed");
   return reply.result;
 }
@@ -63,7 +63,7 @@ import SafariServices
 import os
 
 nonisolated enum SharedSettings {
-    static let suite = "group.cyberm3.yt"
+    static let suite = "group.com.cyberm3.commander"
     static func snapshot() -> [String: Any] {
         guard let defaults = UserDefaults(suiteName: suite) else { return [:] }
         return ["autoplay": defaults.bool(forKey: "autoplay"), "speed": defaults.double(forKey: "speed")]
@@ -71,7 +71,7 @@ nonisolated enum SharedSettings {
 }
 
 nonisolated final class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
-    private let log = Logger(subsystem: "cyberm3.yt.Extension", category: "native-messaging")
+    private let log = Logger(subsystem: "com.cyberm3.commander.Extension", category: "native-messaging")
 
     func beginRequest(with context: NSExtensionContext) {
         let item = context.inputItems.first as? NSExtensionItem
@@ -105,8 +105,8 @@ Removed from the template on purpose: the `#available` fallbacks (deployment tar
 
 | Where | How | Source |
 | --- | --- | --- |
-| Handler logs, macOS | `/usr/bin/log stream --predicate 'subsystem == "cyberm3.yt.Extension"' --level debug` (full path: `log` is a zsh builtin) | `(local)` |
-| Handler logs, simulator | `xcrun simctl spawn <udid> log stream --predicate 'subsystem == "cyberm3.yt.Extension"' --level debug` | adapted from https://github.com/patrickserrano/skills (MIT); `(unverified)` here |
+| Handler logs, macOS | `/usr/bin/log stream --predicate 'subsystem == "com.cyberm3.commander.Extension"' --level debug` (full path: `log` is a zsh builtin) | `(local)` |
+| Handler logs, simulator | `xcrun simctl spawn <udid> log stream --predicate 'subsystem == "com.cyberm3.commander.Extension"' --level debug` | adapted from https://github.com/patrickserrano/skills (MIT); `(unverified)` here |
 | JS side | Develop > Web Extension Background Content (macOS); Develop > Simulator > Extension Background Page (iOS) | https://developer.apple.com/documentation/safariservices/troubleshooting-your-safari-web-extension |
 | Registration | `pluginkit -mAvvv -p com.apple.Safari.web-extension` after launching the app once | same URL; `(local)` |
 | Unit tests | XCTest cannot test the JS APIs; extract `reply(for:)` into a pure function and test it from a Swift test target | https://developer.apple.com/documentation/safariservices/creating-a-safari-web-extension |

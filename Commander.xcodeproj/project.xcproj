@@ -16,7 +16,7 @@
       "path": "Shared (App)",
       "membership-exceptions": [
         {
-          "target": "yt (iOS)",
+          "target": "Commander (iOS)",
           "inclusions": [
             "/Localized: Resources/Main.html",
             "Assets.xcassets",
@@ -27,7 +27,7 @@
             "ViewController.swift",
           ],
         }, {
-          "target": "yt (macOS)",
+          "target": "Commander (macOS)",
           "inclusions": [
             "/Localized: Resources/Main.html",
             "Assets.xcassets",
@@ -40,33 +40,33 @@
         },
       ],
     },
-    { "kind": "folder", "path": "Shared (Extension)", "target-membership": [ "yt Extension (iOS)", "yt Extension (macOS)" ] },
-    { "kind": "folder", "path": "extension", "opaque-folders": [ "_locales", "images" ], "target-membership": [ "yt Extension (iOS)", "yt Extension (macOS)" ] },
+    { "kind": "folder", "path": "Shared (Extension)", "target-membership": [ "Commander Extension (iOS)", "Commander Extension (macOS)" ] },
+    { "kind": "folder", "path": "extension", "opaque-folders": [ "_locales", "images" ], "target-membership": [ "Commander Extension (iOS)", "Commander Extension (macOS)" ] },
     {
       "kind": "folder",
       "path": "iOS (App)",
       "target-membership": [
-        "yt (iOS)",
+        "Commander (iOS)",
       ],
       "membership-exceptions": [
         {
-          "target": "yt (iOS)",
+          "target": "Commander (iOS)",
           "exclusions": [
             "Info.plist",
           ],
         },
       ],
     },
-    { "kind": "folder", "path": "macOS (App)", "target-membership": [ "yt (macOS)" ] },
+    { "kind": "folder", "path": "macOS (App)", "target-membership": [ "Commander (macOS)" ] },
     {
       "kind": "folder",
       "path": "iOS (Extension)",
       "target-membership": [
-        "yt Extension (iOS)",
+        "Commander Extension (iOS)",
       ],
       "membership-exceptions": [
         {
-          "target": "yt Extension (iOS)",
+          "target": "Commander Extension (iOS)",
           "exclusions": [
             "Info.plist",
           ],
@@ -76,11 +76,11 @@
       "kind": "folder",
       "path": "macOS (Extension)",
       "target-membership": [
-        "yt Extension (macOS)",
+        "Commander Extension (macOS)",
       ],
       "membership-exceptions": [
         {
-          "target": "yt Extension (macOS)",
+          "target": "Commander Extension (macOS)",
           "exclusions": [
             "Info.plist",
           ],
@@ -90,21 +90,21 @@
       "kind": "group",
       "name": "Products",
       "children": [
-        { "path": "<PRODUCTS>/yt.app", "id": "9D0572AB3098B7C800785C76", "type": "wrapper.application", "index": false },
-        { "path": "<PRODUCTS>/yt.app", "id": "9D0572BD3098B7C800785C76", "type": "wrapper.application", "index": false },
-        { "path": "<PRODUCTS>/yt Extension.appex", "id": "9D0572C83098B7C800785C76", "type": "wrapper.app-extension", "index": false, "target-membership": [ { "build-phase": "yt (iOS)/copy/Embed Foundation Extensions", "header-preservation": "remove-on-copy" } ] },
-        { "path": "<PRODUCTS>/yt Extension.appex", "id": "9D0572D23098B7C800785C76", "type": "wrapper.app-extension", "index": false, "target-membership": [ { "build-phase": "yt (macOS)/copy/Embed Foundation Extensions", "header-preservation": "remove-on-copy" } ] },
+        { "path": "<PRODUCTS>/Commander.app", "id": "9D0572AB3098B7C800785C76", "type": "wrapper.application", "index": false },
+        { "path": "<PRODUCTS>/Commander.app", "id": "9D0572BD3098B7C800785C76", "type": "wrapper.application", "index": false },
+        { "path": "<PRODUCTS>/Commander Extension.appex", "id": "9D0572C83098B7C800785C76", "type": "wrapper.app-extension", "index": false, "target-membership": [ { "build-phase": "Commander (iOS)/copy/Embed Foundation Extensions", "header-preservation": "remove-on-copy" } ] },
+        { "path": "<PRODUCTS>/Commander Extension.appex", "id": "9D0572D23098B7C800785C76", "type": "wrapper.app-extension", "index": false, "target-membership": [ { "build-phase": "Commander (macOS)/copy/Embed Foundation Extensions", "header-preservation": "remove-on-copy" } ] },
       ],
     },
   ],
   "targets": [
     {
-      "name": "yt (iOS)",
+      "name": "Commander (iOS)",
       "id": "9D0572AA3098B7C800785C76",
       "product": "id:9D0572AB3098B7C800785C76",
       "product-type": "application",
       "dependencies": [
-        "yt Extension (iOS)",
+        "Commander Extension (iOS)",
       ],
       "build-phases": [
         "compile-sources",
@@ -123,7 +123,7 @@
         "CURRENT_PROJECT_VERSION": "1",
         "GENERATE_INFOPLIST_FILE": "YES",
         "INFOPLIST_FILE": "iOS (App)/Info.plist",
-        "INFOPLIST_KEY_CFBundleDisplayName": "yt",
+        "INFOPLIST_KEY_CFBundleDisplayName": "Commander",
         "INFOPLIST_KEY_ITSAppUsesNonExemptEncryption": "NO",
         "INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents": "YES",
         "INFOPLIST_KEY_UILaunchStoryboardName": "LaunchScreen",
@@ -141,8 +141,8 @@
           "-framework",
           "WebKit",
         ],
-        "PRODUCT_BUNDLE_IDENTIFIER": "cyberm3.yt",
-        "PRODUCT_NAME": "yt",
+        "PRODUCT_BUNDLE_IDENTIFIER": "com.cyberm3.commander",
+        "PRODUCT_NAME": "Commander",
         "SDKROOT": "iphoneos",
         "STRING_CATALOG_GENERATE_SYMBOLS": "YES",
         "SWIFT_APPROACHABLE_CONCURRENCY": "YES",
@@ -154,12 +154,12 @@
         "VALIDATE_PRODUCT[config=Release]": "YES",
       },
     }, {
-      "name": "yt (macOS)",
+      "name": "Commander (macOS)",
       "id": "9D0572BC3098B7C800785C76",
       "product": "id:9D0572BD3098B7C800785C76",
       "product-type": "application",
       "dependencies": [
-        "yt Extension (macOS)",
+        "Commander Extension (macOS)",
       ],
       "build-phases": [
         "compile-sources",
@@ -181,7 +181,7 @@
         "ENABLE_OUTGOING_NETWORK_CONNECTIONS": "YES",
         "ENABLE_USER_SELECTED_FILES": "readonly",
         "GENERATE_INFOPLIST_FILE": "YES",
-        "INFOPLIST_KEY_CFBundleDisplayName": "yt",
+        "INFOPLIST_KEY_CFBundleDisplayName": "Commander",
         "INFOPLIST_KEY_ITSAppUsesNonExemptEncryption": "NO",
         "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.utilities",
         "INFOPLIST_KEY_NSMainStoryboardFile": "Main",
@@ -198,8 +198,8 @@
           "-framework",
           "WebKit",
         ],
-        "PRODUCT_BUNDLE_IDENTIFIER": "cyberm3.yt",
-        "PRODUCT_NAME": "yt",
+        "PRODUCT_BUNDLE_IDENTIFIER": "com.cyberm3.commander",
+        "PRODUCT_NAME": "Commander",
         "REGISTER_APP_GROUPS": "YES",
         "SDKROOT": "macosx",
         "STRING_CATALOG_GENERATE_SYMBOLS": "YES",
@@ -210,7 +210,7 @@
         "SWIFT_VERSION": "5.0",
       },
     }, {
-      "name": "yt Extension (iOS)",
+      "name": "Commander Extension (iOS)",
       "id": "9D0572C73098B7C800785C76",
       "product": "id:9D0572C83098B7C800785C76",
       "product-type": "app-extension",
@@ -224,7 +224,7 @@
         "CURRENT_PROJECT_VERSION": "1",
         "GENERATE_INFOPLIST_FILE": "YES",
         "INFOPLIST_FILE": "iOS (Extension)/Info.plist",
-        "INFOPLIST_KEY_CFBundleDisplayName": "yt Extension",
+        "INFOPLIST_KEY_CFBundleDisplayName": "Commander Extension",
         "INFOPLIST_KEY_NSHumanReadableCopyright": "",
         "IPHONEOS_DEPLOYMENT_TARGET": "17.0",
         "LD_RUNPATH_SEARCH_PATHS": [
@@ -237,8 +237,8 @@
           "-framework",
           "SafariServices",
         ],
-        "PRODUCT_BUNDLE_IDENTIFIER": "cyberm3.yt.Extension",
-        "PRODUCT_NAME": "yt Extension",
+        "PRODUCT_BUNDLE_IDENTIFIER": "com.cyberm3.commander.Extension",
+        "PRODUCT_NAME": "Commander Extension",
         "SDKROOT": "iphoneos",
         "SKIP_INSTALL": "YES",
         "STRING_CATALOG_GENERATE_SYMBOLS": "YES",
@@ -250,7 +250,7 @@
         "VALIDATE_PRODUCT[config=Release]": "YES",
       },
     }, {
-      "name": "yt Extension (macOS)",
+      "name": "Commander Extension (macOS)",
       "id": "9D0572D13098B7C800785C76",
       "product": "id:9D0572D23098B7C800785C76",
       "product-type": "app-extension",
@@ -267,7 +267,7 @@
         "ENABLE_USER_SELECTED_FILES": "readonly",
         "GENERATE_INFOPLIST_FILE": "YES",
         "INFOPLIST_FILE": "macOS (Extension)/Info.plist",
-        "INFOPLIST_KEY_CFBundleDisplayName": "yt Extension",
+        "INFOPLIST_KEY_CFBundleDisplayName": "Commander Extension",
         "INFOPLIST_KEY_NSHumanReadableCopyright": "",
         "LD_RUNPATH_SEARCH_PATHS": [
           "$(inherited)",
@@ -280,8 +280,8 @@
           "-framework",
           "SafariServices",
         ],
-        "PRODUCT_BUNDLE_IDENTIFIER": "cyberm3.yt.Extension",
-        "PRODUCT_NAME": "yt Extension",
+        "PRODUCT_BUNDLE_IDENTIFIER": "com.cyberm3.commander.Extension",
+        "PRODUCT_NAME": "Commander Extension",
         "SDKROOT": "macosx",
         "SKIP_INSTALL": "YES",
         "STRING_CATALOG_GENERATE_SYMBOLS": "YES",

@@ -26,9 +26,9 @@ open -a /Applications/Xcode.app/Contents/Applications/DeviceHub.app   # Xcode 27
 ## 4. Install and launch
 
 ```sh
-APP=.atlas/tmp/build/DerivedData/Build/Products/Debug-iphonesimulator/yt.app
+APP=.atlas/tmp/build/DerivedData/Build/Products/Debug-iphonesimulator/Commander.app
 xcrun simctl install "$UDID" "$APP"
-xcrun simctl launch "$UDID" cyberm3.yt
+xcrun simctl launch "$UDID" com.cyberm3.commander
 xcrun simctl openurl "$UDID" "https://m.youtube.com"
 ```
 
@@ -36,17 +36,17 @@ Reinstalling the same bundle ID replaces the app and keeps the extension's enabl
 
 ## 5. Enable the extension (manual, once per install)
 
-Settings > Apps > Safari > Extensions > yt Extension > Allow Extension. Then in Safari, when the site asks, allow youtube.com ("Allow for One Day" or "Always Allow"); if no prompt appears, use the page menu (aA or puzzle icon) > Manage Extensions. Debug builds also list extension details in Settings; App Store or TestFlight copies do not.
+Settings > Apps > Safari > Extensions > Commander Extension > Allow Extension. Then in Safari, when the site asks, allow youtube.com ("Allow for One Day" or "Always Allow"); if no prompt appears, use the page menu (aA or puzzle icon) > Manage Extensions. Debug builds also list extension details in Settings; App Store or TestFlight copies do not.
 
 ## 6. Observe
 
 | Purpose | Command |
 |---|---|
-| Live log of the app and extension (filter by subsystem or process) | `xcrun simctl spawn "$UDID" log stream --style compact --predicate 'process CONTAINS "yt"'` |
+| Live log of the app and extension (filter by subsystem or process) | `xcrun simctl spawn "$UDID" log stream --style compact --predicate 'process CONTAINS "Commander"'` |
 | Screenshot | `xcrun simctl io "$UDID" screenshot .atlas/tmp/build/sim.png` |
 | Video | `xcrun simctl io "$UDID" recordVideo .atlas/tmp/build/sim.mp4` (Ctrl-C to stop) |
 | Web Inspector for content, background or popup | macOS Safari > Develop > [Simulator name] > pick the page, "Extension Background Page" or "Extension Popup Page" |
-| Terminate the app | `xcrun simctl terminate "$UDID" cyberm3.yt` |
+| Terminate the app | `xcrun simctl terminate "$UDID" com.cyberm3.commander` |
 | Shut down | `xcrun simctl shutdown "$UDID"` |
 
 Keep logs in files under `.atlas/tmp/build/` and grep them; never stream logs straight into the conversation.
@@ -57,4 +57,4 @@ Safari on iPhone loads `m.youtube.com` (mobile site, different DOM); iPad loads 
 
 ## Guard rails
 
-`xcrun simctl erase` and `xcrun simctl delete` are on the project deny list; ask the user before wiping a simulator. Prefer `simctl uninstall "$UDID" cyberm3.yt` to reset only this app.
+`xcrun simctl erase` and `xcrun simctl delete` are on the project deny list; ask the user before wiping a simulator. Prefer `simctl uninstall "$UDID" com.cyberm3.commander` to reset only this app.

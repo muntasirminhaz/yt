@@ -6,7 +6,7 @@ metadata:
   author: Agent optimization patterns
   version: "1.0"
   focus: token_efficiency, hallucination_reduction, execution_quality
-  adapted_for: yt Safari extension (JS + Swift)
+  adapted_for: Commander Safari extension (JS + Swift)
 ---
 
 # Context Engineering
