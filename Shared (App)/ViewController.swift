@@ -25,10 +25,6 @@ class ViewController: PlatformViewController, WKNavigationDelegate, WKScriptMess
 
         self.webView.navigationDelegate = self
 
-        #if os(iOS)
-            self.webView.scrollView.isScrollEnabled = false
-        #endif
-
         self.webView.configuration.userContentController.add(self, name: "controller")
 
         self.webView.loadFileURL(
@@ -50,6 +46,21 @@ class ViewController: PlatformViewController, WKNavigationDelegate, WKScriptMess
                 }
             }
         #endif
+    }
+
+    func webView(
+        _ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
+        guard let url = navigationAction.request.url, url.scheme != "file" else {
+            return decisionHandler(.allow)
+        }
+        #if os(iOS)
+            UIApplication.shared.open(url)
+        #elseif os(macOS)
+            NSWorkspace.shared.open(url)
+        #endif
+        decisionHandler(.cancel)
     }
 
     func userContentController(

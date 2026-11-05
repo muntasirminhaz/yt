@@ -111,6 +111,7 @@ pages.support.append(
     el("div", { className: "row" }, [el("span", { className: "text" }, [el("span", { className: "label", textContent: t("sp_email") }), el("span", { className: "note", textContent: supportEmail })]), el("a", { className: "button", href: `mailto:${supportEmail}?subject=${encodeURIComponent(name + " " + manifest.version)}`, textContent: t("sp_write") }), copyMail]),
     el("div", { className: "row" }, [el("span", { className: "text" }, [el("span", { className: "label", textContent: t("sp_version") })]), el("span", { className: "note", textContent: manifest.version })]),
     el("div", { className: "row" }, [el("span", { className: "text" }, [el("span", { className: "label", textContent: t("sp_device") })]), el("span", { className: "note", textContent: [device, navigator.userAgent.match(/Version\/[\d.]+/)?.[0]].filter(Boolean).join(" · ") })]),
+    el("div", { className: "row" }, [el("span", { className: "text" }, [el("span", { className: "label", textContent: t("sp_privacy") }), el("span", { className: "note", textContent: t("sp_privacy_note") })]), el("a", { className: "button", href: "https://muntasirminhaz.github.io/yt/privacy", target: "_blank", rel: "noopener", textContent: t("sp_open") })]),
   ]),
 );
 const foot = document.getElementById("foot");

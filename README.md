@@ -2,7 +2,7 @@
 
 A Safari Web Extension that adds playback and interface controls to youtube.com, packaged inside an iOS app and a macOS app for App Store distribution. `yt` is the internal placeholder name; the public name is chosen before the App Store Connect record exists and must not contain "YouTube" or "YT" (YouTube brand rules allow "<Name> for YouTube").
 
-Status (2026-11-02): foundation only. Template extension builds headlessly on both platforms; features come next. Plan: `.atlas/plans/2026-11-02-2255-project-foundation-plan.md`.
+Status (2026-11-05): feature complete for a first release and passing the live Safari suites on Mac, iPhone and iPad simulators (`tests/live/`). Waiting on the product name, icons and a Developer Program team; see `.atlas/runbooks/rename-checklist.md` and `.atlas/reports/2026-11-03-feature-status.md`.
 
 ## Layout
 

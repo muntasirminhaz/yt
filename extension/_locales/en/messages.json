@@ -1862,5 +1862,14 @@
   },
   "h_transcript_opening": {
     "message": "Transcript opening, press again"
+  },
+  "sp_privacy": {
+    "message": "Privacy policy"
+  },
+  "sp_privacy_note": {
+    "message": "Nothing is collected. The policy lists what each optional service receives."
+  },
+  "sp_open": {
+    "message": "Open"
   }
 }

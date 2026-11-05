@@ -21,11 +21,27 @@ body {
     flex-direction: column;
 
     gap: var(--spacing);
-    margin: 0 calc(var(--spacing) * 2);
-    height: 100%;
+    margin: 0 auto;
+    padding: var(--spacing) calc(var(--spacing) * 2);
+    box-sizing: border-box;
+    min-height: 100%;
+    max-width: 36em;
 
     font: -apple-system-short-body;
     text-align: center;
+}
+
+p {
+    margin: 0;
+}
+
+.small {
+    font-size: 0.85em;
+    opacity: 0.75;
+}
+
+a {
+    cursor: pointer;
 }
 
 body:not(.platform-mac, .platform-ios) :is(.platform-mac, .platform-ios) {

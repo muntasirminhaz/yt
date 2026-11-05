@@ -19,7 +19,9 @@ Do this once, before the App Store Connect record exists (bundle IDs are locked 
 | `yt.xcodeproj/project.xcproj` | target names, `PRODUCT_NAME`, `PRODUCT_BUNDLE_IDENTIFIER` (4 targets), `INFOPLIST_KEY_CFBundleDisplayName`, product references, the `yt.xcodeproj` folder name itself; run `xcrun xcprojformatter --update` and `xcodebuild -list` afterwards |
 | `scripts/env.sh` | `PROJECT_FILE`, `PRODUCT_NAME`, `APP_BUNDLE_ID`, `EXT_BUNDLE_ID`, `SCHEME_MAC`, `SCHEME_IOS` (every script reads these) |
 | `Shared (App)/ViewController.swift` | `extensionBundleIdentifier` |
-| `Shared (App)/Resources/Base.lproj/Main.html` | the four sentences and the icon alt text |
+| `Shared (App)/Resources/Base.lproj/Main.html` | the sentences, the icon alt text, and the privacy and support URLs if the repository is renamed |
+| `extension/options.js` | the privacy policy URL on the Support page |
+| `docs/privacy.md`, `docs/support.md` | the product name in prose; publish with GitHub > Settings > Pages > branch `main`, folder `/docs` (nothing is published until that is switched on) |
 | `extension/_locales/en/messages.json` | `extension_name`, `extension_description` |
 | `package.json` | `name`, `description` |
 | `README.md`, `CLAUDE.md`, `.claude/rules/swift.md`, `.claude/skills/*/SKILL.md` and references, `.atlas/runbooks/*.md` | prose mentions; find them with the grep below |

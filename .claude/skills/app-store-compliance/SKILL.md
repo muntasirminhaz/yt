@@ -10,7 +10,8 @@ Product facts this skill assumes; update the row when a fact changes.
 | Fact | Value |
 |---|---|
 | Distribution | App Store on iOS and macOS from one App Store Connect record; app bundle ID `cyberm3.yt`, extension `cyberm3.yt.Extension`; universal purchase |
-| Business | Free; no in-app purchase, no ads, no accounts, no network calls of our own |
+| Business | Free; no in-app purchase, no ads, no accounts, no analytics. Three opt-in features reach community servers behind optional host permissions (SponsorBlock and DeArrow at sponsor.ajay.app: 4-character hash prefix of the video ID; Return YouTube Dislike: the video ID); otherwise no network calls of our own |
+| Policy and support pages | `docs/privacy.md`, `docs/support.md`, meant for GitHub Pages at `https://muntasirminhaz.github.io/yt/`; linked from `Main.html` and the extension's Support page; Notes for Review draft in `.atlas/runbooks/review-notes.md` |
 | Version 1 scope | Playback and interface controls on `*://*.youtube.com/*`; no ads blocked or skipped |
 | Name | `yt` is an internal placeholder; the public name is fixed before the App Store Connect record exists |
 | Team | No Apple Developer Program team yet; device, TestFlight and App Store builds wait for enrolment |
