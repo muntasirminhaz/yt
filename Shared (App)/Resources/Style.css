@@ -9,6 +9,10 @@
 
     --spacing: 20px;
     --muted: color-mix(in srgb, currentColor 60%, transparent);
+    --row: color-mix(in srgb, currentColor 8%, transparent);
+    --sheet: color-mix(in srgb, Canvas 92%, CanvasText);
+    --ill-bg: color-mix(in srgb, currentColor 4%, transparent);
+    --accent: #0a84ff;
 }
 
 html {
@@ -18,7 +22,6 @@ html {
 body {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
 
     gap: var(--spacing);
@@ -45,24 +48,18 @@ p {
     align-self: stretch;
     display: flex;
     flex-direction: column;
-    gap: calc(var(--spacing) * 0.8);
+    gap: var(--spacing);
     margin: 0;
     padding: 0;
     list-style: none;
     text-align: left;
+    counter-reset: step;
 }
 
 .steps li {
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
-}
-
-.steps svg {
-    flex: none;
-    width: 28px;
-    height: 28px;
-    margin-top: 2px;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .steps b {
@@ -70,14 +67,46 @@ p {
     font-weight: 600;
 }
 
-.steps span {
+.steps b::before {
+    counter-increment: step;
+    content: counter(step);
+    display: inline-grid;
+    place-items: center;
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: 0.5em;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.85em;
+}
+
+.steps em {
     display: block;
+    font-style: normal;
     color: var(--muted);
 }
 
-.steps span b {
-    color: initial;
+.ill {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
 }
+
+.ill-bg { fill: var(--ill-bg); }
+.ill-row { fill: var(--row); }
+.ill-select { fill: color-mix(in srgb, var(--accent) 18%, transparent); }
+.ill-sheet { fill: var(--sheet); stroke: var(--row); }
+.ill-sheet-fill { fill: var(--sheet); }
+.ill-primary { fill: var(--accent); }
+.ill-video { fill: #2a2d34; }
+.ill-icon { color: var(--accent); }
+.ill-title { font: 600 14px -apple-system, system-ui, sans-serif; fill: currentColor; }
+.ill-text { font: 13px -apple-system, system-ui, sans-serif; fill: currentColor; }
+.ill-small { font: 11px -apple-system, system-ui, sans-serif; fill: currentColor; }
+.ill-muted { fill: var(--muted); }
+.ill-on { fill: var(--accent); }
+.ill-primary-text { fill: #fff; font-weight: 600; }
 
 footer.small {
     display: flex;
@@ -96,11 +125,10 @@ body:not(.platform-mac, .platform-ios) :is(.platform-mac, .platform-ios) {
     display: none;
 }
 
-body.platform-ios .platform-mac {
-    display: none;
-}
-
-body.platform-mac .platform-ios {
+body.platform-ios .platform-mac,
+body.platform-mac .platform-ios,
+body.platform-ios:not(.platform-ipad) .ipad-only,
+body.platform-ipad .iphone-only {
     display: none;
 }
 
@@ -108,11 +136,8 @@ body:not(.state-on, .state-off) :is(.state-on, .state-off) {
     display: none;
 }
 
-body.state-on :is(.state-off, .state-unknown) {
-    display: none;
-}
-
-body.state-off :is(.state-on, .state-unknown) {
+body.state-on .state-off,
+body.state-off .state-on {
     display: none;
 }
 

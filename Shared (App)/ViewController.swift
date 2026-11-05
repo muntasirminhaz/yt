@@ -34,7 +34,7 @@ class ViewController: PlatformViewController, WKNavigationDelegate, WKScriptMess
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         #if os(iOS)
-            webView.evaluateJavaScript("show('ios')")
+            webView.evaluateJavaScript("show('\(UIDevice.current.userInterfaceIdiom == .pad ? "ipad" : "ios")')")
         #elseif os(macOS)
             webView.evaluateJavaScript("show('mac')")
 

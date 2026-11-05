@@ -10,27 +10,107 @@
     <script src="../Script.js" defer></script>
 </head>
 <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <g id="toggle-on"><rect width="34" height="20" rx="10" fill="#34c759"/><circle cx="24" cy="10" r="8" fill="#fff"/></g>
+            <g id="puzzle"><path d="M10 3.5a2 2 0 0 1 4 0V5h3.5A1.5 1.5 0 0 1 19 6.5V10h-1.5a2 2 0 0 0 0 4H19v3.5a1.5 1.5 0 0 1-1.5 1.5H14v-1.5a2 2 0 0 0-4 0V19H6.5A1.5 1.5 0 0 1 5 17.5V14h1.5a2 2 0 0 0 0-4H5V6.5A1.5 1.5 0 0 1 6.5 5H10Z" fill="currentColor"/></g>
+            <g id="chevrons"><path d="M5 11l7-6 7 6M5 19l7-6 7 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+            <g id="mark"><rect width="24" height="24" rx="6" fill="#15294d"/><path d="M6 11l6-5 6 5M6 18l6-5 6 5" fill="none" stroke="#e5b659" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+        </defs>
+    </svg>
+
     <img src="../Icon.png" width="128" height="128" alt="Commander Icon">
     <p class="tagline">Commander adds controls to YouTube in Safari.</p>
 
-    <ol class="steps platform-ios">
+    <ol class="steps">
         <li>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            <span><b>Turn it on</b>Settings › Apps › Safari › Extensions › Commander</span>
+            <span><b>Turn it on</b>
+                <em class="platform-ios">Settings › Apps › Safari › Extensions › Commander. Turn on Allow Extension, and Allow in Private Browsing if you use private tabs.</em>
+                <em class="platform-mac">Safari › Settings › Extensions. Tick Commander, and Allow in Private Browsing if you use private windows.</em>
+            </span>
+            <svg class="ill platform-ios" viewBox="0 0 300 150" aria-label="Settings page with the Allow Extension switch on">
+                <rect width="300" height="150" rx="14" class="ill-bg"/>
+                <text x="150" y="26" text-anchor="middle" class="ill-title">Commander</text>
+                <rect x="16" y="40" width="268" height="44" rx="10" class="ill-row"/>
+                <text x="30" y="67" class="ill-text">Allow Extension</text>
+                <use href="#toggle-on" x="236" y="52"/>
+                <rect x="16" y="92" width="268" height="44" rx="10" class="ill-row"/>
+                <text x="30" y="119" class="ill-text">Allow in Private Browsing</text>
+                <use href="#toggle-on" x="236" y="104"/>
+            </svg>
+            <svg class="ill platform-mac" viewBox="0 0 300 150" aria-label="Safari Extensions settings with Commander ticked">
+                <rect width="300" height="150" rx="14" class="ill-bg"/>
+                <rect x="16" y="16" width="96" height="118" rx="10" class="ill-row"/>
+                <rect x="24" y="26" width="80" height="26" rx="6" class="ill-select"/>
+                <rect x="30" y="31" width="16" height="16" rx="4" fill="#0a84ff"/><path d="M33.5 39l3.5 3.5 6-6" fill="none" stroke="#fff" stroke-width="2"/>
+                <text x="52" y="43" class="ill-text ill-on">Commander</text>
+                <use href="#mark" x="124" y="24" transform="scale(1)"/>
+                <text x="156" y="41" class="ill-title" text-anchor="start">Commander</text>
+                <rect x="124" y="60" width="16" height="16" rx="4" fill="#0a84ff"/><path d="M127.5 68l3.5 3.5 6-6" fill="none" stroke="#fff" stroke-width="2"/>
+                <text x="148" y="72" class="ill-text">Allow in Private Browsing</text>
+                <text x="124" y="100" class="ill-text ill-muted">Permissions</text>
+                <text x="124" y="122" class="ill-text">youtube.com</text>
+                <text x="276" y="122" class="ill-text ill-on" text-anchor="end">Always Allow</text>
+            </svg>
         </li>
         <li>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5a2 2 0 0 1 4 0V5h3.5A1.5 1.5 0 0 1 19 6.5V10h-1.5a2 2 0 0 0 0 4H19v3.5a1.5 1.5 0 0 1-1.5 1.5H14v-1.5a2 2 0 0 0-4 0V19H6.5A1.5 1.5 0 0 1 5 17.5V14h1.5a2 2 0 0 0 0-4H5V6.5A1.5 1.5 0 0 1 6.5 5H10Z" fill="currentColor"/></svg>
-            <span><b>Allow it on youtube.com</b>Open a video in Safari, tap this icon in the address bar, then allow Commander.</span>
+            <span><b>Allow it on youtube.com</b>
+                <em class="platform-ios iphone-only">Open a video in Safari and tap the puzzle icon in the address bar. It carries a red badge until you do. Choose Always Allow.</em>
+                <em class="platform-ios ipad-only">Open a video in Safari and tap the puzzle icon at the left of the address bar. Choose Always Allow.</em>
+                <em class="platform-mac">Open a video, then click the Commander button in the toolbar. Choose Always Allow so it never asks again.</em>
+            </span>
+            <svg class="ill platform-ios" viewBox="0 0 300 150" aria-label="Safari address bar with the puzzle icon badged, and the permission sheet">
+                <rect width="300" height="150" rx="14" class="ill-bg"/>
+                <rect x="16" y="14" width="268" height="32" rx="16" class="ill-row"/>
+                <svg x="30" y="20" width="20" height="20" viewBox="0 0 24 24" class="ill-icon"><use href="#puzzle"/></svg>
+                <circle cx="48" cy="22" r="4" fill="#ff3b30"/>
+                <text x="150" y="35" text-anchor="middle" class="ill-text">youtube.com</text>
+                <rect x="16" y="56" width="268" height="80" rx="12" class="ill-sheet"/>
+                <text x="150" y="78" text-anchor="middle" class="ill-text">Allow Commander on youtube.com?</text>
+                <rect x="30" y="90" width="118" height="32" rx="8" class="ill-row"/>
+                <text x="89" y="110" text-anchor="middle" class="ill-text">Allow for One Day</text>
+                <rect x="152" y="90" width="118" height="32" rx="8" class="ill-primary"/>
+                <text x="211" y="110" text-anchor="middle" class="ill-text ill-primary-text">Always Allow</text>
+            </svg>
+            <svg class="ill platform-mac" viewBox="0 0 300 150" aria-label="Safari toolbar with the Commander button and its permission popover">
+                <rect width="300" height="150" rx="14" class="ill-bg"/>
+                <rect x="16" y="14" width="200" height="28" rx="8" class="ill-row"/>
+                <text x="116" y="32" text-anchor="middle" class="ill-text">youtube.com</text>
+                <use href="#mark" x="230" y="16"/>
+                <path d="M242 46l-6 8h12z" class="ill-sheet-fill"/>
+                <rect x="60" y="54" width="224" height="84" rx="12" class="ill-sheet"/>
+                <text x="172" y="76" text-anchor="middle" class="ill-text">Allow Commander on youtube.com?</text>
+                <rect x="72" y="88" width="62" height="30" rx="7" class="ill-row"/>
+                <text x="103" y="107" text-anchor="middle" class="ill-small">Allow Once</text>
+                <rect x="140" y="88" width="66" height="30" rx="7" class="ill-row"/>
+                <text x="173" y="107" text-anchor="middle" class="ill-small">For One Day</text>
+                <rect x="212" y="88" width="62" height="30" rx="7" class="ill-primary"/>
+                <text x="243" y="107" text-anchor="middle" class="ill-small ill-primary-text">Always Allow</text>
+            </svg>
         </li>
         <li>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11l7-6 7 6M5 19l7-6 7 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span><b>Find the controls</b>They sit under the player. The same icon menu opens Commander's settings.</span>
+            <span><b>Find the controls</b>
+                <em class="platform-ios">They sit under the player. Tap the puzzle icon, then Commander, to open settings.</em>
+                <em class="platform-mac">They sit under the player. The toolbar button opens settings.</em>
+            </span>
+            <svg class="ill" viewBox="0 0 300 150" aria-label="A video with the Commander toolbar under the player">
+                <rect width="300" height="150" rx="14" class="ill-bg"/>
+                <rect x="16" y="14" width="268" height="78" rx="10" class="ill-video"/>
+                <path d="M141 42l22 11-22 11z" fill="#fff" opacity="0.9"/>
+                <rect x="16" y="100" width="268" height="36" rx="10" class="ill-row"/>
+                <svg x="30" y="108" width="20" height="20" viewBox="0 0 24 24" class="ill-icon"><use href="#chevrons"/></svg>
+                <text x="60" y="122" class="ill-small">1×</text>
+                <text x="92" y="122" class="ill-small">Loop</text>
+                <text x="134" y="122" class="ill-small">1080p</text>
+                <text x="186" y="122" class="ill-small">A–B</text>
+                <text x="222" y="122" class="ill-small">Photo</text>
+                <text x="270" y="122" class="ill-small" text-anchor="end">•••</text>
+            </svg>
         </li>
     </ol>
 
-    <p class="platform-mac state-unknown">Turn on the Commander extension in the Extensions section of Safari Settings.</p>
-    <p class="platform-mac state-on">The Commander extension is on. You can turn it off in the Extensions section of Safari Settings.</p>
-    <p class="platform-mac state-off">The Commander extension is off. You can turn it on in the Extensions section of Safari Settings.</p>
+    <p class="platform-mac state-on">Commander is on in Safari.</p>
+    <p class="platform-mac state-off">Commander is off in Safari.</p>
     <button class="platform-mac open-preferences">Quit and Open Safari Settings…</button>
 
     <footer class="small">

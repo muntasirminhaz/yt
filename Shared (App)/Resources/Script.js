@@ -1,5 +1,6 @@
 function show(platform, enabled) {
-    document.body.classList.add(`platform-${platform}`);
+    document.body.classList.add(`platform-${platform === "ipad" ? "ios" : platform}`);
+    if (platform === "ipad") document.body.classList.add("platform-ipad");
 
     if (typeof enabled === "boolean") {
         document.body.classList.toggle("state-on", enabled);
