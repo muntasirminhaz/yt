@@ -14,8 +14,7 @@ After the rename, Safari treats the extension as new: enable it again in Safari 
 
 ## Still before the first archive
 
-- App icons: `Shared (App)/Assets.xcassets/AppIcon.appiconset` and `LargeIcon.imageset` are empty; add a 1024 px icon for iOS and the macOS sizes (or an Icon Composer file) and fill both `Contents.json`.
-- Extension icons in `extension/images/` and the toolbar SVG still show the template artwork.
+- Icons done 2026-11-05 (direction A, brass chevrons on navy): iOS light, dark and tinted 1024 px, the ten macOS sizes, LaunchScreen LargeIcon, `extension/images/icon-*.png`, `Shared (App)/Resources/Icon.png`, toolbar SVG. Renderer: `.atlas/runbooks/icon-render.swift` (regenerate from it, never edit PNGs by hand).
 - `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION` in the project file and `version` in `extension/manifest.json` should agree (1.0 / 1 / 1.0 today).
 
 ## Verify
