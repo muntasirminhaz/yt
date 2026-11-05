@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: [SIGN=none|adhoc] [IOS_DESTINATION=<xcodebuild destination>] scripts/build.sh macos|ios [Debug|Release]
+# Usage: [SIGN=none|adhoc|auto] [IOS_DESTINATION=<xcodebuild destination>] scripts/build.sh macos|ios [Debug|Release]
 # Builds headlessly, writes the full log to .atlas/tmp/build/, prints only the result and errors.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -15,13 +15,14 @@ mkdir -p "$LOGDIR"
 case "$PLATFORM" in
   macos) SCHEME="$SCHEME_MAC"; DEST="platform=macOS,arch=arm64" ;;
   ios)   SCHEME="$SCHEME_IOS"; DEST="${IOS_DESTINATION:-generic/platform=iOS Simulator}" ;;
-  *) echo "usage: [SIGN=none|adhoc] $0 macos|ios [Debug|Release]" >&2; exit 2 ;;
+  *) echo "usage: [SIGN=none|adhoc|auto] $0 macos|ios [Debug|Release]" >&2; exit 2 ;;
 esac
 
 case "$SIGN" in
   none)  SIGN_ARGS=(CODE_SIGNING_ALLOWED=NO) ;;
   adhoc) SIGN_ARGS=(CODE_SIGN_STYLE=Manual "CODE_SIGN_IDENTITY=-" DEVELOPMENT_TEAM= PROVISIONING_PROFILE_SPECIFIER=) ;;
-  *) echo "SIGN must be none or adhoc" >&2; exit 2 ;;
+  auto)  SIGN_ARGS=(CODE_SIGN_STYLE=Automatic -allowProvisioningUpdates -allowProvisioningDeviceRegistration) ;;
+  *) echo "SIGN must be none, adhoc or auto (auto = the team in the project, device registration allowed)" >&2; exit 2 ;;
 esac
 
 LOG="$LOGDIR/build-$PLATFORM-$CONFIG.log"
