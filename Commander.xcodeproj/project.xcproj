@@ -121,6 +121,7 @@
         "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor",
         "CODE_SIGN_STYLE": "Automatic",
         "CURRENT_PROJECT_VERSION": "1",
+        "DEVELOPMENT_TEAM": "3YD5LQ56PJ",
         "GENERATE_INFOPLIST_FILE": "YES",
         "INFOPLIST_FILE": "iOS (App)/Info.plist",
         "INFOPLIST_KEY_CFBundleDisplayName": "Commander",
@@ -222,6 +223,7 @@
       "build-settings": {
         "CODE_SIGN_STYLE": "Automatic",
         "CURRENT_PROJECT_VERSION": "1",
+        "DEVELOPMENT_TEAM": "3YD5LQ56PJ",
         "GENERATE_INFOPLIST_FILE": "YES",
         "INFOPLIST_FILE": "iOS (Extension)/Info.plist",
         "INFOPLIST_KEY_CFBundleDisplayName": "Commander Extension",
@@ -262,6 +264,7 @@
       "build-settings": {
         "CODE_SIGN_STYLE": "Automatic",
         "CURRENT_PROJECT_VERSION": "1",
+        "DEVELOPMENT_TEAM": "3YD5LQ56PJ",
         "ENABLE_APP_SANDBOX": "YES",
         "ENABLE_HARDENED_RUNTIME": "YES",
         "ENABLE_USER_SELECTED_FILES": "readonly",
